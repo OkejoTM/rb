@@ -1,0 +1,59 @@
+<% title "#{@page_title}#{page_number_substr(@pagination.current_page)}" %>
+
+<h2><%= t(:index, scope: :regions) %>
+  <%= link_to t("common.add"), new_region_path, class: 'btn btn-primary' %>
+</h2>
+
+<br>
+<%= render_location_filter(location_filter: "/regions", type: "region") %>
+<br>
+
+<%= link_to t(:without_translation, scope: :regions), "#{translations_regions_path}?has_active_and_moderated_property=on" %>
+
+<br>
+<%= render_pagination @pagination %>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= t(:name, scope: :areas) %></th>
+    <th><%= t(:show, scope: :countries) %></th>
+    <th><%= t(:active_short, scope: :properties) %></th>
+    <th><%= t(:popular, scope: :common) %></th>
+    <th><%= t(:slug, scope: :areas) %></th>
+    <th><%= "#{t(:short_properties_count, scope: :common)}/#{t(:short_active, scope: :common)}/#{t(:short_active_and_moderated, scope: :common)}" %></th>
+    <th><%= t(:short_cities_count, scope: :areas) %></th>
+    <th><%= t("common.seo_pages") %></th>
+    <th></th>
+  </tr>
+
+  <% @pagination.items.order(is_popular: :desc).each do |region| %>
+      <tr>
+        <td><%= region.id %></td>
+        <% p params%>
+        <td>
+          en: <%= link_to region.title_en, cities_path(request.params.merge(region_id: region.id)) %><br>
+          ru: <%= link_to region.title_ru, cities_path(request.params.merge(region_id: region.id)) %>
+        </td>
+        <td><%= region.country&.title %></td>
+        <td><%= Utils::Html::bool_glyphicon(region.is_active) %></td>
+        <td><%= Utils::Html::bool_glyphicon(region.is_popular) %></td>
+        <td><%= link_to region.slug, region.seo_path %></td>
+        <td>
+          <%= link_to region.properties_count, properties_path(region_id: region.id) %> /
+          <%= link_to region.active_properties_count, properties_path(region_id: region.id, active: "on") %> /
+          <%= link_to region.active_and_moderated_properties_count, properties_path(region_id: region.id, active: "on", moderated: "on") %>
+        </td>
+        <td><%= region.cities_count %></td>
+        <td><%= link_to region.seo_location_pages.count, region_browse_pages_path(region) %></td>
+        <td>
+          <%= render_compact_control_buttons(obj: region,
+                                             edit_obj_path: edit_region_path(region),
+                                             confirm_message: t(:delete_confirm, scope: :regions)) %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+
+<%= render_pagination @pagination %>
+<br>

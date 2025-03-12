@@ -1,0 +1,41 @@
+<h2><%= @title %></h2>
+
+<%= render_pagination(@pagination) %>
+
+<table class="table">
+  <tr>
+    <th></th>
+    <th>H1</th>
+    <th><%= t(:page_title, scope: :seo) %></th>
+    <th><%= t(:meta_description, scope: :seo) %></th>
+    <th><%= t(:description, scope: :seo) %></th>
+    <th><%= t(:properties_count, scope: :common) %></th>
+    <!--<th>Отображается на сайте?</th>-->
+  </tr>
+
+  <% old_locale = I18n.locale %>
+  <% @pagination.items.each do |page| %>
+    <% I18n.locale = :ru %>
+    <tr>
+      <td>RU</td>
+      <td><%= link_to string_or_dummy(page.h1, 'Не указано'), page.seo_path, target: '_blank' %></td>
+      <td><%= page.title %></td>
+      <td><%= page.meta_description&.html_safe %></td>
+      <td><%= page.description&.html_safe %></td>
+      <td rowspan="2"><%= page.properties_count %></td>
+      <!--<td><%#= yes_no_html page.visible? %></td>-->
+    </tr>
+    <% I18n.locale = :en %>
+    <tr>
+      <td style="border-top: 0px;">EN</td>
+      <td style="border-top: 0px;"><%= link_to string_or_dummy(page.h1, 'Не указано'), page.seo_path, target: '_blank' %></td>
+      <td style="border-top: 0px;"><%= page.title %></td>
+      <td style="border-top: 0px;"><%= page.meta_description&.html_safe %></td>
+      <td style="border-top: 0px;"><%= page.description&.html_safe %></td>
+      <!--<td><%#= yes_no_html page.visible? %></td>-->
+    </tr>
+  <% end %>
+  <% I18n.locale = old_locale %>
+</table>
+
+<%= render_pagination(@pagination) %>

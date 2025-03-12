@@ -1,0 +1,9 @@
+<% title @page_title %>
+
+<h2><%= t('common.full_attributes_list') %></h2>
+
+<% @dictionary.sort.each do |key, values| %>
+    <p>
+      <strong><%= key %>:</strong> <%= values.join(', ') %><br>
+    </p>
+<% end %>

@@ -1,0 +1,32 @@
+<%= form_with model: @object, data: { remote: true, type: :json }, html: { 'data-ajax-submit' => '' } do |f| %>
+  <div class="form-group row">
+    <%= f.label :title_ru, t(:title_ru, scope: :common), class: 'col-lg-2 control-label' %>
+    <div class="col-lg-6">
+      <%= f.text_field :title_ru, class: "form-control" %>
+      <%= danger_help_block(:title_ru) %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :title_en, t(:title_en, scope: :common), class: 'col-lg-2 control-label' %>
+    <div class="col-lg-6">
+      <%= f.text_field :title_en, class: "form-control" %>
+      <%= danger_help_block(:title_en) %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :icon_class, "Класс иконки, брать из
+                                 <a href='https://fontawesome.com/icons?d=gallery'>Font Awesome</a>
+                                 или
+                                 <a href='https://getbootstrap.com/docs/3.3/components/'>Glyphicons</a>".html_safe,
+                class: 'col-lg-2 control-label' %>
+    <div class="col-lg-6">
+      <%= f.text_field :icon_class, class: "form-control" %>
+    </div>
+  </div>
+
+  <%= render_control_buttons(form: f,
+                             obj: @object,
+                             confirm_message: t(:delete_confirm, scope: :contact_type)) %>
+<% end %>

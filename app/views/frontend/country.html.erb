@@ -1,0 +1,64 @@
+<% title @seo_page.title %>
+<% meta_description @seo_page.meta_description %>
+
+<%= render partial: 'layouts/frontend/titlebar' %>
+
+<%= render partial: 'layouts/frontend/search_titlebar',
+           locals: {
+             filter_options: @filter_options,
+             edit_path: edit_country_path(@country)
+           }
+%>
+
+<div class="container">
+  <div class="col-xs-12 col-md-8 col-md-offset-2">
+    <% if browser.device.mobile? %>
+      <%= render partial: 'common/ads/country_mobile' %>
+    <% else %>
+      <%= render partial: 'common/ads/country_desktop' %>
+    <% end %>
+  </div>
+</div>
+
+<% if @country.important_regions.present? %>
+  <%= render partial: 'layouts/frontend/places', locals: { areas: @country.important_regions,
+                                                              title: t(:popular_regions),
+                                                              subtitle: t(:subtitle_popular_regions) } %>
+<% end %>
+
+<% if @country.important_cities.present? %>
+  <%= render partial: 'layouts/frontend/places', locals: { areas: @country.important_cities,
+                                                              title: t(:popular_cities),
+                                                              subtitle: t(:subtitle_popular_cities) } %>
+<% end %>
+
+<% if @country.show_agencies_on_website %>
+  <section class="fullwidth border-top margin-top-40 margin-bottom-0 padding-top-0 padding-bottom-20"
+           data-background-color="#f7f7f7"
+           style="background: rgb(247, 247, 247);">
+    <%= render partial: 'layouts/frontend/agents_mk2', locals: { agencies: @agencies, country: @country } %>
+  </section>
+<% end %>
+
+<div id="country_properties">
+  <%= render_async country_properties_path(country_id: @country.id) do %>
+    <%= loader_block %>
+  <% end %>
+</div>
+
+<% if @seo_page.description.present? %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <%= @seo_page.description.html_safe %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% similar_links = @template.similar_links_by_groups %>
+<% if similar_links.present? %>
+  <%= render partial: 'layouts/frontend/internal_links_mk2',
+             locals: { group_links: similar_links,
+                       box_title: @template.internal_links_title } %>
+<% end %>

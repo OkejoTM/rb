@@ -1,0 +1,83 @@
+<%
+  currency ||= current_currency
+  residentials ||= []
+  commercials ||= []
+  lands ||= []
+  is_res = residentials.present?
+  is_com = commercials.present?
+  is_land = lands.present?
+  is_one_of_three = 1 == ((is_res ? 1 : 0) + (is_com ? 1 : 0) + (is_land ? 1 : 0))
+  is_no_one = !is_res && !is_com && !is_land
+%>
+<!--Widget-->
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="margin-top-0 margin-bottom-30" style="font-size: 30px;"><%= t("meta.compare_properties_h1") %></h1>
+    <% unless is_no_one %>
+      <div clas="row">
+        <div class="search-type" style="<%= 'display: none' if is_one_of_three %>">
+          <% if is_res %>
+            <label class="active" id="residential-switch-button">
+              <input name="tab" type="radio" class="first-tab"></input>
+              <%= t(:residential, scope: :navbar_application) %>
+            </label>
+          <% end %>
+          <% if is_com %>
+            <label class="<%= (!is_res) ? 'active' : '' %>" id="commercial-switch-button">
+              <input name="tab" type="radio" class="tab"></input>
+              <%= t(:commercial, scope: :navbar_application) %>
+            </label>
+          <% end %>
+          <% if is_land %>
+            <label class="<%= (!is_res && !is_com) ? 'active' : '' %>" id="land-switch-button">
+              <input name="tab" type="radio" class="tab"></input>
+              <%= t(:land, scope: :navbar_application) %>
+            </label>
+          <% end %>
+        </div>
+        <% if is_res %>
+          <!--RESIDENTAILS-->
+          <div id="residential-body" style="display: block;">
+            <%=
+                render partial: 'layouts/frontend/compare_properties/listing_item',
+                        locals: {
+                                  wrap_collection: residentials,
+                                  currency: currency,
+                                  type: "residential",
+                                }
+            %>
+          </div>
+        <% end %>
+        <% if is_com %>
+          <!-- COMMERCIALS -->
+          <div id="commercial-body" style="display: <%= is_res ? 'none' : 'block' %>;">
+            <%=
+                render partial: 'layouts/frontend/compare_properties/listing_item',
+                        locals: {
+                                  wrap_collection: commercials,
+                                  currency: currency,
+                                  type: "commercial",
+                                }
+            %>
+          </div>
+        <% end %>
+        <% if is_land %>
+          <!-- LANDS -->
+          <div id="land-body" style="display: <%= (is_res || is_com) ? 'none' : 'block' %>;">
+            <%=
+                render partial: 'layouts/frontend/compare_properties/listing_item',
+                        locals: {
+                                  wrap_collection: lands,
+                                  currency: currency,
+                                  type: "land",
+                                }
+            %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+    <p id="compare-list-nothing-found" style="display: <%= (is_no_one) ? 'block' : 'none;' %>;">
+      <%= t("nothing_found") %>
+    </p>
+  </div>
+</div>

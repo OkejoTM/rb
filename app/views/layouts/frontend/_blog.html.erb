@@ -1,0 +1,31 @@
+<%
+  title ||= ""
+  edit_path ||= ""
+%>
+
+<!-- Content
+================================================== -->
+<div class="container">
+
+  <!-- Blog Posts -->
+  <div class="blog-page">
+    <div class="row">
+      <div class="col-md-8">
+
+        <div id="articles_list">
+          <%= render partial: 'layouts/frontend/blog/listing', locals: { title: title,
+                                                                            edit_path: edit_path,
+                                                                            pagination: pagination } %>
+        </div>
+      </div>
+      <!-- Blog Posts / End -->
+
+      <!-- Widgets -->
+      <div class="col-md-4">
+        <%= render partial: 'layouts/frontend/blog/sidebar' %>
+      </div>
+    </div>
+    <!-- Sidebar / End -->
+
+  </div>
+</div>

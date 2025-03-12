@@ -1,0 +1,87 @@
+<div class="form-group row">
+  <label for="has_contract"
+         class="col-lg-2 control-label"
+  >
+    <%= t("agencies.has_contract") %>
+  </label>
+  <div class="col-lg-6">
+    <input type="checkbox"
+           id="has_contract"
+           class="form-check"
+           v-model="agency.has_contract"
+    />
+    <span class="label label-info">Если есть договор. Скрывает прямые контакты.</span>
+  </div>
+</div>
+
+<div class="form-group row">
+  <label for="is_active"
+         class="col-lg-2 control-label"><%= t("areas.is_active") %></label>
+  <div class="col-lg-6">
+    <input type="checkbox" id="is_active" class="form-check" v-model="agency.is_active">
+  </div>
+</div>
+
+<div class="form-group row">
+  <label for="show_on_website"
+         class="col-lg-2 control-label"><%= t("agencies.show_on_website") %></label>
+  <div class="col-lg-6">
+    <input type="checkbox" id="show_on_website" class="form-check" v-model="agency.show_on_website">
+  </div>
+</div>
+
+<div class="form-group row">
+  <label for="url"
+         class="col-lg-2 control-label"><%= t("areas.url") %><span style="color:red">*</span></label>
+  <div class="col-lg-6">
+    <input type="text" id="slug" class="form-control" required="required" v-model="agency.slug">
+    <error-label :errors="errors['slug']"></error-label>
+  </div>
+</div>
+
+<div class="form-group row">
+  <label for="name_ru"
+         class="col-lg-6 control-label"><%= t("common.title_ru") %><span style="color:red">*</span></label>
+  <label for="name_en"
+         class="col-lg-6 control-label"><%= t("common.title_en") %><span style="color:red">*</span></label>
+
+  <div class="col-lg-6">
+    <input type="text" id="name_ru" class="form-control" v-model="agency.name_ru">
+    <error-label :errors="errors['name_ru']"></error-label>
+  </div>
+  <div class="col-lg-6">
+    <input type="text" id="name_en" class="form-control" v-model="agency.name_en">
+    <error-label :errors="errors['name_en']"></error-label>
+  </div>
+</div>
+
+<div class="form-group row">
+  <label for="about_ru"
+         class="col-lg-6 control-label"><%= t("agencies.about_ru") %></label>
+  <label for="about_en"
+         class="col-lg-6 control-label"><%= t("agencies.about_en") %></label>
+
+  <div class="col-lg-6">
+    <ckeditor id="about_ru" :editor="editor" v-model="agency.about_ru"></ckeditor>
+  </div>
+  <div class="col-lg-6">
+    <ckeditor id="about_en" :editor="editor" v-model="agency.about_en"></ckeditor>
+  </div>
+</div>
+
+<div class="form-group row">
+  <label for="website"
+         class="col-lg-2 control-label"><%= t("agencies.website") %></label>
+  <div class="col-lg-6">
+    <input type="text" id="website" class="form-control" v-model="agency.website">
+  </div>
+</div>
+
+<div class="form-group row">
+  <label class="col-lg-2 control-label"><%= t("agencies.logo") %></label>
+
+  <div class="row col-lg-6">
+    <img-loader :image="agency.logo_attributes"
+                @load_image="agency.logo_attributes = $event"></img-loader>
+  </div>
+</div>

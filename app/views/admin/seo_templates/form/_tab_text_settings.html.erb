@@ -1,0 +1,77 @@
+<%= f.fields_for :seo_template_page do |ff| %>
+  <div class="row">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th class="col-lg-2"></th>
+        <th class="col-lg-5">RU</th>
+        <th class="col-lg-5">EN</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>H1</td>
+
+        <td>
+          <%= ff.text_field :h1_ru, class: 'form-control' %>
+        </td>
+        <td>
+          <%= ff.text_field :h1_en, class: 'form-control' %>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Title</td>
+
+        <td>
+          <%= ff.text_field :title_ru, class: 'form-control' %>
+        </td>
+
+        <td>
+          <%= ff.text_field :title_en, class: 'form-control' %>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Мета-описание</td>
+
+        <td>
+          <%= ff.text_area :meta_description_ru, class: "form-control" %>
+        </td>
+
+        <td>
+          <%= ff.text_area :meta_description_en, class: "form-control" %>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Описание страницы</td>
+
+        <td>
+          <%= ff.text_area :description_ru, class: "form-control classic_ckeditor" %>
+        </td>
+
+        <td>
+          <%= ff.text_area :description_en, class: "form-control classic_ckeditor" %>
+        </td>
+      </tr>
+
+      <tr>
+        <td rowspan="2">Справка по сниппетам</td>
+
+        <td colspan="2">
+          <%= snippets_description(:area) %>
+          <br>
+          <%= snippets_description(:property) %>
+        </td>
+      </tr>
+
+      <tr>
+        <td colspan="3">
+          <%= snippets_description(:common) %>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+<% end %>

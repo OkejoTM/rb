@@ -1,0 +1,191 @@
+<div class="form-group row">
+  <%= f.input :is_active,
+              wrapper: :group_wrapper,
+              label: t(:is_active, scope: :properties),
+              label_html: { class: 'pr-20' } %>
+
+  <% if allowed_to? :info? %>
+    <%= f.input :moderated,
+                wrapper: :group_wrapper,
+                label: t(:moderated, scope: :common),
+                wrapper_html: { class: 'row' },
+                label_html: { class: 'pr-20' } %>
+    <%= f.input :is_filler,
+                wrapper: :group_wrapper,
+                label: t(:is_filler, scope: :properties),
+                disabled: true,
+                label_html: { class: 'pr-20' } %>
+  <% end %>
+</div>
+
+<%= f.input :country_id,
+            wrapper: :horizontal_form,
+            label: t(:show, scope: :countries),
+            collection: @countries,
+            label_method: :title_ru,
+            value_method: :id,
+            include_blank: true,
+            input_html: { class: 'select2-enable select-country' } %>
+
+<%= f.input :region_id,
+            wrapper: :horizontal_form,
+            label: t(:show, scope: :regions),
+            collection: @regions,
+            label_method: :title_ru,
+            value_method: :id,
+            include_blank: true,
+            input_html: { class: "select2-enable select-region" } %>
+
+<%= f.input :city_id,
+            wrapper: :horizontal_form,
+            label: t(:show, scope: :cities),
+            collection: @cities,
+            label_method: :title_ru,
+            value_method: :id,
+            include_blank: true,
+            input_html: { class: "select2-enable select-city" } %>
+
+<%= f.input :energy_efficiency_type,
+            wrapper: :horizontal_form,
+            label: t(:energy_efficiency, scope: :common),
+            collection: Property.energy_efficiency_types.keys,
+            include_blank: true,
+            input_html: { class: "select2-enable select-energy_efficiency_type" } %>
+
+<%= f.input :video_link,
+            wrapper: :horizontal_form,
+            label: t(:video, scope: :properties),
+            input_html: { class: "form-control" } %>
+
+<%= f.input :construction_phase,
+            wrapper: :horizontal_form,
+            label: t(:construction_phase, scope: :properties),
+            collection: @filter_options.construction_phase,
+            input_html: { class: 'form-control select2-enable' } %>
+
+<div class="form-group row">
+  <%= f.input :building_year,
+              label: t(:building_year, scope: :properties),
+              wrapper: :row_wrapper,
+              start_year: Time.zone.now.year + 50,
+              end_year: Time.zone.now.year - 300,
+              discard_day: true,
+              discard_month: true,
+              include_blank: true,
+              label_html: { class: 'col-lg-6' },
+              wrapper_html: { class: 'mr col-lg-4' } %>
+
+  <%= f.input :last_repair,
+              label: t(:last_repair, scope: :properties),
+              wrapper: :row_wrapper,
+              start_year: Time.zone.now.year + 1,
+              end_year: Time.zone.now.year - 300,
+              discard_day: true,
+              discard_month: true,
+              include_blank: true,
+              label_html: { class: 'col-lg-6' },
+              wrapper_html: { class: 'col-lg-4' } %>
+</div>
+
+<div class="form-group row">
+  <%= f.input :description_ru,
+              label: t(:description_ru, scope: :properties),
+              input_html: { class: 'form-control classic_ckeditor', id: 'description_ru' },
+              wrapper: :description_wrapper,
+              as: :text %>
+
+  <%= f.input :description_en,
+              label: t(:description_en, scope: :properties),
+              input_html: { class: 'form-control classic_ckeditor', id: 'description_en' },
+              wrapper: :description_wrapper,
+              as: :text %>
+</div>
+
+<!--<h3>Теги</h3>-->
+<div class="form-group row">
+  <% @property_tag_categories.each do |property_tag_category| %>
+    <div class="col-lg-3">
+      <h4><%= property_tag_category.title %></h4>
+
+      <% property_tag_category.property_tags.each do |property_tag| %>
+        <%= f.input :property_tag_ids,
+                    as: :boolean,
+                    wrapper: :tag_wrapper,
+                    label: property_tag.title,
+                    checked_value: property_tag.id %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%= f.input :agency_id,
+            wrapper: :horizontal_form,
+            label: t(:agency, scope: :properties),
+            collection: @agencies,
+            label_method: :name_ru,
+            include_blank: true,
+            input_html: { class: 'select2-enable' } %>
+
+<%= f.input :location_type_ids,
+            wrapper: :horizontal_form,
+            label: (t(:show, scope: :location_types)),
+            input_html: { multiple: 'multiple' },
+            collection: @location_types,
+            label_method: :title_ru,
+            value_method: :id,
+            include_blank: true %>
+
+<%= f.input :property_type_id,
+            wrapper: :horizontal_form,
+            label: t(:show, scope: :property_types),
+            collection: @property_types,
+            label_method: :title_ru,
+            include_blank: true,
+            input_html: { class: 'select2-enable' } %>
+
+<div class="form-group row">
+  <%= f.input :area,
+              label: (t(:area, scope: :properties)),
+              input_html: { step: 'any', min: 0 },
+              wrapper: :size_wrapper %>
+  <%= f.input :area_unit,
+              as: :select,
+              label: false,
+              wrapper: :group_wrapper,
+              collection: Formatters::AreaFormatter.area_units.invert,
+              selected: @property.area_unit.presence,
+              include_blank: false,
+              input_html: { class: 'form-control select2-enable' },
+              wrapper_html: { class: 'col-lg-1' } %>
+</div>
+
+<div class="form-group row">
+  <%= f.input :plot_area,
+              label: t(:plot_area, scope: :properties),
+              input_html: { step: 'any', min: 0 },
+              wrapper: :size_wrapper %>
+  <%= f.input :plot_area_unit,
+              as: :select,
+              label: false,
+              wrapper: :group_wrapper,
+              collection: Formatters::AreaFormatter.area_units.invert,
+              selected: @property.plot_area_unit,
+              include_blank: false,
+              input_html: { class: 'form-control select2-enable' },
+              wrapper_html: { class: 'col-lg-1' } %>
+</div>
+
+<div class="form-group row">
+  <%= f.input :room_count,
+              label: t(:room_count, scope: :properties),
+              wrapper: :row_wrapper,
+              input_html: { class: 'form-control col-lg-2',
+              step: 1, min: 0 },
+              wrapper_html: { class: 'col-lg-4' },
+              label_html: { class: 'col-lg-6' } %>
+
+  <%= f.input :studio,
+              label: t(:studio, scope: :properties),
+              wrapper: :group_wrapper,
+              label_html: { class: 'col-lg-8' } %>
+</div>

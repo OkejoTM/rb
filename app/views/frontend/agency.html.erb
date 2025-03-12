@@ -1,0 +1,10 @@
+<% title @seo_page.title %>
+<% meta_description @seo_page.meta_description %>
+
+<% meta_canonical_page(@seo_params.meta_canonical_path) if @seo_params.meta_canonical_path.present? %>
+
+<div class="margin-bottom-30">
+  <%= render partial: 'layouts/frontend/titlebar' %>
+</div>
+
+<%= render partial: 'layouts/frontend/agency' %>

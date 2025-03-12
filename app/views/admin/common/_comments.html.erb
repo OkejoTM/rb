@@ -1,0 +1,19 @@
+<% comments_count = comments.count %>
+<div class="btn-group btn-group-sm">
+  <a class="btn btn-default"
+     title="<%= t('common.comments') %>"
+     data-commentable_id="<%= obj.id %>"
+     data-commentable_type="<%= obj.class.name %>"
+     data-comments_dialog
+  >
+    <i class="glyphicon glyphicon-comment"></i>
+    <span id="comments_count"
+          style="display: <%= comments_count > 0 ? '' : 'none' %>;"
+    >
+        <%= comments_count %>
+  </span>
+  </a>
+</div>
+<div data-last_comment_id="<%= comments.last&.id %>">
+  <%= comments.last ? comments.last.message.truncate(25) : '' %>
+</div>

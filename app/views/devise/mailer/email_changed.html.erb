@@ -1,0 +1,7 @@
+<p><%= t(:hello, scope: :devise)%><%= @email %>!</p>
+
+<% if @resource.try(:unconfirmed_email?) %>
+  <p><%= t(:notify_to, scope: :devise)%><%= @resource.unconfirmed_email %>.</p>
+<% else %>
+  <p><%= t(:notify_to, scope: :devise)%><%= @resource.email %>.</p>
+<% end %>

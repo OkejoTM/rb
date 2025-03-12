@@ -1,0 +1,63 @@
+<!-- Banner
+================================================== -->
+<div class="parallax" data-background="/images/home-parallax-2.jpg" data-color="#36383e" data-color-opacity="0.5" data-img-width="2500" data-img-height="1600">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="search-container">
+
+          <!-- Form -->
+          <h2>Find New Home</h2>
+
+          <!-- Row With Forms -->
+          <div class="row with-forms">
+
+            <!-- Property Type -->
+            <div class="col-md-3">
+              <select data-placeholder="Any Type" class="chosen-select-no-single" >
+                <option>Apartments</option>
+                <option>Houses</option>
+                <option>Commercial</option>
+                <option>Garages</option>
+                <option>Lots</option>
+              </select>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-3">
+              <select data-placeholder="Any Status" class="chosen-select-no-single" >
+                <option><%= t(:for_sale, scope: :properties) %></option>
+                <option><%= t(:for_rent, scope: :properties) %></option>
+              </select>
+            </div>
+
+            <!-- Main Search Input -->
+            <div class="col-md-6">
+              <div class="main-search-input">
+                <input type="text" placeholder="Enter address e.g. street, city or state" value=""/>
+                <button class="button"><i class="fas fa-search"></i></button>
+              </div>
+            </div>
+
+          </div>
+          <!-- Row With Forms / End -->
+
+          <!-- Browse Jobs -->
+          <div class="adv-search-btn">
+            Need more search options? <a href="listings-list-full-width.html">Advanced Search</a>
+          </div>
+
+          <!-- Announce -->
+          <div class="announce">
+            We’ve 1000 properties for you!
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

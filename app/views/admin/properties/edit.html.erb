@@ -1,0 +1,27 @@
+<% title @page_title %>
+<h1><%= @property.page_h1 %></h1>
+
+<% if allowed_to? :info? %>
+  <% if @updated_by.present? %>
+    <h4><%= t('common.updated_by_at', user: @updated_by.email, date: @property.updated_at) %></h4>
+  <% else %>
+    <h4><%= "#{t('common.updated_at')} #{@property.updated_at}"%></h4>
+  <% end %>
+
+  <% if @created_by.present? %>
+    <h4><%= t('common.created_by_at', user: @created_by.email, date: @property.created_at) %></h4>
+  <% else %>
+    <h4><%= "#{t('properties.create_at')} #{@property.created_at}"%></h4>
+  <% end %>
+
+  <% if @property.external_link.present? %>
+    <h4>
+      <%= link_to t('properties.ex_link'),
+                  html_escape(@property.external_link),
+                  target: '_blank'
+      %>
+    </h4>
+  <% end %>
+<% end %>
+
+<%= render 'form' %>

@@ -1,0 +1,55 @@
+<% title "#{@page_title}#{page_number_substr(@pagination.current_page)}" %>
+
+<h2><%= t(:index, scope: :properties) %>
+  <%= link_to t("common.add"), new_property_path, class: 'btn btn-primary' %>
+</h2>
+
+<br>
+<%= render_property_filter(search_url: "/properties") %>
+<br>
+
+<% if allowed_to? :additional_links?, :property %>
+  <%= link_to t(:attributes, scope: :properties), attributes_properties_path %>
+  <%= link_to t(:same, scope: :properties), same_properties_path %>
+  <%= link_to t(:no_location, scope: :properties), no_location_properties_path %>
+  <%= link_to t(:far_property, scope: :properties), far_property_properties_path %>
+  <%= link_to t(:for_moderation, scope: :properties), for_moderation_properties_path %>
+<% end %>
+<br>
+<%= render_pagination @pagination %>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th>Название</th>
+    <% if allowed_to? :info? %>
+      <th><%= t(:agency, scope: :properties) %></th>
+    <% end %>
+    <th></th>
+  </tr>
+
+  <% @pagination.items.each do |property| %>
+    <% property = property.present %>
+    <tr>
+      <td><%= property.id %></td>
+      <td>
+        <%= property.page_h1 %><br>
+      </td>
+      <% if allowed_to?(:info?) %>
+        <td>
+          <% if property.agency.present? %>
+            <%= link_to property.agency.name_ru, agencies_list_item_path(I18n.locale, property.agency.slug) %>
+          <% end %>
+        </td>
+      <% end %>
+      <td>
+        <%= render_compact_control_buttons(obj: property,
+                                           edit_obj_path: edit_property_path(property),
+                                           confirm_message: t(:delete_confirm, scope: :properties)) %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<%= render_pagination @pagination %>
+<br>

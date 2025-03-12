@@ -1,0 +1,92 @@
+<!-- Contact Form -->
+<!--<div class="col-md-8">-->
+
+  <section id="contact">
+    <h3 class="desc-headline margin-bottom-35"><%= t('bids.new') %><span><a name="bid" style="bottom: 99px; position: relative;"></a></span></h3>
+
+    <div id="contact-message"></div>
+
+    <form method="post" name="contactform" id="contactform" autocomplete="on">
+    <%#= form_with url: '/bids', method: :post, autocomplete: 'on', data: { remote: true, type: :json }, id: 'bid_ajax_form' do |f| %>
+    <%#= form_with model: Bid.new, method: :post, autocomplete: 'on', data: { remote: true, type: :json }, id: 'bid_ajax_form' do |f| %>
+      <div class="row">
+        <div class="col-md-12">
+          <div>
+            <input name="name" type="text" id="name" placeholder="<%= translate_with_asterisk('common.your_name') %>" required="required" />
+            <%#= f.text_field :name, placeholder: t('common.your_name'), required: true %>
+            <%= danger_help_block(:name_error, css_class: 'input_error_message') %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div>
+            <input name="phone"
+                   type="text"
+                   id="phone"
+                   placeholder="<%= translate_with_asterisk('common.phone') %>"
+                   required="required"
+                   class="international-phone"
+            />
+            <%#= f.text_field :phone, placeholder: t('common.phone'), required: true %>
+            <%= danger_help_block(:phone_error, css_class: 'input_error_message') %>
+          </div>
+          <div class="contact-ways">
+            <%= render partial: 'layouts/frontend/bid/contact_ways' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div>
+            <input name="email"
+                   type="email"
+                   id="email"
+                   placeholder="<%= translate_with_asterisk('common.email_address') %>"
+                   required="required"
+                   inputmode="email"
+            />
+
+            <%#= f.text_field :email, placeholder: t('common.email_address'), required: true %>
+            <%= danger_help_block(:email_error, css_class: 'input_error_message') %>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <!-- message -->
+        <textarea name="message"
+                  cols="40"
+                  rows="3"
+                  id="message"
+                  placeholder="<%= translate_with_asterisk('common.message') %>"
+                  spellcheck="true"
+                  required="required"
+                  class="margin-top-0"></textarea>
+        <%#= f.text_area :message, placeholder: t('common.message'), cols: 40, rows: 3, required: true %>
+        <%= danger_help_block(:message_error, css_class: 'input_error_message') %>
+      </div>
+
+      <div class="margin-bottom-30">
+        <%= check_box_tag("i_agree", "on", false, style: "display: inline-block; width: auto; height: auto;") %>
+        <%= label_tag("i_agree", t('common.i_agree',
+                                   terms: terms_path,
+                                   privacy: privacy_path
+                                  ).html_safe, style: "display: inline;") %>
+      </div>
+
+      <input type="hidden" name="property_id" id="property_id" value="<%= property.id %>" />
+      <%#= f.hidden_field :property_id, value: property.id %>
+
+      <input type="submit" class="submit button disabled" id="submit_message_btn" value="<%= t('common.submit_message') %>" disabled />
+      <%#= f.submit  t('common.submit_message'), id: :submit_message_btn, class: "submit button disabled", disabled: true %>
+
+      <img src="<%= asset_pack_path("images/loader.gif") %>" id="loader" class="loader" style="display: none;" />
+
+    </form>
+    <%# end %>
+  </section>
+<!--</div>-->
+<!-- Contact Form / End -->

@@ -1,0 +1,56 @@
+<%
+  @articles ||= nil
+%>
+
+<% title "#{@seo_page.title}#{page_number_substr(@pagination.current_page)}" %>
+<% meta_description "#{@seo_page.meta_description}#{page_number_substr(@pagination.current_page)}" %>
+
+<% meta_canonical_page(@filter_properties.meta_canonical_path) if @filter_properties.meta_canonical_path.present? %>
+
+<% if @area.present? %>
+  <input type="hidden" id="area_latitude" value="<%= @area.latitude %>">
+  <input type="hidden" id="area_longitude" value="<%= @area.longitude %>">
+<% end %>
+
+<div class="margin-bottom-30">
+  <%= render partial: 'layouts/frontend/titlebar' %>
+</div>
+
+<%= render partial: 'layouts/frontend/filter_content',
+           locals: {
+             filter_options: @filter_options,
+             filter_properties: @filter_properties,
+             template: @filter_properties.template,
+             currency: @currency,
+             pagination: @pagination,
+             properties_count: @properties_count,
+             base_url: @url,
+             title: @seo_page.h1,
+             # edit_path: @filter_properties.edit_path,
+             articles: @articles
+           }
+%>
+
+<% if @seo_page.description.present? %>
+  <div class="container">
+    <div class="row sticky-wrapper">
+      <div class="col-md-offset-4 col-md-8">
+        <p><%= @seo_page.description.html_safe %></p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+<% if @countries_by_continent.present? %>
+  <%= render partial: "agencies_filter/agencies/locations_mk2", locals: { countries_by_continent: @countries_by_continent,
+                                                                          seo_path: -> (c) { c.seo_path } } %>
+<% end %>
+
+
+<% similar_links = @filter_properties.template.similar_links_by_groups %>
+<% if similar_links.present? %>
+  <%= render partial: 'layouts/frontend/internal_links_mk2',
+             locals: { group_links: similar_links,
+                       box_title: @filter_properties.template.internal_links_title } %>
+<% end %>

@@ -1,0 +1,38 @@
+<%
+  is_favorite = property.favorite?(cookies)
+  is_compare = property.favorite?(cookies, :compare)
+%>
+<!-- Widget -->
+<div class="widget margin-bottom-30">
+  <button class="widget-button with-tip"
+          data-tip-content="<%= t('common.print') %>"
+          data-pdf-link="<%= property.seo_path(format: 'pdf') %>"
+          id="print-pdf-id"
+  >
+    <i class="fas fa-print"></i>
+  </button>
+  <button class="widget-button with-tip delete-favorite <%= property.favorite_css_class(cookies) %>"
+    data-tip-content="<%= is_favorite ? t('common.remove_from_bookmark') : t('common.add_to_bookmark') %>"
+    data-tip-content-alt="<%= is_favorite ? t('common.add_to_bookmark') : t('common.remove_from_bookmark') %>"
+    data-property_id="<%= property.id %>"
+    data-call_place="property"><i class="fas fa-star"></i></button>
+  <button class="compare-button compare-widget-button widget-button with-tip <%= property.favorite_css_class(cookies, :compare) %>"
+    id="compare-button-<%= property.id %>"
+    data-call_place="property"
+    data-tip-content="<%= is_compare ? t('common.remove_from_compare') : t('common.add_to_compare') %>"
+    data-tip-content-alt="<%= is_compare ? t('common.add_to_compare') : t('common.remove_from_compare') %>"
+    data-property_id="<%= property.id %>"
+    data-property_title="<%= property.short_page_title %>"
+    data-seo_path="<%= property.seo_path %>"
+    data-img_path="<%= property_image(property) %>"
+    data-sale_type="<%= property.sale_type %>"
+    data-price="<%= Formatters::PriceFormatter.format_price(property, currency: current_currency) %>"
+    data-change_child="first"
+    data-compare_image="<%= asset_pack_path('_/_/_/vendor/assets/components/findeo/images/compare-icon-black.svg') %>"
+    data-compare_image_alt="<%= asset_pack_path('_/_/_/vendor/assets/components/findeo/images/compare-icon-yellow.svg') %>"
+    style="right: 0;bottom: 0;">
+    <i class="fas icon-compare" style="<%= "background-image: url(#{asset_pack_path('_/_/_/vendor/assets/components/findeo/images/compare-icon-yellow.svg')})" if is_compare %>"></i>
+  </button>
+  <div class="clearfix"></div>
+</div>
+<!-- Widget / End -->

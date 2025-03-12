@@ -1,0 +1,38 @@
+<% title "#{@page_title}#{page_number_substr(@pagination.current_page)}" %>
+
+<br>
+<%= render_property_filter(search_url: "/properties/far_property") %>
+<br>
+
+<br>
+<%= render_pagination @pagination %>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%=  t(:distance_to_city, scope: :properties) %></th>
+    <th>H1</th>
+    <th><%= t(:agency, scope: :properties) %></th>
+    <th></th>
+  </tr>
+
+  <% @pagination.items.each do |property| %>
+    <% property = property.present %>
+    <tr>
+      <td><%= property.id %></td>
+      <td><%= property.distance_to_city %></td>
+      <td>
+        <%= property.page_h1 %><br>
+      </td>
+      <td><%= link_to property.agency.name_ru, agency_path(property.agency) %></td>
+      <td>
+        <%= render_compact_control_buttons(obj: property,
+                                           edit_obj_path: edit_property_path(property),
+                                           confirm_message: t(:delete_confirm, scope: :properties)) %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<%= render_pagination @pagination %>
+<br>

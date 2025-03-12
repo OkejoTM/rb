@@ -1,0 +1,34 @@
+<%
+  featured ||= false
+%>
+
+<div class="listing-item compact">
+
+  <a href="<%= agency.seo_path %>" class="listing-img-container" target="_blank" rel="nofollow">
+
+    <div class="listing-badges">
+      <% if featured %>
+        <span class="featured">Featured</span>
+      <% end %>
+    </div>
+
+    <div class="listing-img-content">
+      <span class="listing-compact-title"><%= agency.name %></span>
+
+      <ul class="listing-hidden-content">
+        <li><%= t('agencies.properties') %> <span><%= agency.active_and_moderated_properties_count %></span></li>
+      </ul>
+    </div>
+
+    <% if agency.logo&.pic? %>
+      <div class="owl-agency-img"
+           style="background-image: url('<%= agency.logo.pic.middle.url %>')"
+      ></div>
+    <% else %>
+      <div class="owl-agency-img"
+           style="background-image: url('/images/listing-01.jpg')"
+      ></div>
+    <% end %>
+  </a>
+
+</div>

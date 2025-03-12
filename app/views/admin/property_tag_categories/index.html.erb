@@ -1,0 +1,33 @@
+<% title @page_title %>
+<h2><%= t(:index, scope: :property_tag_categories) %>
+  <%= link_to t("common.add"), new_property_tag_category_path, class: 'btn btn-primary' %>
+</h2>
+<small><%= t('property_tags.filtered_tags') %></small>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= "Title Ru" %></th>
+    <th><%= "Title En" %></th>
+    <th><%= t(:property_category, scope: :common) %></th>
+    <th><%= t(:tags_count, scope: :common) %></th>
+    <th><%= t(:properties_count, scope: :common) %></th>
+    <th></th>
+  </tr>
+
+  <% @objects.each_with_index do |property_tag_category, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= property_tag_category.title_ru %></td>
+        <td><%= property_tag_category.title_en %></td>
+        <td><%= string_or_dummy(property_tag_category.property_supertype&.title_ru, t(:not_stated, scope: :property_tag_categories)) %></td>
+        <td><%= property_tag_category.property_tags.count %></td>
+        <td><%= property_tag_category.properties.count %></td>
+        <td>
+          <%= render_compact_control_buttons(obj: property_tag_category,
+                                             edit_obj_path: edit_property_tag_category_path(property_tag_category),
+                                             confirm_message: t(:delete_confirm, scope: :property_tag_categories)) %>
+        </td>
+      </tr>
+  <% end %>
+</table>

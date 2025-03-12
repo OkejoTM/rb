@@ -1,0 +1,9 @@
+// Global settings
+$theme-style: 'square';
+$theme-type:  'default';
+
+@import '~bootstrap/dist/css/bootstrap.css';
+@import '~metronic/global/components/_reset-rounds';
+@import '~metronic/global/_components';
+@import '~metronic/global/_plugins';
+@import "~metronic/layouts/layout3/themes/green-haze.scss";

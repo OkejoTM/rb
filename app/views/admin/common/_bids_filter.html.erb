@@ -1,0 +1,31 @@
+<%= form_with url: search_url, method: "get" do %>
+  <div class="row">
+    <% if allowed_to? :search? %>
+      <div class="col-lg-2">
+        <div class="input-group">
+          <%= label_tag :agency_id, t(:index, scope: :agencies), class: 'control-label' %>
+          <%= select_tag :agency_id,
+                          options_for_select(@agencies, params[:agency_id]),
+                          include_blank: t(:all, scope: :common),
+                          class: "form-control select2-enable"%>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="col-lg-2">
+      <div class="input-group">
+        <%= label_tag :name, t('bids.query'), class: 'control-label' %>
+        <%= text_field_tag :query,
+                           params[:query],
+                           placeholder: t(:enter_search_term, scope: :common),
+                           class: "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row text-center">
+    <%= search_button %>
+  </div>
+<% end %>

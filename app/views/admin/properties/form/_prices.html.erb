@@ -1,0 +1,72 @@
+<div class="form-group row">
+  <%= f.input :price_on_request,
+              wrapper: :group_wrapper,
+              label: t(:price_on_request, scope: :properties),
+              label_html: { class: 'col-lg-10 row' } %>
+</div>
+
+<div class="form-group row">
+  <%= f.input :sale_price,
+              label: t(:sale_price, scope: :properties),
+              wrapper: :row_wrapper,
+              wrapper_html: { class: 'col-lg-4 row' },
+              label_html: { class: 'col-lg-4' },
+              min: 0 %>
+  <%= f.input :sale_price_unit,
+              label: t(:unit, scope: :properties),
+              collection: CurrencyRate::ACTIVE_CURRENCIES,
+              wrapper: :row_wrapper,
+              selected: @property.sale_price_unit.presence || CurrencyRate::DEFAULT_CURRENCY,
+              wrapper_html: { class: 'col-lg-4 row' },
+              label_html: { class: 'col-lg-2' } %>
+</div>
+
+<% if allowed_to? :info? %>
+  <div class="form-group row">
+    <%= f.input :rent_price_per_day,
+                label: t(:rent_price, scope: :properties),
+                wrapper: :row_wrapper,
+                wrapper_html: { class: 'col-lg-4 row' },
+                label_html: { class: 'col-lg-4' },
+                min: 0 %>
+    <%= f.input :rent_price_unit_per_day,
+                label: t(:unit, scope: :properties),
+                collection: CurrencyRate::ACTIVE_CURRENCIES,
+                wrapper: :row_wrapper,
+                selected: @property.rent_price_unit_per_day.presence || CurrencyRate::DEFAULT_CURRENCY,
+                wrapper_html: { class: 'col-lg-4 row' },
+                label_html: { class: 'col-lg-2' } %>
+  </div>
+
+  <div class="form-group row">
+    <%= f.input :rent_price_per_week,
+                label: t(:per_week, scope: :properties),
+                wrapper: :row_wrapper,
+                wrapper_html: { class: 'col-lg-4 row' },
+                label_html: { class: 'col-lg-4' },
+                min: 0 %>
+    <%= f.input :rent_price_unit_per_week,
+                label: t(:unit, scope: :properties),
+                collection: CurrencyRate::ACTIVE_CURRENCIES,
+                wrapper: :row_wrapper,
+                selected: @property.rent_price_unit_per_week.presence || CurrencyRate::DEFAULT_CURRENCY,
+                wrapper_html: { class: 'col-lg-4 row' },
+                label_html: { class: 'col-lg-2' } %>
+  </div>
+
+  <div class="form-group row">
+    <%= f.input :rent_price_per_month,
+                label: t(:per_month, scope: :properties),
+                wrapper: :row_wrapper,
+                wrapper_html: { class: 'col-lg-4 row' },
+                label_html: { class: 'col-lg-4' },
+                min: 0 %>
+    <%= f.input :rent_price_unit_per_month,
+                label: t(:unit, scope: :properties),
+                collection: CurrencyRate::ACTIVE_CURRENCIES,
+                wrapper: :row_wrapper,
+                selected: @property.rent_price_unit_per_month.presence || CurrencyRate::DEFAULT_CURRENCY,
+                wrapper_html: { class: 'col-lg-4 row' },
+                label_html: { class: 'col-lg-2' } %>
+  </div>
+<% end %>

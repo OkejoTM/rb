@@ -1,0 +1,66 @@
+<div class="form-group row">
+  <%= f.label :is_active, t(:is_active, scope: :areas), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.check_box :is_active, class: "form-check" %>
+  </div>
+</div>
+
+<!--
+  <div class="form-group row">
+    <%#= f.label :slug, t(:slug, scope: :areas), class: 'col-lg-2 control-label' %>
+    <div class="col-lg-6">
+      <%#= f.text_field :slug, class: "form-control" %>
+    </div>
+  </div>
+  -->
+
+<div class="form-group row">
+  <%= f.label :article_category, t(:show, scope: :article_categories), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.select :article_category_id, @article_categories, { prompt: "Категория..." }, class: "form-control select2-enable" %>
+    <%= danger_help_block(:article_category_id) %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :country, t(:show, scope: :countries), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.select :country_id, @countries, { prompt: "Страна..." }, class: "form-control select2-enable" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :slug, t(:slug, scope: :areas), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :slug, class: "form-control" %>
+    <%= danger_help_block(:slug) %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :short_description_ru, t(:short_description_ru, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_area :short_description_ru, class: "form-control classic_ckeditor" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :short_description_en, t(:short_description_en, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_area :short_description_en, class: "form-control classic_ckeditor" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :description_ru, t(:description_ru, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_area :description_ru, class: "form-control image_uploader_ckeditor" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :description_en, t(:description_en, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_area :description_en, class: "form-control image_uploader_ckeditor" %>
+  </div>
+</div>

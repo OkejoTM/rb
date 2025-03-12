@@ -1,0 +1,15 @@
+<div class="col-md-6">
+  <!-- Sort by -->
+  <div class="sort-by">
+    <label><%= t(:sort_by, scope: :sort) %>:</label>
+
+    <div class="sort-by-select">
+      <%= select_tag :sort_by,
+                     options_for_select(filter_options.sort_by, value_for_filter(:sort_by_price, template)),
+                     class: "chosen-select-no-single",
+                     id: 'sort_by',
+                     'data-placeholder' => t(:default_order, scope: :sort)
+      %>
+    </div>
+  </div>
+</div>

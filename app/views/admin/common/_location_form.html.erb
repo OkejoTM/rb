@@ -1,0 +1,120 @@
+<div class="form-group row">
+  <%= form.label :is_active, t(:is_active, scope: :areas), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.check_box :is_active, class: "form-check" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :is_popular, t(:is_popular, scope: :areas), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.check_box :is_popular, class: "form-check" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :coming_soon, t(:coming_soon), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.check_box :coming_soon, class: "form-check" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :show_agencies_on_website, t("countries.show_agencies_on_website"), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.check_box :show_agencies_on_website, class: "form-check" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :slug, t(:slug, scope: :areas), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :slug, class: "form-control" %>
+    <%= danger_help_block(:slug) %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :name, t(:name, scope: :areas), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :title_en, t(:title_en, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :title_en, class: "form-control" %>
+    <%= danger_help_block(:title_en) %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :title_ru, t(:title_ru, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :title_ru, class: "form-control" %>
+    <%= danger_help_block(:title_ru) %>
+  </div>
+</div>
+
+
+<div class="form-group row">
+  <%= form.label :title_genitive_en, t(:title_genitive_en, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :title_genitive_en, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :title_genitive_ru, t(:title_genitive_ru, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :title_genitive_ru, class: "form-control" %>
+  </div>
+</div>
+
+
+<div class="form-group row">
+  <%= form.label :title_prepositional_en, t(:title_prepositional_en, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :title_prepositional_en, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :title_prepositional_ru, t(:title_prepositional_ru, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :title_prepositional_ru, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :image, t(:image), class: 'col-lg-2 control-label' %>
+  <div class="row col-lg-6">
+    <%= form.file_field :image, id: 'load_image', style: "display: none;" %>
+    <button onclick="$('#load_image').click()"
+            class="btn btn-success"
+            type="button">Загрузить
+    </button>
+  </div>
+</div>
+
+<% if form.object.image? %>
+    <div class="row">
+      <div class="col-lg-3"></div>
+      <%= render partial: 'admin/common/remove_image', locals: { form: form, field: "image", method: :remove_image } %>
+    </div>
+<% end %>
+
+<div class="form-group row">
+  <%= form.label :latitude, t(:latitude, scope: :areas), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :latitude, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= form.label :longitude, t(:longitude, scope: :areas), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= form.text_field :longitude, class: "form-control" %>
+  </div>
+</div>

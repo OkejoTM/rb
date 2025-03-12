@@ -1,0 +1,124 @@
+<style>
+  .crop-image {
+    max-height: 60vh;
+    overflow: hidden;
+    display: inline;
+  }
+
+  .crop-image > img {
+    width: 400px;
+    margin-right: 10px;
+  }
+
+  .crop-image:last-child > img {
+    margin-right: 0 !important;
+  }
+
+  .tile-image > img {
+    width: 400px;
+    margin-top: 30px;
+  }
+
+  .tile-image {
+    display: inline;
+  }
+
+  .property-badge {
+    background-color: transparent !important;
+    color: #274abb !important;
+    border: 1px solid #274abb !important;
+    padding: 1px 11px 1px 11px !important;
+  }
+
+  .property-price-font {
+    font-weight: 700;
+  }
+</style>
+
+<div class="container"
+     id="wrapper"
+>
+
+  <!-- Page 1 -->
+  <div class="row">
+    <% @property.pictures.take(3).each do |pic| %>
+      <div class="col-sm-4 crop-image">
+        <%= wicked_pdf_image_tag pic.pic.mini.url %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="row padding-top-10">
+    <%
+      currency ||= current_currency
+    %>
+    <div class="col-md-12">
+      <div id="titlebar"
+           class="property-titlebar"
+      >
+        <div class="property-title margin-left-0">
+          <h1>
+            <%= @property.page_h1 %>
+            <span class="property-badge">
+              <%= @property.sale_type %>
+            </span>
+          </h1>
+          <div class="listing-address">
+            <i class="fas fa-map-marker"></i>
+            <%= @property.address %>
+          </div>
+        </div>
+
+        <div class="property-pricing">
+          <div class="property-price property-price-font">
+            <%= Formatters::PriceFormatter.format_price(@property, currency: currency) %>
+          </div>
+          <div class="sub-price">
+            <%= Formatters::PriceFormatter.format_price_for_area(@property, currency: currency) %>
+          </div>
+        </div>
+
+        <%= main_features(@property) %>
+      </div>
+    </div>
+  </div>
+
+  <div class="alwaysbreak"></div>
+
+  <!-- Page #2 -->
+  <div class="row">
+    <div class="col-sm-12">
+      <!-- Description -->
+      <% if @property.description.present? %>
+        <h3>
+          <%= sanitize @property.description %>
+        </h3>
+      <% end %>
+
+      <!-- Details -->
+      <%= details(@property) %>
+
+      <!-- Features -->
+      <%= features(@property, no_link: true) %>
+    </div>
+  </div>
+  <div class="alwaysbreak"></div>
+
+  <!-- Page #3 -->
+  <div class="row">
+    <div class="col-sm-12"
+         id="pics"
+    >
+      <section class="fullwidth border-top margin-bottom-0 padding-top-0 padding-bottom-0"
+               data-background-color="#f7f7f7"
+               style="background: rgb(247, 247, 247);"
+      >
+        <% @property.pictures.last(6).each do |pic| %>
+          <div class="col-sm-4 tile-image">
+            <%= wicked_pdf_image_tag pic.pic.mini.url %>
+          </div>
+        <% end %>
+      </section>
+    </div>
+  </div>
+</div>

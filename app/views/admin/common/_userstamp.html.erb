@@ -1,0 +1,13 @@
+<% if object.created_by_user.present? %>
+  <p>
+    <strong>Created <%= object.created_at.strftime('%F %T') %> by:</strong>
+    <%= link_to object.created_by_user.email, users_path(object.created_by_user) %>
+  </p>
+<% end %>
+
+<% if object.updated_by_user.present? %>
+  <p>
+    <strong>Last updated <%= object.updated_at.strftime('%F %T') %> by:</strong>
+    <%= link_to object.updated_by_user.email, user_path(object.updated_by_user) %>
+  </p>
+<% end %>

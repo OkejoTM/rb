@@ -1,0 +1,11 @@
+<% if pics_array.present? %>
+  <div class="row">
+    <% pics_array.each do |pic| %>
+          <span>
+            <a class="item mfp-gallery" href="<%= pic %>">
+              <%= image_tag pic, class: "img-thumbnail" %>
+            </a>
+          </span>
+    <% end %>
+  </div>
+<% end %>

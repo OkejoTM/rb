@@ -1,0 +1,58 @@
+<% title @page_title %>
+<h2><%= t(:index, scope: :property_tags) %>
+  <%= link_to t("common.add"), new_property_tag_path, class: 'btn btn-primary' %>
+</h2>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= t('common.title_ru') %></th>
+    <th><%= t('common.title_en') %></th>
+    <th><%= t('property_tag_aliases.aliases') %></th>
+    <th><%= t('common.category') %></th>
+    <th><%= t(:moderated, scope: :common) %></th>
+    <th><%= t(:show_in_filter, scope: :common) %></th>
+    <th><%= t(:properties_count, scope: :common) %></th>
+    <th></th>
+  </tr>
+  <tbody id="property_tags"
+         data-url="<%= sort_property_tags_path %>"
+         class="js-sortable-table"
+         aria-dropeffect="move"
+  >
+  <% @objects.sort_by { |row| [row.moderated ? 1 : 0, row.position] }.each do |property_tag| %>
+    <tr class="bg-white navy p4 js-sortable-tr grabbable"
+        draggable="true"
+        role="option"
+        aria-grabbed="false"
+    >
+      <td class="position" id="<%= property_tag.id %>"><%= property_tag.position %></td>
+      <td><%= property_tag.title_ru %></td>
+      <td><%= property_tag.title_en %></td>
+      <td><%= property_tag.aliases_list.join(', ') %></td>
+      <td><%= property_tag.property_supertype&.title_ru %></td>
+      <td><%= Utils::Html::bool_glyphicon(property_tag.moderated) %></td>
+      <td><%= Utils::Html::bool_glyphicon(property_tag.show_in_filter) %></td>
+      <td><%= property_tag.properties.count %></td>
+      <td>
+        <%= render_compact_control_buttons(obj: property_tag,
+                                           edit_obj_path: edit_property_tag_path(property_tag),
+                                           confirm_message: t(:delete_confirm, scope: :property_tags)) %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<!--
+<script>
+    $(function () {
+        $("a[data-remote]").on("ajax:success", function(event) {
+            $(this).parents('tr').hide('slow');
+            noty_success('Success');
+        }).on("ajax:error", function (event) {
+            noty_error('Error');
+        });
+    });
+</script>
+-->

@@ -1,0 +1,52 @@
+<%
+  featured ||= false
+  currency ||= current_currency
+%>
+
+<div class="listing-item compact">
+
+  <a href="<%= property.seo_path %>" class="listing-img-container" target="_blank" rel="nofollow">
+
+    <div class="listing-badges">
+      <% if featured %>
+          <span class="featured">Featured</span>
+      <% end %>
+
+      <span><%= property.sale_type %></span>
+    </div>
+
+    <div class="listing-img-content">
+      <% if property.for_sale %>
+          <span class="listing-compact-title"><%= property.page_h1 %> <i><%= Formatters::PriceFormatter.format_price(property, currency: currency) %></i></span>
+      <% else %>
+          <span class="listing-compact-title"><%= property.page_h1 %> <i><%= Formatters::PriceFormatter.format_price(property, currency: currency) %> / monthly</i></span>
+      <% end %>
+
+      <ul class="listing-hidden-content">
+        <li>Area <span>530 sq ft</span></li>
+        <li>Rooms <span>3</span></li>
+        <li>Beds <span>1</span></li>
+        <li>Baths <span>1</span></li>
+      </ul>
+    </div>
+
+    <%= render partial: 'layouts/frontend/carousel/images', locals: { pictures: property.middle_pics_urls } %>
+
+  </a>
+
+</div>
+<% if defined?(property_counter) && property_counter == 2 %>
+  <% if browser.device.mobile? %>
+    <%= render partial: 'common/ads/property_list_mobile' %>
+  <% else %>
+    <%= render partial: 'common/ads/property_list_desktop' %>
+  <% end %>
+<% end %>
+
+<% if defined?(property_counter) && property_counter == 11 %>
+  <% if browser.device.mobile? %>
+    <%= render partial: 'common/ads/property_list_mobile3' %>
+  <% else %>
+    <%= render partial: 'common/ads/property_list_desktop3' %>
+  <% end %>
+<% end %>

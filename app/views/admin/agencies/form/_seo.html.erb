@@ -1,0 +1,105 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="h1_ru" class="control-label">H1 RU</label>
+      <input type="text" id="h1_ru" class="form-control" v-model="agency.seo_agency_page_attributes.h1_ru">
+    </div>
+  </div>
+
+  <div class="col-md-6" style="margin-top: 30px;">
+    <%= string_or_dummy(template_fieldset.h1_ru, 'не указано') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="h1_ru" class="control-label">H1 EN</label>
+      <input type="text" id="h1_ru" class="form-control" v-model="agency.seo_agency_page_attributes.h1_en">
+    </div>
+  </div>
+
+  <div class="col-md-6" style="margin-top: 30px;">
+    <%= string_or_dummy(template_fieldset.h1_en, 'не указано') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="title_ru" class="control-label">Title RU</label>
+      <input type="text" id="title_ru" class="form-control" v-model="agency.seo_agency_page_attributes.title_ru">
+    </div>
+  </div>
+  <div class="col-md-6" style="margin-top: 30px;">
+    <%= string_or_dummy(template_fieldset.title_ru, 'не указано') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="title_en" class="control-label">Title EN</label>
+      <input type="text" id="title_en" class="form-control" v-model="agency.seo_agency_page_attributes.title_en">
+    </div>
+  </div>
+  <div class="col-md-6" style="margin-top: 30px;">
+    <%= string_or_dummy(template_fieldset.title_en, 'не указано') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="meta_description_ru" class="control-label">Мета-описание RU</label>
+
+      <textarea id="meta_description_ru" class="form-control" v-model="agency.seo_agency_page_attributes.meta_description_ru"></textarea>
+    </div>
+  </div>
+  <div class="col-md-6" style="margin-top: 30px;">
+    <%= string_or_dummy(template_fieldset.meta_description_ru, 'не указано') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="meta_description_en" class="control-label">Мета-описание EN</label>
+
+      <textarea id="meta_description_en" class="form-control" v-model="agency.seo_agency_page_attributes.meta_description_en"></textarea>
+    </div>
+  </div>
+  <div class="col-md-6" style="margin-top: 30px;">
+    <%= string_or_dummy(template_fieldset.meta_description_en, 'не указано') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="description_ru" class="control-label">Описание страницы RU</label>
+
+      <ckeditor id="description_ru" :editor="editor" v-model="agency.seo_agency_page_attributes.description_ru"></ckeditor>
+    </div>
+  </div>
+  <div class="col-md-6" style="margin-top: 30px;">
+    <%= string_or_dummy(template_fieldset.description_ru, 'не указано') %>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="description_en" class="control-label">Мета-описание EN</label>
+
+      <ckeditor id="description_en" :editor="editor" v-model="agency.seo_agency_page_attributes.description_en"></ckeditor>
+    </div>
+  </div>
+  <div class="col-md-6" style="margin-top: 30px;">
+    <%= string_or_dummy(template_fieldset.description_en, 'не указано') %>
+  </div>
+</div>
+
+<%= snippets_description(:agency) %>
+<br>
+<%= snippets_description(:common) %>

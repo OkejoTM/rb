@@ -1,0 +1,215 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/">Propimo</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <% # Обращения %>
+        <% feedbacks_menu = %w[bids agency_bids client_feedbacks] %>
+        <% if feedbacks_menu.present? %>
+
+          <% if allowed_to? :manage?, :bid %>
+            <% feedbacks_menu = %w[bids agency_bids client_feedbacks].select { |menu_item| allowed_to?(:index?, menu_item.singularize.camelize.constantize) } %>
+
+            <% if feedbacks_menu.size == 1 %>
+              <%= navbar_link _link_name: t("#{feedbacks_menu.first}.index"),
+                        _link_path: public_send("#{feedbacks_menu.first}_path"),
+                        _controller_name: feedbacks_menu.first
+              %>
+            <% else %>
+              <li class="dropdown <%= 'active' if feedbacks_menu.include?(controller_name) %>">
+                <a href="#feedbacks"
+                  class="dropdown-toggle"
+                  data-toggle="dropdown"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                <%= t(:feedbacks, scope: :navbar_admin) %><span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <% feedbacks_menu.each do |menu_item| %>
+                  <%= navbar_link _link_name: t("#{menu_item}.index"),
+                                  _link_path: public_send("#{menu_item}_path"),
+                                  _controller_name: menu_item
+                  %>
+                <% end %>
+                </ul>
+              </li>
+          <% end %>
+        <% end %>
+
+        <% # Агенство %>
+        <% if allowed_to? :manage?, :agency %>
+          <% if current_user.agent? %>
+            <%= navbar_link _link_name: 'Агентство',
+                            _link_path: edit_agency_path(current_user.agency_id),
+                            _controller_name: 'agencies'
+            %>
+          <% else %>
+            <%= navbar_link _link_name: t('agencies.index'),
+                            _link_path: agencies_path,
+                            _controller_name: 'agencies'
+            %>
+          <% end %>
+        <% end %>
+
+        <% # Недвижимость %>
+        <% if allowed_to? :manage, :property %>
+        <%= navbar_link _link_name: t('properties.index'),
+                        _link_path: properties_path,
+                        _controller_name: 'properties'
+        %>
+        <% end %>
+
+        <% # Сео настройки %>
+        <% seo_menu = %w[seo_templates seo_templates_groups seo_articles_pages seo_agency_pages seo_agencies_pages] %>
+        <% if seo_menu.any? {|menu| allowed_to? :manage?, menu.singularize.to_sym} %>
+          <li class="dropdown <%= 'active' if seo_menu.include?(controller_name) %>">
+            <a href="#catalogs" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <%= t(:seo_settings, scope: :common) %><span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <%= navbar_link _link_name: t("seo_templates.index"),
+                              _link_path: seo_templates_path,
+                              _controller_name: 'seo_templates' %>
+              <%= navbar_link _link_name: t("seo_templates_groups.index"),
+                              _link_path: seo_templates_groups_path,
+                              _controller_name: 'seo_templates_groups' %>
+
+              <li role="separator" class="divider"></li>
+
+              <%= navbar_link _link_name: t("seo_agency_pages.agency_main"),
+                              _link_path: edit_agency_main_seo_agency_pages_path,
+                              _controller_name: 'seo_agency_pages',
+                              _action_name: 'edit_agency_main' %>
+              <%= navbar_link _link_name: t("seo_agencies_pages.agencies_main"),
+                              _link_path: edit_agencies_main_seo_agencies_pages_path,
+                              _controller_name: 'seo_agencies_pages',
+                              _action_name: 'edit_agencies_main' %>
+
+              <li role="separator" class="divider"></li>
+
+              <%= navbar_link _link_name: t("seo_articles_pages.articles_main"),
+                              _link_path: edit_articles_main_seo_articles_pages_path,
+                              _controller_name: 'seo_articles_pages',
+                              _action_name: 'edit_articles_main' %>
+              <%= navbar_link _link_name: t("seo_articles_pages.articles_countries_main"),
+                              _link_path: edit_articles_countries_main_seo_articles_pages_path,
+                              _controller_name: 'seo_articles_pages',
+                              _action_name: 'edit_articles_countries_main' %>
+              <%= navbar_link _link_name: t("seo_articles_pages.articles_categories_main"),
+                              _link_path: edit_articles_categories_main_seo_articles_pages_path,
+                              _controller_name: 'seo_articles_pages',
+                              _action_name: 'edit_articles_categories_main_seo_articles_pages_path' %>
+            </ul>
+          </li>
+        <% end %>
+
+        <% # Локации %>
+        <% if allowed_to? :manage, :location_types %>
+          <% locations_menu = %w[countries regions cities].select %>
+          <% if locations_menu.present? %>
+            <li class="dropdown <%= 'active' if locations_menu.include?(controller_name) %>">
+              <a href="#locations" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <%= t(:locations, scope: :navbar_admin) %><span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <% locations_menu.each do |menu_item| %>
+                  <%= navbar_link _link_name: t("#{menu_item}.index"),
+                                  _link_path: public_send("#{menu_item}_path"),
+                                  _controller_name: menu_item %>
+                <% end %>
+              </ul>
+            </li>
+          <% end %>
+        <% end %>
+
+        <% menu_items_group = ['contact_people',
+                               nil,
+                               'property_supertypes', 'property_type_groups', 'property_types',
+                               nil,
+                               'property_tag_categories', 'property_tags',
+                               nil,
+                               'location_types', 'agency_types', 'contact_types', 'messenger_types',
+                               nil,
+                               'article_categories', 'articles',
+                               nil,
+                               'pages',
+                               nil,
+                               'users']
+        %>
+        <% end %>
+
+        <% if allowed_to? :manage?, :user %>
+          <% # Справочники %>
+          <li class="dropdown <%= 'active' if menu_items_group.include?(controller_name) %>">
+            <a href="#catalogs" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <%= t(:catalogs, scope: :navbar_admin) %><span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <% menu_items_group.each do |menu_item| %>
+                <% if menu_item.nil? %>
+                  <li role="separator" class="divider"></li>
+                <% elsif menu_item.eql?('property_tags') %>
+                  <%= navbar_link _link_name: t("#{menu_item}.index"),
+                                  _link_path: public_send("#{menu_item}_path"),
+                                  _controller_name: menu_item,
+                                  _notification_amount: PropertyTag.not_moderated.count
+                  %>
+                <% else %>
+                  <%= navbar_link _link_name: t("#{menu_item}.index"),
+                                  _link_path: public_send("#{menu_item}_path"),
+                                  _controller_name: menu_item %>
+                <% end %>
+              <% end %>
+            </ul>
+          </li>
+        <% end %>
+
+        <% # Отчеты %>
+        <% if allowed_to? :manage?, :report %>
+          <li class="dropdown <%= 'active' if action_name.include?('report') %>">
+            <a href="#locations" class='dropdown-toggle' data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <%= t(:reports, scope: :common) %><span class='caret'></span></a>
+            <ul class='dropdown-menu'>
+              <li <%= 'class=active' if action_name.include?('report_content') %>>
+                <%= link_to "#{t(:content, scope: :reports)}", updated_content_path, target: '_self' %>
+              </li>
+            </ul>
+          </li>
+        <% end %>
+      </ul>
+
+
+      <% # Пользователь и выход %>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <% if allowed_to?(:edit?, current_user) %>
+            <%= link_to "<span class='glyphicon glyphicon-user'></span> #{current_user.email}".html_safe,
+                        edit_user_path(current_user),
+                        target: '_self',
+                        # title: 'Зайти на вашу персональную страницу',
+                        class: 'navbar-link navbar-link-interactive' %>
+          <% else %>
+            <span class='navbar-link-non-interactive'>
+            <span class='glyphicon glyphicon-user'></span> <%= current_user.email %></span>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to '<span class="glyphicon glyphicon-log-out"></span>'.html_safe,
+                      destroy_user_session_path,
+                      method: :delete,
+                      title: t(:sign_out),
+                      # subdomain: false,
+                      class: 'navbar-link' %>
+        </li>
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>

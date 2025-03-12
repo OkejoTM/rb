@@ -1,0 +1,66 @@
+<% title @page_title %>
+<h2><%= t('agency_bids.index') %></h2>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th style="width: 130px;"><%= t('properties.create_at') %></th>
+    <th><%= t('properties.person_name') %></th>
+    <th><%= t('properties.agency') %></th>
+    <th><%= t('properties.contacts') %></th>
+    <th style="width: 10%"><%= t('contact_ways.preferred_ways') %></th>
+    <th style="min-width: 300px;"><%= t('properties.message') %></th>
+<!--    <th><%#= t('common.comments') %></th>-->
+    <th style="width: 5%"><!-- Зона кнопочек --></th>
+  </tr>
+
+  <% @objects.each do |agency_bid| %>
+      <tr>
+        <td>
+          <%= agency_bid.id %><br>
+          <%= bid_source(agency_bid) %><br>
+          <%= bitrix_sync_state(agency_bid) %>
+        </td>
+        <td><%= date_format(agency_bid.created_at, format_type: :simple_format) %></td>
+        <td class="word-break-bw"><%= agency_bid.name %></td>
+        <td>
+          <%= agency_bid.agency_name %><br>
+          <%= agency_bid.country&.title %>
+        </td>
+        <td>
+          <%= agency_bid.email %><br>
+          <%= agency_bid.phone %><br>
+          <%= agency_bid.website %>
+        </td>
+        <td>
+          <%= render partial: 'admin/contact_ways/chosen_contact_ways',
+                     locals: { contact_ways: agency_bid.contact_ways }
+          %>
+        </td>
+        <td class="word-break-bw"><%= agency_bid.message %></td>
+        <td>
+          <div class="btn-group btn-group-sm">
+            <%= link_to_bitrix(agency_bid.present) %>
+            <%= bitrix_sync_button(agency_bid) %>
+            <%= render_comments(agency_bid, agency_bid.comments) %>
+          </div>
+        </td>
+<!--        <td>-->
+          <%#= render_compact_control_buttons(obj: agency_bid,
+                                             hide_show_btn: true,
+                                             hide_delete_btn: true,
+                                             edit_obj_path: '',
+                                             confirm_message: t('agency_bids.delete_confirm'))
+          %>
+<!--        </td>-->
+      </tr>
+  <% end %>
+</table>
+
+<%= render partial: 'modals/comments_modal',
+           locals: {
+               modal_id: 'comments_modal_id',
+               modal_label_id: 'comments_modal_label_id',
+
+           }
+%>

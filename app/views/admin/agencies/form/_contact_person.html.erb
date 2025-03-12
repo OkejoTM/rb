@@ -1,0 +1,51 @@
+<!-- Контактное лицо -->
+<br>
+
+<div class="row"
+     v-for="contact_person in agency.contact_people_attributes"
+     v-if="!contact_person['_destroy']">
+  <div class="col-lg-8 col-lg-offset-2">
+
+    <div class="form-group">
+      <div class="input-group">
+        <span class="input-group-addon block_left_align" style="width: 180px; max-width: 200px;">
+          {{contact_person.name_ru}}
+        </span>
+        <span class="input-group-addon block_left_align" style="width: 180px; max-width: 200px;">
+          {{contact_person.name_en}}
+        </span>
+        <span class="input-group-addon block_left_align" style="width: 180px; max-width: 200px;">
+          {{contact_person.role_ru}}
+        </span>
+        <span class="input-group-addon block_left_align" style="width: 180px; max-width: 200px;">
+          {{contact_person.role_en}}
+        </span>
+        <span class="input-group-btn">
+          <a class="btn btn-default"
+             title="Редактировать"
+             @click="editContactPerson(contact_person)"><i class="glyphicon glyphicon-pencil"></i></a>
+          <a class="btn btn-default"
+             title="Удалить"
+             @click="removeContactPerson(contact_person)"><i class="glyphicon glyphicon-remove-sign"></i></a>
+        </span>
+        <i class="glyphicon glyphicon-warning-sign text-danger"
+           v-if="contact_person.errors"
+           title="Есть ошибки"
+           style="margin: 9px;"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<contact-person-modal :contact_person="editableContactPerson"
+                      :contact_types="htmlParams.contact_types"
+                      :default_contact="defaultContact()"
+                      :contact_person_errors="editableContactPersonErrors"></contact-person-modal>
+
+<div class="row text-center">
+  <button type="button"
+          class="btn btn-success"
+          @click="addContactPerson">
+    Добавить <i class="glyphicon glyphicon-plus"></i>
+  </button>
+</div>

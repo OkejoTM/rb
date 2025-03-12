@@ -1,0 +1,82 @@
+<% location = location[:location] %>
+<p>
+  <strong><%= t(:name, scope: :areas) %>:</strong>
+  <%= location.name %> <a href="<%= location.seo_path %>" target="_blank"><i class="glyphicon glyphicon-new-window"></i></a>
+</p>
+
+<%= render partial: 'admin/common/userstamp', locals: { object: location } %>
+
+<% if location.image.present? %>
+    <img src="<%= location.image.url %>"/>
+<% end %>
+
+<p>
+  <strong><%= t(:title_en, scope: :areas) %>:</strong>
+  <%= location.title_en %>
+</p>
+
+<p>
+  <strong><%= t(:title_ru, scope: :areas) %>:</strong>
+  <%= location.title_ru %>
+</p>
+
+<div class="form-group row">
+  <div class="col-lg-1"></div>
+  <div class="col-lg-6">
+    <% if location.alternate_names.present? %>
+        <strong><%= t(:alternate_names, scope: :areas) %>:</strong>
+        <table class="table table-striped table-hover table-with-items">
+          <tr>
+            <th><%= t(:language, scope: :areas) %></th>
+            <th><%= t(:name, scope: :areas) %></th>
+          </tr>
+          <% location.alternate_names.each do |alter_name|%>
+              <tr>
+                <td><%= alter_name.iso_language %></td>
+                <td><%= alter_name.alternate_name %></td>
+              </tr>
+          <% end %>
+        </table>
+    <% end %>
+  </div>
+</div>
+
+<p>
+  <strong><%= t(:latitude, scope: :areas) %>:</strong>
+  <%= location.latitude %>
+</p>
+
+<p>
+  <strong><%= t(:longitude, scope: :areas) %>:</strong>
+  <%= location.longitude %>
+</p>
+
+<p>
+  <strong><%= t(:properties_count, scope: :common) %>:</strong>
+  <%= location.properties_count %>
+</p>
+
+<p>
+  <strong><%= t(:slug, scope: :areas) %>:</strong>
+  <%= location.slug %>
+</p>
+
+<p>
+  <strong><%= t("common.popular") %>:</strong>
+  <%= Utils::Html::bool_glyphicon(location.is_popular) %>
+</p>
+
+<p>
+  <strong><%= t(:is_active, scope: :areas) %>:</strong>
+  <%= Utils::Html::bool_glyphicon(location.is_active) %>
+</p>
+
+<p>
+  <strong><%= t(:coming_soon, scope: :areas) %>:</strong>
+  <%= Utils::Html::bool_glyphicon(location.coming_soon) %>
+</p>
+
+<p>
+  <strong><%= t(:show_agencies_on_website, scope: :countries) %>:</strong>
+  <%= Utils::Html::bool_glyphicon(location.show_agencies_on_website) %>
+</p>

@@ -1,0 +1,19 @@
+<div class="control-group"
+     id="comment-block"
+>
+  <div id="comment-notification"></div>
+  <input type="hidden"
+         value="<%= current_user.id %>"
+         name="created_by"
+         id="created_by"
+  />
+  <textarea class="form-control"
+            id="comment_message"
+            name="comment_message"
+            cols="50"
+            rows="4"
+            placeholder="<%= translate_with_asterisk('common.message') %>"
+            spellcheck="true"
+  ></textarea>
+  <%= danger_help_block(:message_error, css_class: 'input_error_message') %>
+</div>

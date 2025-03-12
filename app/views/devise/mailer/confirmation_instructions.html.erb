@@ -1,0 +1,5 @@
+<p><%= t(:welcome, scope: :devise)%><%= @email %>!</p>
+
+<p><%= t(:confirm_by_link, scope: :devise) %> </p>
+
+<p><%= link_to  t(:link_confirm_account, scope: :devise), confirmation_url(@resource, confirmation_token: @token) %></p>

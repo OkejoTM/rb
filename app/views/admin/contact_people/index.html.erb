@@ -1,0 +1,39 @@
+<% title @page_title %>
+<h2><%= t(:index, scope: :contact_people) %>
+  <%#= link_to t("common.add"), new_contact_person_path, class: 'btn btn-primary' %>
+</h2>
+
+<br>
+<%= render_pagination @pagination %>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= t(:agency, scope: :contact_people)   %></th>
+    <th><%= t(:title_ru, scope: :common) %></th>
+    <th><%= t(:role_ru, scope: :contact_people)  %></th>
+    <th><%= t(:title_en, scope: :common) %></th>
+    <th><%= t(:role_en, scope: :contact_people)  %></th>
+    <th></th>
+  </tr>
+
+  <% @pagination.items.each do |contact_person| %>
+      <tr>
+        <td><%= contact_person.id %></td>
+        <td><a href="<%= contact_person.agency.prian_link %>" target="_blank"><%= contact_person.agency.name_ru %></a></td>
+        <td><%= contact_person.name_ru %></td>
+        <td><%= contact_person.role_ru %></td>
+        <td><%= contact_person.name_en %></td>
+        <td><%= contact_person.role_en %></td>
+        <td>
+          <%= render_compact_control_buttons(obj: contact_person,
+                                             show_obj_path: contact_person.agency.seo_path,
+                                             edit_obj_path: "#{edit_agency_path(contact_person.agency)}#contact_person",
+                                             confirm_message: t(:delete_confirm, scope: :contact_people)) %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+
+<%= render_pagination @pagination %>
+<br>

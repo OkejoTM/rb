@@ -1,0 +1,22 @@
+<%
+  max_contacts_count ||= 999
+  printed_contacts_count = 0
+%>
+
+<% if agency.contacts.present? || agency.messengers.present? %>
+  <ul class="agent-contact-details">
+    <% agency.contacts.each_with_index do |contact| %>
+      <% printed_contacts_count += 1 %>
+      <% break if printed_contacts_count > max_contacts_count %>
+
+      <li title="<%= contact&.title %>"><i class="<%= contact&.icon_class %>"></i><%= contact&.value %></li>
+    <% end %>
+
+    <% agency.messengers.each_with_index do |messenger| %>
+      <% printed_contacts_count += 1 %>
+      <% break if printed_contacts_count > max_contacts_count %>
+
+      <li><i class="<%= messenger&.icon_class %>"></i><%= "#{messenger&.title}: #{messenger&.phone}" %></li>
+    <% end %>
+  </ul>
+<% end %>

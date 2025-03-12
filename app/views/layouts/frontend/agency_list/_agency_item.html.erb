@@ -1,0 +1,42 @@
+<div class="agent agent-page agency agency-item">
+
+  <a href="<%= agencies_list_item_path(I18n.locale, agency.slug) %>" class="agent-avatar" target="_blank" rel="nofollow">
+    <% if agency.logo&.pic? %>
+      <img src="<%= agency.logo.pic.middle.url %>"/>
+    <% end %>
+  </a>
+
+  <div class="agent-content">
+    <div class="agent-name">
+      <h4><a href="<%= agencies_list_item_path(I18n.locale, agency.slug) %>"
+             target="_blank"
+             title="<%= agency.name %>"><%= agency.name %></a></h4>
+      <div>
+        <% if agency&.website.present? && show_agency_contacts?(agency) %>
+          <i class="fas fa-external-link-alt"></i> <a href="<%= agency&.website %>" title="<%= t(:open_site, scope: :common) %>" target="_blank" rel="nofollow">
+            <%= agency&.website %>
+          </a>
+        <% end %>
+        <div><%= linked_countries(agency) %></div>
+      </div>
+    </div>
+
+    <% if agency.about.present? %>
+      <div class="show-more <%= "visible" unless description_show_more?(agency.about) %>">
+        <p>
+          <%= agency.about.html_safe %>
+        </p>
+
+        <% if description_show_more?(agency.about) %>
+          <a href="#" class="show-more-button" style="margin-bottom: 10px;"><%= t(:show_more, scope: :common) %> <i class="fas fa-angle-down"></i></a>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if show_agency_contacts?(agency) %>
+      <%= render partial: 'layouts/frontend/agency/contacts', locals: { agency: agency, max_contacts_count: 2 } %>
+    <% end %>
+
+    <div class="clearfix"></div>
+  </div>
+</div>

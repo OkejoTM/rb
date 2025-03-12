@@ -1,0 +1,16 @@
+<%= form_with url: search_url, method: "get" do %>
+  <div class="row">
+    <div class="col-lg-6">
+      <%= text_field_tag :query,
+                         params[:query],
+                         placeholder: t(:enter_search_term, scope: :common),
+                         class: "form-control" %>
+    </div>
+
+    <div class="col-lg-2">
+      <div class="btn-group" role="group">
+        <%= search_button %>
+      </div>
+    </div>
+  </div>
+<% end %>

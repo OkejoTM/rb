@@ -1,0 +1,70 @@
+.photo-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.3s ease;
+  background-color: black;
+}
+
+.photo-container {
+  position: relative;
+  width: 200px;
+
+  &:hover .photo-overlay {
+    opacity: 0.6;
+  }
+}
+
+.photo-icons {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+
+  .photo-icon {
+    font-size: 40px;
+    color: white;
+    text-decoration: none;
+    margin: 10px;
+    text-shadow: 1px 1px 2px black;
+
+    &.icon-danger {
+      color: red;
+    }
+
+    &:hover {
+      font-size: 45px;
+    }
+  }
+}
+
+.resized_image {
+  width: 200px;
+  height: auto;
+  object-fit: contain;
+}
+
+.highlight::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px; /* Увеличенная толщина линии */
+  background-color: #007bff;
+  z-index: 9999;
+}
+
+.highlight.left::after {
+  left: 0;
+}
+
+.highlight.right::after {
+  right: 0;
+}

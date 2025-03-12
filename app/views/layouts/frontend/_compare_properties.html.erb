@@ -1,0 +1,47 @@
+<%
+  compare_properties = Property::Presenter.wrap_collection(get_compare_properties)
+%>
+<!-- Compare Properties Widget
+================================================== -->
+<div class="compare-slide-menu">
+
+  <%# if compare_properties.present? %>
+    <div class="csm-trigger"></div>
+  <%# end %>
+  <div class="csm-content">
+    <h4><%= t("common.compare_properties") %><div class="csm-mobile-trigger"></div></h4>
+
+    <div class="csm-properties">
+
+      <% if compare_properties.present? %>
+        <% compare_properties.each do |property| %>
+          <!-- Property -->
+          <div class="listing-item compact" id="property_compare_compact<%= property.id%>">
+            <a href="<%= property.seo_path %>" class="listing-img-container">
+              <div class="remove-from-compare" id="remove-compare-<%= property.id %>"
+                  data-property_id="<%= property.id %>"
+                  data-call_place="card">
+                <i class="fas fa-times"></i>
+              </div>
+              <div class="listing-badges">
+                <span><%= property.sale_type %></span>
+              </div>
+              <div class="listing-img-content">
+                <span class="listing-compact-title"><%= property.short_page_title %> <i><%= Formatters::PriceFormatter.format_price(property, currency: current_currency) %></i></span>
+              </div>
+              <img src="<%= property_image(property) %>" alt="">
+            </a>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="csm-buttons" id="compare-right-side-buttons">
+      <a href="<%= compare_properties_path %>" class="button"><%= t("common.compare") %></a>
+      <a href="#" id="compare-reset-button" class="button reset"><%= t("common.reset") %></a>
+    </div>
+    <p id="compare-right-side-nothing-found" style="display: none; margin-left: 3rem;"><%= t("nothing_found") %></p>
+  </div>
+
+</div>
+<!-- Compare Properties Widget / End -->

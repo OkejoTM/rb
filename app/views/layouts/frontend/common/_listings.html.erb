@@ -1,0 +1,34 @@
+<%
+  compact ||= false
+  wrapped_properties = Property::Presenter.wrap_collection(properties.items)
+  disable_agency ||= false
+  currency ||= current_currency
+%>
+
+<!-- Listings -->
+<div class="listings-container list-layout">
+
+  <% if compact %>
+      <%= render partial: 'layouts/frontend/common/listing_item_compact',
+                 collection: wrapped_properties,
+                 as: :property,
+                 locals: { currency: currency }
+      %>
+  <% else %>
+      <%= render partial: 'layouts/frontend/common/listing_item',
+                 collection: wrapped_properties,
+                 as: :property,
+                 locals: { disable_agency: disable_agency,
+                           currency: currency }
+      %>
+  <% end %>
+
+  <% if wrapped_properties.length > 3 %>
+    <% if browser.device.mobile? %>
+      <%= render partial: 'common/ads/property_list_mobile2' %>
+    <% else %>
+      <%= render partial: 'common/ads/property_list_desktop2' %>
+    <% end %>
+  <% end %>
+</div>
+<!-- Listings Container / End -->

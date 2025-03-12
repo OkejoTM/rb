@@ -1,0 +1,36 @@
+<% title @page_title %>
+<p id="notice"><%= notice %></p>
+
+<%= render_location_show(location: @country) %>
+
+<p>
+  <strong><%= t(:iso_alpha2, scope: :areas) %>:</strong>
+  <%= @country.iso_alpha2 %>
+</p>
+
+<p>
+  <strong><%= t(:capital, scope: :areas) %>:</strong>
+  <%= link_to @country.capital&.title, city_path(@country.capital) if @country.capital.present? %>
+</p>
+
+<p>
+  <strong><%= t(:continent, scope: :areas) %>:</strong>
+  <%= @country.continent %>
+</p>
+
+<p>
+  <strong><%= t(:currencycode, scope: :areas) %>:</strong>
+  <%= @country.currencycode %>
+</p>
+
+<p>
+  <strong><%= t(:currencyname, scope: :areas) %>:</strong>
+  <%= @country.currencyname %>
+</p>
+
+<p>
+  <strong><%= t(:languages, scope: :areas) %>:</strong>
+  <%= @country.languages %>
+</p>
+
+<%= link_to t(:edit, scope: :common), edit_country_path(@country), class: 'btn btn-default', title: t(:edit, scope: :common) %>

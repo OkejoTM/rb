@@ -1,0 +1,10 @@
+<%= link_to "Всего: #{Bid.count}", bids_path %>, <%= links_to_objects_with_bids(relation_name: :country) %>
+<br><br>
+<%= links_to_objects_with_bids(relation_name: :property_supertype) %>
+<br><br>
+<div>
+  <%= links_to_price_limitted(:cheap) %>,
+  <%= links_to_price_limitted(:medium) %>,
+  <%= links_to_price_limitted(:expensive) %>,
+  <%= links_to_price_limitted(:on_request) %>
+</div>

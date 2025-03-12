@@ -1,0 +1,47 @@
+@media (max-width: 1853px) {
+  #map-tab {
+    height: 690px;
+  }
+}
+
+@media (max-width: 1366px) {
+  #map-tab {
+    height: 405px;
+  }
+}
+
+@media (max-width: 768px) {
+  #map-tab {
+    top: 0;
+    left: 0;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 1001;
+  }
+
+  .gm-control-active.gm-fullscreen-control {
+    display: none;
+  }
+
+  #close-map {
+    top: 15px !important;
+  }
+
+  #map_load {
+    top: 50%;
+    left: 50%;
+  }
+
+  .layout-switcher.filter a {
+    display: none;
+  }
+}
+
+//.layout-switcher.filter {
+//  display: block;
+//
+//  a.map {
+//    display: inline-block;
+//  }
+//}

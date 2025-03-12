@@ -1,0 +1,31 @@
+<% title @page_title %>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong><%= "Title Ru" %>:</strong>
+  <%= @object.title_ru %>
+</p>
+
+<p>
+  <strong><%= "Title En" %>:</strong>
+  <%= @object.title_en %>
+</p>
+
+<p>
+  <strong><%= "Property Supertype" %>:</strong>
+  <%= string_or_dummy(@object.property_supertype&.title_ru, 'не указано') %>
+</p>
+
+<p>
+  <strong><%= t(:properties_count, scope: :common) %>:</strong>
+  <%= @object.properties.count %>
+</p>
+
+<p>
+  <strong><%= "Property Tags" %>:</strong>
+  <% @object.property_tags.each do |property_tag| %>
+    <div><%= link_to property_tag.title, property_tag %></div>
+  <% end %>
+</p>
+
+<%= link_to t(:edit, scope: :common), edit_property_tag_category_path(@object), class: 'btn btn-default', title: t(:edit, scope: :common) %>

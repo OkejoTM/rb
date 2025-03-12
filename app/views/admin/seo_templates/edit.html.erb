@@ -1,0 +1,12 @@
+<% title @page_title %>
+
+<h3>Редактирование SEO-шаблона "<%= @template.name %>" для объектов "<%= template_location_type_name(@template) %>"</h3>
+
+<br>
+
+<%= render partial: 'admin/seo_templates/form', locals: { template: @template,
+                                                    filter_options: @filter_options,
+                                                    property_supertypes: @property_supertypes,
+                                                    property_type_groups: @property_type_groups,
+                                                    property_types: @property_types,
+                                                    seo_templates_groups: @seo_templates_groups } %>

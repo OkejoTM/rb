@@ -1,0 +1,12 @@
+<div class="form-group row">
+  <%= f.input :short_page_title_ru,
+              label: t(:short_page_title_ru, scope: :seo),
+              wrapper_html: { class: 'col-lg-6' },
+              input_html: { class: 'form-control' } %>
+  <%= f.input :short_page_title_en,
+              label: t(:short_page_title_en, scope: :seo),
+              wrapper_html: { class: 'col-lg-6' },
+              input_html: { class: 'form-control' } %>
+</div>
+
+<%= render partial: "admin/common/location_seo", locals: { form: f } %>

@@ -1,0 +1,23 @@
+<%
+  show_country_icon ||= false
+%>
+<div class="container padding-bottom-20">
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="show-more <%= "visible" unless locations_show_more?(seo_agencies_pages) %>">
+        <% seo_agencies_pages.each_with_index do |seo_agency_page| %>
+          <div class="col-md-3">
+            <%= country_icon(seo_agency_page.object) if show_country_icon %>
+            <a href="<%= seo_agency_page.seo_path %>"><%= seo_agency_page.object.title %></a>
+          </div>
+        <% end %>
+
+        <% if locations_show_more?(seo_agencies_pages) %>
+          <a href="#" class="show-more-button" style="margin-bottom: 10px;"><%= t(:show_more, scope: :common) %> <i class="fas fa-angle-down"></i></a>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

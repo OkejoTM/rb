@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col-md-4">
+    <%= f.label :name, 'Название', class: 'control-label' %>
+    <%= f.text_field :name, class: 'form-control' %>
+    <%= danger_help_block(:name) %>
+    <br>
+
+    <% unless template.is_main? %>
+      <%= f.label :link_name_ru, 'Название ссылки RU', class: 'control-label' %>
+      <%= f.text_field :link_name_ru, class: 'form-control' %>
+      <br>
+
+      <%= f.label :link_name_en, 'Название ссылки EN', class: 'control-label' %>
+      <%= f.text_field :link_name_en, class: 'form-control' %>
+      <br>
+
+      <%= f.label :slug, 'Slug', class: 'control-label' %>
+      <%= f.text_field :slug, class: 'form-control' %>
+      <%= danger_help_block(:slug) %>
+      <br>
+    <% end %>
+
+    <%= f.label :template_location_type, 'Тип объектов', class: 'control-label' %>
+    <%= f.select :template_location_type, template_location_types, {}, class: 'form-control', disabled: !template.new_record? %>
+    <br>
+
+    <%= f.label :view_mode, 'Режим отображения', class: 'control-label' %>
+    <%= f.select :view_mode, template_view_modes, {}, class: 'form-control' %>
+    <br>
+
+    <hr>
+
+    <%= f.label :seo_templates_group_id, t("seo_templates_groups.show"), class: 'control-label' %>
+    <%= f.select :seo_templates_group_id,
+                 options_for_select(seo_templates_groups, template.seo_templates_group_id),
+                 { include_blank: "Не задано" },
+                 { class: "form-control select2-enable",
+                   disabled: template.is_main? } %>
+
+    <hr>
+
+    <%= f.label :property_supertype_id, t("property_supertypes.show"), class: 'control-label' %>
+    <%= f.select :property_supertype_id,
+                   options_for_select(property_supertypes, template.property_supertype_id),
+                   { include_blank: t(:all, scope: :common) },
+                   { class: "form-control select2-enable select-property-supertype",
+                     disabled: template.is_main? } %>
+    <br>
+    <%= f.label :property_type_group_id, t("property_type_groups.show"), class: 'control-label' %>
+    <%= f.select :property_type_group_id,
+                 options_for_select(property_type_groups, template.property_type_group_id),
+                 { include_blank: t(:all, scope: :common) },
+                 { class: "form-control select2-enable select-property-type-group",
+                   disabled: !(template.property_type_group_id.present? && template.property_type_group_id.to_i > 0) || template.is_main? } %>
+    <br>
+    <%= f.label :property_type_id, t("property_types.show"), class: 'control-label' %>
+    <%= f.select :property_type_id,
+                   options_for_select(property_types, template.property_type_id),
+                   { include_blank: t(:all, scope: :common) },
+                   { class: "form-control select2-enable select-property-type",
+                   disabled: !(template.property_type_id.present? && template.property_type_id.to_i > 0) || template.is_main? } %>
+    <br>
+  </div>
+</div>

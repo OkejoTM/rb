@@ -1,0 +1,68 @@
+<%
+  wrap_collection ||= [{}]
+  currency ||= current_currency
+  i = 0
+  type ||= ""
+%>
+<!-- Compare List -->
+<div class="compare-list-container" style="overflow: auto;">
+  <% unless wrap_collection.empty? %>
+    <ul id="compare-list">
+      <li class="compare-list-properties">
+        <div class="blank-div"></div>
+        <% wrap_collection[:property].each_with_index do |property, index| %>
+          <div class="compare-list-item-<%= index %> <%= type %>">
+            <a href="<%= property.seo_path %>">
+              <div class="clp-img" style="text-align: center;">
+                <%=
+                  render partial: 'layouts/frontend/carousel/images',
+                         locals: {
+                           pictures: photos_version(property).slice(0, 1),
+                           height: "16rem",
+                           width: "21rem"
+                         }
+                %>
+                <span class="remove-from-compare"
+                      data-call_place="compare list page"
+                      data-property_id="<%= property.id %>"
+                      data-num="<%= index %>"
+                      data-type="<%= type %>">
+                          <i class="fa fa-remove"></i>
+                        </span>
+              </div>
+              <div class="clp-title">
+                <h4><%= property.short_page_title %></h4>
+                <span>
+                        <% if property.for_sale %>
+                          <%= Formatters::PriceFormatter.format_price(property, currency: currency) %>
+                    <i><%= Formatters::PriceFormatter.format_price_for_area(property, currency: currency) %></i>
+                        <% else %>
+                          $900 <i>monthly</i>
+                        <% end %>
+                      </span>
+              </div>
+            </a>
+          </div>
+        <% end %>
+      </li>
+      <% wrap_collection.drop(1).to_h.each do |key, value| %>
+        <li>
+          <div>
+            <%= t(key.to_s, scope: :properties) %>
+          </div>
+          <% i = 0 %>
+          <% value.each do |item| %>
+            <div class="compare-list-item-<%= i %> <%= type %>">
+              <% if item %>
+                <%= item %>
+              <% else %>
+                <span class="not-available"></span>
+              <% end %>
+            </div>
+            <% i += 1 %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>

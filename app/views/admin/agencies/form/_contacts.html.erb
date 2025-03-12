@@ -1,0 +1,64 @@
+<h3>
+  <%= t("agencies.messengers") %>
+  <button type="button"
+          class="btn btn-success"
+          @click="addMessenger">
+    Добавить <i class="glyphicon glyphicon-plus"></i>
+  </button>
+</h3>
+
+<div class="col-lg-offset-2">
+  <messenger v-for="messenger in agency.messengers_attributes"
+             :key="messenger.id"
+             :messenger="messenger"
+             :messenger_types="htmlParams.messenger_types"
+             :errors="messenger.errors"></messenger>
+</div>
+
+
+<h3>
+  <%= t("agencies.other_contacts") %>
+  <button type="button"
+          class="btn btn-success"
+          @click="addContact(agency, 'Agency')">
+    Добавить <i class="glyphicon glyphicon-plus"></i>
+  </button>
+</h3>
+
+<div class="row">
+  <div class="col-lg-offset-2 col-lg-8">
+    <contact v-for="contact in agency.contacts_attributes"
+               :key="contact.id"
+               :contact="contact"
+               :contact_types="htmlParams.contact_types"
+               :errors="contact.errors"></contact>
+  </div>
+</div>
+
+
+<div v-if="agency.agency_other_contacts_attributes.length > 0">
+  <!-- Другие контакты -->
+  <h3><%= t("agencies.other_contacts") %>:</h3>
+
+  <div v-for="other_contact in agency.agency_other_contacts_attributes">
+    <hr>
+    <div class="form-group row">
+      <strong class="col-lg-2">{{ other_contact.title_ru }}</strong>
+      <div class="col-lg-6">
+        <span v-for="content in other_contact.content_ru">
+          {{ content }}<br>
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <strong class="col-lg-2">{{ other_contact.title_en }}</strong>
+      <div class="col-lg-6">
+        <span v-for="content in other_contact.content_en">
+          {{ content }}<br>
+        </span>
+      </div>
+    </div>
+    <br>
+  </div>
+</div>

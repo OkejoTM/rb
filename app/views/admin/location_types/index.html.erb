@@ -1,0 +1,28 @@
+<% title @page_title %>
+<h2><%= t(:index, scope: :location_types) %>
+  <%= link_to t("common.add"), new_location_type_path, class: 'btn btn-primary' %>
+</h2>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= "Title Ru" %></th>
+    <th><%= "Title En" %></th>
+    <th><%= t(:properties_count, scope: :common) %></th>
+    <th></th>
+  </tr>
+
+  <% @objects.each_with_index do |location_type, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= location_type.title_ru %></td>
+        <td><%= location_type.title_en %></td>
+        <td><%= location_type.properties.count %></td>
+        <td>
+          <%= render_compact_control_buttons(obj: location_type,
+                                             edit_obj_path: edit_location_type_path(location_type),
+                                             confirm_message: t(:delete_confirm, scope: :location_types)) %>
+        </td>
+      </tr>
+  <% end %>
+</table>

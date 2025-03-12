@@ -1,0 +1,17 @@
+<%= render_location_form(form: f) %>
+
+<% if cities.present? %>
+  <div class="form-group row">
+    <%= f.label :region_center, t(:region_center, scope: :regions), class: 'col-lg-2 control-label' %>
+    <div class="col-lg-6">
+      <%= f.select :region_center, options_for_select(cities.collect {|p| [ p.title, p.id ] }, region_center&.id), { include_blank: true }, { class: "form-control select2-enable" } %>
+    </div>
+  </div>
+<% end %>
+
+<div class="form-group row">
+  <%= f.label :country_id, t(:show, scope: :countries), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.collection_select :country_id, countries, :id, :title, {}, { class: "form-control select2-enable" } %>
+  </div>
+</div>

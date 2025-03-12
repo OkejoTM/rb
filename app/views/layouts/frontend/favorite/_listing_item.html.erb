@@ -1,0 +1,68 @@
+<%
+  property_seo_path = property.seo_path
+  currency = current_currency
+  active = property.is_active
+%>
+<!--Item-->
+<tr>
+  <td class="title-container <%= active ? '' : 'inactive-ad' %>">
+    <a href="<%= property_seo_path %>"
+       class="listing-img-container margin-right-25"
+       style="height: auto; max-width: 110px; max-height: 84px;"
+       target="_blank"
+       rel="nofollow"
+    >
+      <%=
+        render partial: 'layouts/frontend/carousel/images',
+               locals: {
+                 pictures: photos_version(property).slice(0, 1),
+                 height: "84px",
+                 width: "110px",
+               }
+      %>
+    </a>
+    <div class="title">
+      <h4>
+        <a href="<%= property_seo_path %>" rel="nofollow" target="_blank"><%= property.short_page_title %></a>
+      </h4>
+      <% if property.has_coordinates? %>
+        <span href="<%= map_point_link(property.latitude, property.longitude) %>"
+              class="listing-address popup-gmaps"
+              style="cursor: pointer; top: 0;"
+        >
+          <i class="fas fa-map-marker"></i>
+          <%= property.address %>
+        </span>
+      <% else %>
+        <div><%= property.address %></div>
+      <% end %>
+
+      <span class="table-property-price">
+        <% if active %>
+          <% if property.for_sale %>
+            <div>
+              <%= Formatters::PriceFormatter.format_price(property, currency: currency) %>
+            </div>
+            <div>
+              <i><%= Formatters::PriceFormatter.format_price_for_area(property, currency: currency) %></i>
+            </div>
+          <% else %>
+            $900 <i>monthly</i>
+          <% end %>
+        <% else %>
+          <%= t('sold') %>
+        <% end %>
+      </span>
+    </div>
+  </td>
+
+  <td class="action" style="min-width: 135px;">
+    <a href="#" class="delete delete-favorite"
+       data-property_id="<%= property.id %>"
+       data-element_hide="true"
+       data-call_place="bookmark list"
+    >
+      <i class="fa fa-remove"></i><%= t("common.delete") %>
+    </a>
+  </td>
+</tr>

@@ -1,0 +1,21 @@
+<% title @page_title %>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong><%= "Title Ru" %>:</strong>
+  <%= @object.title_ru %>
+</p>
+
+<p>
+  <strong><%= "Title En" %>:</strong>
+  <%= @object.title_en %>
+</p>
+
+<p>
+  <strong><%= "Property Types" %>:</strong>
+  <% @object.property_types.each do |property_type| %>
+    <div><%= link_to property_type.title, property_type %></div>
+  <% end %>
+</p>
+
+<%= link_to t(:edit, scope: :common), edit_property_supertype_path(@object), class: 'btn btn-default', title: t(:edit, scope: :common) %>

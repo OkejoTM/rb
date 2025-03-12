@@ -1,0 +1,32 @@
+<h1><%= t(:hello, email: "#{current_user.email}") %></h1>
+
+<% if allowed_to? :info? %>
+  <p>
+    Всего недвижимости: <%= Property.count %>
+  </p>
+
+  <p>
+    Активной недвижимости: <%= Property.active.count %>
+  </p>
+
+  <p>
+    Активной и отмодерированной недвижимости: <%= Property.active_and_moderated.count %>
+  </p>
+
+  <p>
+    Всего агентств: <%= Agency.count %>
+  </p>
+
+  <p>Переведено недвижимости на английский язык:</p>
+  <div class="row">
+    <div class="col-lg-4">
+      <%= progress_bar(Property.for_translation_part(:en)) %>
+    </div>
+  </div>
+<% end %>
+
+<% if allowed_to? :manage?, :monitor %>
+  <p>
+    <%= link_to t('monitor.sidekiq'), sidekiq_web_path, target: '_self', class: 'btn btn-default' %>
+  </p>
+<% end %>

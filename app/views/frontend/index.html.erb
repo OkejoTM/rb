@@ -1,0 +1,21 @@
+<% title t("meta.index_title") %>
+<% meta_description t("meta.index_description") %>
+
+<%= render partial: 'layouts/frontend/banner', locals: { filter_options: @filter_options } %>
+
+<%= render partial: 'layouts/frontend/places_mk2', locals: { popular_countries: @popular_countries,
+                                                                areas_by_continent: @areas_by_continent,
+                                                                title: t(:popular_countries),
+                                                                subtitle: t(:subtitle_popular_countries) } %>
+
+<section id="best_deals"
+         class="fullwidth border-top margin-top-40 margin-bottom-0 padding-top-0 padding-bottom-65"
+         data-background-color="#f7f7f7"
+         style="background: rgb(247, 247, 247);">
+  <%= render_async best_deals_path(locale: I18n.locale) do %>
+    <%= loader_block %>
+  <% end %>
+</section>
+
+<%= render partial: 'layouts/frontend/flip_banner', locals: { title_visible: t(:title_visible, scope: :flip_banner),
+                                                                 title_hidden: t(:title_hidden, scope: :flip_banner) } %>

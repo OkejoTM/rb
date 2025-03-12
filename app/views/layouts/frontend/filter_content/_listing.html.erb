@@ -1,0 +1,30 @@
+<%#= render partial: 'layouts/frontend/filter_content/listing/main_serach' %>
+
+<% if pagination.items.count > 0 %>
+
+  <div class="row margin-bottom-15">
+    <div class="col-md-12">
+      <%#= page_count_of_size(pagination.current_page, pagination.page_size, properties_count) %>
+      <%= found_listings(properties_count) %>
+    </div>
+  </div>
+
+  <%= render partial: 'layouts/frontend/common/listings',
+             locals: {
+               properties: pagination,
+               currency: currency
+             }
+  %>
+
+  <div class="clearfix"></div>
+
+  <% if pagination.pages_count > 1 %>
+    <%= render partial: 'layouts/frontend/filter_content/listing/pagination', locals: { pagination: pagination,
+                                                                                           base_url: base_url } %>
+  <% end %>
+
+<% else %>
+
+  <p><%= t(:nothing_found) %></p>
+
+<% end %>

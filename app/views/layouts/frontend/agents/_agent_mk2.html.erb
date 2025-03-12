@@ -1,0 +1,32 @@
+<!-- Listing Item -->
+<div class="listing-item">
+
+  <a href="#" class="listing-img-container" style="height: auto;" target="_blank" rel="nofollow">
+
+    <%#= render partial: 'layouts/frontend/carousel/images', locals: { pictures: property.middle_pics_urls } %>
+    <div class="listing-carousel">
+      <div>
+        <img src="/images/agent-01.jpg" alt="">
+      </div>
+    </div>
+
+  </a>
+
+  <div class="listing-content">
+
+    <div class="listing-title">
+      <h4><a href="#"
+             target="_blank"
+             title="Tom Wilson"
+             rel="nofollow">Tom Wilson</a></h4>
+
+      <a href="#"
+         class="details button border"
+         style="top: 51%;"
+         target="_blank"
+         rel="nofollow"><%= t(:details, scope: :common) %></a>
+    </div>
+
+  </div>
+
+</div>

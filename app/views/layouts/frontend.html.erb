@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= yield(:title) %></title>
+
+    <%= alternate_link(request.original_url) %>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <%= yield(:meta_description) %>
+    <%= yield(:meta_keywords) %>
+    <%= yield(:meta_ajax_page) %>
+    <%= yield(:meta_canonical_page) %>
+    <%= yield(:meta_robots) %>
+
+    <%= csrf_meta_tags %>
+    <%= favicon_link_tag(Rails.env.production? ? 'favicon_frontend.ico' : 'favicon_frontend_dev.ico') %>
+
+    <!-- For styles -->
+    <%= stylesheet_pack_tag 'frontend_style' %>
+
+    <!-- For script -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByI_T8eoDuQP8a84y3SJu9TI1z42nps7o&libraries=geometry,places&language=<%= I18n.locale %>"></script>
+    <%= javascript_pack_tag 'frontend'%>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6587789223765353"
+            crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <%= content_for :render_async %>
+    <%= browser_updater_block %>
+
+    <%#= render partial: 'layouts/frontend/preload' %>
+
+    <!--
+    <%# if notice.present? %>
+      <p class="notice"><%#= notice %></p>
+    <%# end %>
+
+    <%# if alert.present? %>
+      <p class="alert"><%#= alert %></p>
+    <%# end %>
+    -->
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+      <%= render partial: 'layouts/frontend/compare_properties' %>
+
+      <%= render partial: 'layouts/frontend/header' %>
+
+      <%= yield %>
+
+      <%= render partial: 'layouts/frontend/footer' %>
+
+      <%= render partial: 'layouts/frontend/back_to_top' %>
+
+    </div>
+    <!-- Wrapper / End -->
+
+  </body>
+  <script type="text/javascript">
+      var PROPIMO_LOCALE='<%= I18n.locale %>';
+  </script>
+
+  <%= render partial: 'common/metrika' %>
+
+  <% if locale?(:ru) %>
+    <%= render partial: 'modals/client_feedback_modal',
+               locals: {
+                 modal_id: 'client_feedback_modal_id',
+                 modal_label_id: 'client_feedback_modal_label_id'
+               }
+    %>
+  <% end %>
+</html>

@@ -1,0 +1,30 @@
+<% title @page_title %>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong><%= "Title Ru" %>:</strong>
+  <%= @object.title_ru %>
+</p>
+
+<p>
+  <strong><%= "Title En" %>:</strong>
+  <%= @object.title_en %>
+</p>
+
+<p>
+  <strong><%= t(:is_active, scope: :areas) %>:</strong>
+  <%= Utils::Html::bool_glyphicon(@object.is_active) %>
+</p>
+
+<% if @object.seo_templates.present? %>
+  <p>
+    <strong><%= "Seo Templates" %>:</strong>
+    <div>Название / Тип недвижимости / Тип объектов</div>
+    <% @object.seo_templates.each do |seo_template| %>
+      <div><%= link_to "#{seo_template.name} / #{template_property_type(seo_template)} / #{template_location_type_name(seo_template)}",
+                       edit_seo_template_path(seo_template) %></div>
+    <% end %>
+  </p>
+<% end %>
+
+<%= link_to t(:edit, scope: :common), edit_seo_templates_group_path(@object), class: 'btn btn-default', title: t(:edit, scope: :common) %>

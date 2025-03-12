@@ -1,0 +1,19 @@
+<% title @page_title %>
+
+<p>
+  <strong><%= t(:email, scope: :users) %>:</strong>
+  <%= @object.email %>
+</p>
+
+<p>
+  <strong>Subscribed:</strong>
+  <%= Utils::Html::bool_glyphicon(@object.subscribed) %>
+</p>
+
+<%= link_to t(:edit, scope: :common), edit_user_path(@object), class: 'btn btn-default', title: t(:edit, scope: :common) %>
+<%= link_to t(:delete, scope: :common),
+            @object,
+            method: :delete,
+            class: 'btn btn-danger',
+            data: { confirm: t(:delete_confirm, scope: :users) },
+            title: t(:delete, scope: :common) %>

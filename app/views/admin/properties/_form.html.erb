@@ -1,0 +1,49 @@
+<% if @property.errors.any? %>
+  <div class="alert alert-danger" id="validation-error-alert">
+    <strong><%= t(:error, scope: :properties) %></strong>
+  </div>
+<% end %>
+
+<%= simple_form_for @property,
+              data: { type: :json },
+              id: 'properties_form' do |f| %>
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab"><%= t(:description, scope: :properties) %></a></li>
+    <li role="presentation"><a href="#photos" aria-controls="photos" role="tab" data-toggle="tab"><%= t(:photos, scope: :properties) %></a></li>
+    <li role="presentation"><a href="#prices" aria-controls="prices" role="tab" data-toggle="tab"><%= t(:prices, scope: :properties) %></a></li>
+    <li role="presentation"><a href="#distances" aria-controls="distances" role="tab" data-toggle="tab"><%= t(:distances, scope: :properties) %></a></li>
+    <% if allowed_to? :info? %>
+      <li role="presentation"><a href="#seo" aria-controls="seo" role="tab" data-toggle="tab">SEO</a></li>
+    <% end %>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="general">
+      <%= render partial: "admin/properties/form/general", locals: { f: f } %>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="photos">
+      <%= render partial: "admin/properties/form/photos", locals: { f: f } %>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="prices">
+      <%= render partial: "admin/properties/form/prices", locals: { f: f } %>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="distances">
+      <%= render partial: "admin/properties/form/distances", locals: { f: f } %>
+    </div>
+
+    <% if allowed_to? :info? %>
+      <div role="tabpanel" class="tab-pane" id="seo">
+        <%= render partial: "admin/properties/form/seo", locals: { f: f } %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render_control_buttons(form: f,
+                             obj: @property,
+                             confirm_message: t(:delete_confirm, scope: :properties)) %>
+<% end %>

@@ -1,0 +1,22 @@
+<%
+  currency ||= current_currency
+%>
+
+<!-- Widget -->
+<div class="widget">
+  <h3 class="margin-bottom-35">Featured Properties</h3>
+
+  <div class="listing-carousel outer">
+
+    <% properties.each do |property| %>
+      <!-- Item -->
+      <div class="item">
+        <%= render partial: 'layouts/frontend/common/listing_item_compact', locals: { property: property, currency: currency } %>
+      </div>
+      <!-- Item / End -->
+    <% end %>
+
+  </div>
+
+</div>
+<!-- Widget / End -->

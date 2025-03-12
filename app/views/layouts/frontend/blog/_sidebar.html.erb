@@ -1,0 +1,25 @@
+<div class="sidebar right">
+
+  <%#= render partial: 'layouts/frontend/blog/sidebar/search' %>
+  <%#= render partial: 'layouts/frontend/blog/sidebar/feedback' %>
+  <%#= render partial: 'layouts/frontend/blog/sidebar/popular_posts' %>
+  <%#= render partial: 'layouts/frontend/blog/sidebar/social' %>
+  <%= render partial: 'layouts/frontend/blog/sidebar/countries' %>
+
+  <div id="article_categories">
+    <% if article_categories_available?(params) %>
+      <%= render partial: 'layouts/frontend/blog/sidebar/categories' %>
+    <% end %>
+  </div>
+
+
+  <%# if filter_options.city_id.present? %>
+    <!--<input type="hidden" id="city_id" name="city_id" value="<%#= filter_options.city_id %>"/>-->
+  <%# end %>
+
+  <input type="hidden" id="page" name="page" value="<%#= filter_options.current_page %>"/>
+  <!--<input type="hidden" id="page" name="page" value="<%#= filter_options.current_page %>"/>-->
+
+  <div class="clearfix"></div>
+  <div class="margin-bottom-40"></div>
+</div>

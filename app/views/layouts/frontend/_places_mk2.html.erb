@@ -1,0 +1,118 @@
+<%
+  show_country_icon = true
+%>
+
+<!-- Container -->
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-12">
+      <h3 class="headline centered margin-bottom-35 margin-top-10"><%= title %><span><%= subtitle %></span></h3>
+    </div>
+
+    <% areas_count = popular_countries.to_a.count %>
+    <% popular_countries.each_with_index do |area, index| %>
+      <% if areas_count == 1 %>
+
+        <%= render partial: 'layouts/frontend/places/big_tile',
+                   locals: { area: area,
+                             show_country_icon: show_country_icon } %>
+
+      <% elsif areas_count == 2 %>
+
+        <% if index == 1 %>
+          <%= render partial: 'layouts/frontend/places/small_tile',
+                     locals: { area: area,
+                               show_country_icon: show_country_icon } %>
+        <% elsif index == 2 %>
+          <%= render partial: 'layouts/frontend/places/medium_tile',
+                     locals: { area: area,
+                               show_country_icon: show_country_icon } %>
+        <% end %>
+
+      <% elsif areas_count == 3 %>
+
+        <%= render partial: 'layouts/frontend/places/small_tile',
+                   locals: { area: area,
+                             show_country_icon: show_country_icon } %>
+
+      <% elsif areas_count == 4 %>
+
+        <% if index == 0 %>
+          <%= render partial: 'layouts/frontend/places/big_tile',
+                     locals: { area: area,
+                               show_country_icon: show_country_icon } %>
+        <% elsif index > 1 %>
+          <%= render partial: 'layouts/frontend/places/small_tile',
+                     locals: { area: area,
+                               show_country_icon: show_country_icon } %>
+        <% end %>
+
+      <% elsif areas_count >= 5 %>
+
+        <% if index == 0 %>
+          <%= render partial: 'layouts/frontend/places/big_tile',
+                     locals: { area: area,
+                               show_country_icon: show_country_icon } %>
+        <% elsif index == 1 %>
+          <%= render partial: 'layouts/frontend/places/small_tile',
+                     locals: { area: area,
+                               show_country_icon: show_country_icon } %>
+        <% elsif index == 2 %>
+          <%= render partial: 'layouts/frontend/places/medium_tile',
+                     locals: { area: area,
+                               show_country_icon: show_country_icon } %>
+        <% elsif index == 3 %>
+          <%= render partial: 'layouts/frontend/places/medium_tile',
+                     locals: { area: area,
+                               show_country_icon: show_country_icon } %>
+        <% elsif index == 4 %>
+          <%= render partial: 'layouts/frontend/places/small_tile',
+                     locals: { area: area,
+                               show_country_icon: show_country_icon } %>
+        <% end %>
+
+      <% end %>
+    <% end %>
+  </div>
+
+
+  <div class="row">
+    <% continents_count = areas_by_continent.count %>
+    <% areas_by_continent.each_with_index do |(continent, countries), index| %>
+      <% if index == 0 %>
+        <% rand = Random.new_seed %>
+        <div class="col-md-12 text-center">
+          <a role="button"
+             data-toggle="collapse"
+             href="#areaCollapse<%= rand %>"
+             aria-expanded="false"
+             aria-controls="areaCollapse<%= rand %>">
+            <%= t(:more, scope: :common) %> <i class="fas fa-angle-down"></i>
+          </a>
+          <div class="collapse" id="areaCollapse<%= rand %>">
+      <% end %>
+
+      <div class="row margin-bottom-15">
+        <div class="col-md-12">
+          <div class="h4" style="text-align: left;"><%= continent_name(continent) %></div>
+          <hr class="margin-top-15 margin-bottom-15">
+        </div>
+
+        <% countries.each do |country| %>
+          <div class="col-md-4" style="text-align: left;">
+            <%= country_icon(country) %>
+            <a href="<%= country.seo_path %>"
+               target="_blank"><%= "#{country.title} (#{country.active_and_moderated_properties_count})" %></a>
+          </div>
+        <% end %>
+      </div>
+
+      <% if index == continents_count - 1 %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+<!-- Container / End -->

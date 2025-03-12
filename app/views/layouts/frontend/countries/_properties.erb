@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+
+    <div class="col-md-12">
+      <h3 class="headline centered margin-bottom-0 margin-top-50"><%= t(:popular_properties,
+                                                                         area_locative: country.title_prepositional) %></h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+
+    <%= render partial: 'layouts/frontend/common/listings_block',
+               locals: { pagination: pagination,
+                         base_url: frontend_country_path(country_url: country.slug),
+                         disable_agency: false } %>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<% title "#{@page_title}#{page_number_substr(@pagination.current_page)}" %>
+
+<h2><%= t(:index, scope: :countries) %>
+  <%= link_to t("common.add"), new_country_path, class: 'btn btn-primary' %>
+</h2>
+
+<br>
+<%= render_location_filter(location_filter: "/countries", type: "country") %>
+<br>
+
+<%= link_to t(:without_translation, scope: :countries), "#{translations_countries_path}?has_active_and_moderated_property=on" %>
+
+<br>
+<%= render_pagination @pagination %>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= t(:name, scope: :areas) %></th>
+    <!--<th><%#= t(:capital, scope: :countries) %></th>-->
+    <th><%= t(:active_short, scope: :properties) %></th>
+    <th><%= t(:popular, scope: :common) %></th>
+    <th><%= t(:slug, scope: :areas) %></th>
+    <th><%= "#{t(:short_properties_count, scope: :common)}/#{t(:short_active, scope: :common)}/#{t(:short_active_and_moderated, scope: :common)}" %></th>
+    <th><%= t("common.actual_properties") %></th>
+    <th><%= t(:short_regions_count, scope: :areas) %></th>
+    <th><%= t("common.seo_pages") %></th>
+    <th><%= t("countries.show_agencies_on_website") %></th>
+    <th></th>
+  </tr>
+
+  <% @pagination.items.order(is_popular: :desc).each do |country| %>
+      <tr>
+        <td><%= country.id %></td>
+        <td>
+          en: <%= link_to country.title_en, regions_path(request.params.merge(country_id: country.id)) %><br>
+          ru: <%= link_to country.title_ru, regions_path(request.params.merge(country_id: country.id)) %>
+        </td>
+        <!--<td><%#= country.capital&.title %></td>-->
+        <td><%= Utils::Html::bool_glyphicon(country.is_active) %></td>
+        <td><%= Utils::Html::bool_glyphicon(country.is_popular) %></td>
+        <td><%= link_to country.slug, country.seo_path %></td>
+        <td>
+          <%= link_to country.properties_count, properties_path(country_id: country.id) %> /
+          <%= link_to country.active_properties_count, properties_path(country_id: country.id, active: "on") %> /
+          <%= link_to country.active_and_moderated_properties_count, properties_path(country_id: country.id, active: "on", moderated: "on") %>
+        </td>
+        <td><%= progress_bar(country.actual_properties_percent) %></td>
+        <td><%= country.regions.count %></td>
+        <td><%= link_to country.seo_location_pages.count, country_browse_pages_path(country) %></td>
+        <td><%= Utils::Html::bool_glyphicon(country.show_agencies_on_website?) %></td>
+        <td>
+          <%= render_compact_control_buttons(obj: country,
+                                             edit_obj_path: edit_country_path(country),
+                                             confirm_message: t(:delete_confirm, scope: :countries)) %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+
+<%= render_pagination @pagination %>
+<br>

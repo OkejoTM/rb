@@ -1,0 +1,54 @@
+<div class="row">
+  <span class="label label-info">Некоторые сео страницы будут создаваться по мере посещения ссылок</span>
+  <br>
+  <br>
+  <% if location.seo_location_pages.present? %>
+    <table class="table table-bordered text-center">
+      <thead>
+      <tr>
+        <th class="text-center">Seo-шаблоны</th>
+        <th class="text-center">Slug</th>
+        <th class="text-center">Тип недвижимости</th>
+        <th class="text-center">Управление</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <% sort_seo_location_pages(location.seo_location_pages).each do |page| %>
+        <tr <%= 'class="success" title="Базовый шаблон"'.html_safe if page.primary? %>>
+          <td style="vertical-align: middle">
+            <%= page.seo_template.name %>
+          </td>
+
+          <td style="vertical-align: middle">
+            <%= page.seo_template.slug %>
+          </td>
+
+          <td style="vertical-align: middle">
+            <%= template_property_type(page.seo_template) %>
+          </td>
+
+          <td style="vertical-align: middle">
+            <div class="btn-group btn-group-sm pull-center">
+              <%= link_to '<i class="glyphicon glyphicon-eye-open"></i>'.html_safe,
+                          page.seo_path,
+                          class: 'btn btn-sq-sm btn-default', target: '_blank' %>
+              <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe,
+                          "/seo_templates/area_fields_modal_content?page_id=#{page.id}",
+                          class: 'btn btn-sq-sm btn-default', 'data-toggle' => 'modal', 'data-target' => '#area_fields_modal' %>
+            </div>
+          </td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    Ещё не создано ни одного SEO-шаблона.
+  <% end %>
+</div>
+
+<div class="modal fade" id="area_fields_modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content"></div>
+  </div>
+</div>

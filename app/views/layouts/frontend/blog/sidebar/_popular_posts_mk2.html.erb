@@ -1,0 +1,22 @@
+<!-- Widget -->
+<div class="widget">
+
+  <!-- Agent Widget -->
+  <div class="agent-widget">
+
+    <h3><%= t("common.popular_articles") %></h3>
+
+    <% articles.each do |article| %>
+      <h4 class="margin-top-20">
+        <a href="<%= article.seo_path %>" target="_blank">
+          <%= article.title %>
+        </a>
+      </h4>
+      <div class="clearfix"></div>
+    <% end %>
+
+  </div>
+  <!-- Agent Widget / End -->
+
+</div>
+<!-- Widget / End -->

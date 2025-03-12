@@ -1,0 +1,60 @@
+<div id="agency">
+
+  <div id="agency_json" style="display: none;"><%= render template: 'admin/agencies/show.json.jbuilder', locals: { agency: @object } %></div>
+
+<!--  <loading-alert :alert_state="alertState"></loading-alert>-->
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+      <a href="#general" aria-controls="general" role="tab" data-toggle="tab"><%= t("common.general_info") %></a>
+    </li>
+    <li role="presentation">
+      <a href="#contact_person" aria-controls="contact_person" role="tab" data-toggle="tab"><%= t("agencies.contact_person") %></a>
+    </li>
+    <li role="presentation">
+      <a href="#contacts" aria-controls="contacts" role="tab" data-toggle="tab"><%= t("agencies.contacts") %></a>
+    </li>
+    <li role="presentation">
+      <a href="#seo_pages" aria-controls="seo_pages" role="tab" data-toggle="tab"><%= t("agencies.seo_page") %></a>
+    </li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="general">
+      <%= render partial: "admin/agencies/form/general" %>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="contact_person">
+      <%= render partial: "admin/agencies/form/contact_person" %>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="contacts">
+      <%= render partial: "admin/agencies/form/contacts" %>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="seo_pages">
+      <%= render partial: "admin/agencies/form/seo", locals: { template_fieldset: @object.seo_agency_page.default_page } %>
+    </div>
+  </div>
+
+  <div class="actions">
+    <input type="submit"
+           name="commit"
+           value="<%= t("common.save") %>"
+           class="btn btn-primary"
+           :disabled="isSaveBtnDisabled"
+           @click="saveAgency">
+
+    <% unless @object.new_record? %>
+      <%= link_to t("common.show"), @object.seo_path, class: "btn btn-primary" %>
+      <%= link_to t("common.delete"),
+                  @object,
+                  method: :delete,
+                  class: 'btn btn-danger',
+                  data: { confirm: t("agencies.delete_confirm") },
+                  title: t("common.delete") %>
+    <% end %>
+  </div>
+</div>

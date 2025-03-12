@@ -1,0 +1,323 @@
+<!-- Sidebar
+================================================== -->
+<div class="col-md-4">
+  <div class="sidebar sticky right">
+
+    <%= form_with url: request.path, method: "get", id: 'properties_form', class: 'margin-bottom-40' do %>
+      <!-- Widget -->
+      <div class="widget margin-bottom-40">
+        <!--        <h3 class="margin-top-0 margin-bottom-35"><%#= t(:title, scope: :filter) %></h3>-->
+
+        <div class="row with-forms">
+          <!-- Type -->
+          <div class="col-md-12">
+            <div class="main-search-input larger-input" id="multiple-datasets">
+              <%= fulltext_search(params[:query] || @seo_page.area&.full_title) %>
+            </div>
+          </div>
+        </div>
+
+        <% if filter_options.has_variations_of_types %>
+          <div class="row with-forms">
+            <!-- Type -->
+            <div class="col-md-12">
+              <%
+                type = type_by_params(params, template)
+              %>
+              <input type="hidden" id="type" name="type" value="<%= type %>"/>
+            </div>
+          </div>
+        <% end %>
+
+        <% if filter_options.has_variations_of_type_groups %>
+          <div class="row with-forms">
+            <!-- Type Group -->
+            <div class="col-md-12">
+              <% type_group = type_group_by_params(params, template) %>
+
+              <%= select_with_optgroups(:types_group,
+                                        filter_options.type_groups,
+                                        type_group,
+                                        class: "chosen-select-deselect") %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Price -->
+        <label>
+          <%= t(:price_range) %>
+        </label>
+
+        <div class="row with-forms">
+          <div class="col-md-5">
+            <!-- Select Input -->
+            <div class="select-input">
+              <input type="text"
+                     id="price_from"
+                     name="price_from"
+                     class="formatted_number"
+                     placeholder="<%= t(:from, scope: :common) %>"
+                     data-unit=""
+                     inputmode="numeric"
+                     value="<%= value_for_filter(:price_from, template) %>">
+            </div>
+            <!-- Select Input / End -->
+          </div>
+
+          <div class="col-md-5">
+            <!-- Select Input -->
+            <div class="select-input">
+              <input type="text"
+                     id="price_to"
+                     name="price_to"
+                     class="formatted_number"
+                     placeholder="<%= t(:to, scope: :common) %>"
+                     data-unit=""
+                     inputmode="numeric"
+                     value="<%= value_for_filter(:price_to, template) %>">
+            </div>
+            <!-- Select Input / End -->
+          </div>
+
+          <div class="col-md-2">
+            <%= select_tag :currency,
+                           options_for_select(active_currency_options_for_filter, currency),
+                           class: 'chosen-select-no-single',
+                           id: 'currency'
+            %>
+          </div>
+        </div>
+
+        <div class="checkboxes one-in-row margin-bottom-30">
+          <%= check_box_tag("with_price", "on", checkbox_value_for_filter(:with_price, template)) %>
+          <%= label_tag("with_price", t(:with_price, scope: :properties)) %>
+        </div>
+
+        <!-- Row --
+        <div class="row with-forms">
+          !-- Status --
+          <div class="col-md-12">
+            <%#= select_tag :status, options_for_select(filter_options.statuses, params[:status]), class: "chosen-select-no-single" %>
+            <select name="status" data-placeholder="Any Status" class="chosen-select-no-single" >
+              <option value="0">Any Status</option>
+              <option value="1"><%#= t(:for_sale, scope: :properties) %></option>
+              <option value="2"><%#= t(:for_rent, scope: :properties) %></option>
+            </select>
+          </div>
+        </div>
+        !-- Row / End -->
+
+        <% if filter_options.residential? ||
+            template.has_params?([:room_count, :bedrooms, :bathrooms]) %>
+          <!-- Row -->
+          <div class="row with-forms">
+
+            <div class="col-md-12">
+              <%= select_tag :room_count,
+                             options_for_select(filter_options.room_count, value_for_filter(:room_count, template)),
+                             class: "chosen-select-no-single" %>
+            </div>
+
+          </div>
+          <!-- Row / End -->
+
+          <!-- Row -->
+          <div class="row with-forms">
+
+            <div class="col-md-6">
+              <%= select_tag :bedrooms,
+                             options_for_select(filter_options.bedrooms, value_for_filter(:bedrooms, template)),
+                             class: "chosen-select-no-single" %>
+            </div>
+
+
+            <div class="col-md-6">
+              <%= select_tag :bathrooms,
+                             options_for_select(filter_options.bathrooms, value_for_filter(:bathrooms, template)),
+                             class: "chosen-select-no-single" %>
+            </div>
+
+          </div>
+          <!-- Row / End -->
+      <% end %>
+
+        <!-- Area -->
+        <%= render partial: 'layouts/frontend/filter_content/sidebar/two_input_field',
+                   locals: {
+                       label: t(:area_range),
+                       id_first_field: "area_from",
+                       placeholder_first_filed: t(:from, scope: :common),
+                       value_first_filed: value_for_filter(:area_from, template),
+                       id_second_field: "area_to",
+                       placeholder_second_filed: t(:to, scope: :common),
+                       value_second_filed: value_for_filter(:area_to, template),
+                       data_unit: t("squares.sq_m"),
+                       css_class: 'formatted_number'
+                   }
+        %>
+
+        <!-- Plot Area -->
+        <%= render partial: 'layouts/frontend/filter_content/sidebar/two_input_field',
+                   locals: {
+                       label: t(:plot_area_range),
+                       id_first_field: "plot_area_from",
+                       placeholder_first_filed: t(:from, scope: :common),
+                       value_first_filed: value_for_filter(:plot_area_from, template),
+                       id_second_field: "plot_area_to",
+                       placeholder_second_filed: t(:to, scope: :common),
+                       value_second_filed: value_for_filter(:plot_area_to, template),
+                       data_unit: t("squares.sq_m"),
+                       css_class: 'formatted_number'
+                   }
+        %>
+
+        <!-- Area Range --
+        <div class="range-slider">
+          <label><%#= t(:area_range) %></label>
+          <div id="area-range" data-min="0" data-max="170000" data-unit="<%#= t("squares.sq_m") %>"></div>
+          <div class="clearfix"></div>
+        </div>
+
+        <%# if params[:area_from].present? && params[:area_to].present? %>
+          <script>
+              $(window).on('load', function () {
+                  area_range = $("#area-range")
+                  area_range.slider("values", [<%#= params[:area_from] %>, <%#= params[:area_to] %>]);
+
+                  area_range.children('.first-slider-value').val(area_range.slider("values", 0) + " " + "<%#= t("squares.sq_m") %>");
+                  area_range.children('.second-slider-value').val(area_range.slider("values", 1) + " " + "<%#= t("squares.sq_m") %>");
+              });
+          </script>
+        <%# end %>
+
+        <br>
+
+        !-- Price Range --
+        <div class="range-slider">
+          <label><%#= t(:price_range) %></label>
+          <div id="price-range" data-min="0" data-max="190000000" data-unit="€"></div>
+          <div class="clearfix"></div>
+        </div>
+
+        <%# if params[:price_from].present? && params[:price_to].present? %>
+          <script>
+              $(window).on('load', function () {
+                  price_range = $("#price-range");
+                  price_range.slider("values", [<%#= params[:price_from] %>, <%#= params[:price_to] %>]);
+
+                  price_range.children('.first-slider-value').val("€" +
+                      price_range.slider("values", 0).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+                  price_range.children('.second-slider-value').val("€" +
+                      price_range.slider("values", 1).toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+              });
+          </script>
+        <%# end %>
+        -->
+
+        <% if !filter_options.land? ||
+            template.has_param?(:construction_phase)
+        %>
+          <hr>
+
+          <label><%= t(:construction_phase, scope: :properties) %></label>
+          <div class="row with-forms">
+
+            <div class="col-md-12">
+              <%= select_tag :construction_phase,
+                             options_for_select(filter_options.construction_phase, value_for_filter(:construction_phase, template)),
+                             multiple: true,
+                             "data-placeholder" => t("common.choose_construction_phase"),
+                             class: "chosen-select-no-single" %>
+            </div>
+
+          </div>
+        <% end %>
+
+        <%#= render partial: 'layouts/frontend/filter_content/sidebar/more_options',
+                   locals: {
+                       filter_properties: filter_properties,
+                       filter_options: filter_options,
+                       template: template
+                   }
+        %>
+
+        <hr>
+
+        <!-- Row -->
+        <label><%= t(:location, scope: :common) %></label>
+        <div class="row with-forms">
+
+          <div class="col-md-12">
+            <%= select_tag :location_type_ids,
+                           options_for_select(filter_options.location_types, value_for_filter(:location_type_id, template)),
+                           multiple: true,
+                           "data-placeholder" => t("common.choose_location"),
+                           class: "chosen-select-no-single" %>
+          </div>
+
+        </div>
+        <!-- Row / End -->
+
+        <% filter_properties.more_options_range.each do |la, options| %>
+          <%= render partial: 'layouts/frontend/filter_content/sidebar/two_input_field',
+                     locals: {
+                         label: t(la, scope: :properties),
+                         id_first_field: "#{la}_from",
+                         placeholder_first_filed: t(:from, scope: :common),
+                         value_first_filed: value_for_filter("#{la}_from".to_sym, template),
+                         id_second_field: "#{la}_to",
+                         placeholder_second_filed: t(:to, scope: :common),
+                         value_second_filed: value_for_filter("#{la}_to".to_sym, template),
+                         data_unit: options[:data_unit],
+                         css_class: options[:css_class]
+                     }
+          %>
+        <% end %>
+
+        <div class="checkboxes one-in-row margin-bottom-10">
+
+          <% filter_options.all_property_tags.each do |property_tag| %>
+            <%= check_box_tag("by_tags[]",
+                              property_tag.id,
+                              property_tags_for_filter(property_tag.id, template),
+                              id: "property_tag_#{property_tag.id}") %>
+
+            <%= label_tag("property_tag_#{property_tag.id}", property_tag.title) %>
+          <% end %>
+
+        </div>
+
+
+        <% if filter_options.for_sale? %>
+          <input type="hidden" id="for_sale" name="for_sale" value="on"/>
+        <% else %>
+          <input type="hidden" id="for_rent" name="for_rent" value="on"/>
+        <% end %>
+
+        <% if filter_options.supertype.present? %>
+<!--          # TODO можно и id запилить, чтобы в контроллере легче было-->
+          <input type="hidden" id="property_supertype" name="property_supertype" value="<%= filter_options.supertype %>"/>
+        <% end %>
+
+        <input type="hidden" id="page" name="page" value="<%= filter_options.current_page %>"/>
+
+        <div id="find_sticky">
+          <button class="button fullwidth" type="button" id="find_btn"><%= t(:search, scope: :common) %></button>
+        </div>
+
+      </div>
+      <!-- Widget / End -->
+    <% end %>
+
+    <% unless browser.device.mobile? %>
+      <%= render partial: 'common/ads/sidebar_desktop' %>
+    <% end %>
+
+    <% if articles.present? %>
+      <div id="articles_sticky_widget">
+        <%= render partial: 'layouts/frontend/blog/sidebar/popular_posts_mk2', locals: { articles: articles } %>
+      </div>
+    <% end %>
+  </div>
+</div>
+<!-- Sidebar / End -->

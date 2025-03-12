@@ -1,0 +1,37 @@
+<% title t('agency_bid.title') %>
+
+<div class="margin-bottom-30">
+  <%= render partial: 'layouts/frontend/titlebar' %>
+</div>
+
+<div class="container">
+  <div class="blog-page">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="blog-post single-post">
+          <div class="post-content">
+            <h1>
+              <%= t('agency_bid.form_h1') %>
+            </h1>
+            <p><%= t('agency_bid.description.title') %></p>
+
+            <p class="margin-top-0 margin-bottom-0"><%= t('agency_bid.description.list_prepend') %></p>
+            <ul class="list-2">
+              <% t('agency_bid.description.advantages_list').each do |list_text| %>
+                <li class="margin-top-0 margin-bottom-0"><%= list_text %></li>
+              <% end %>
+            </ul>
+            <p>
+              <%= t('agency_bid.description.contact_request',
+                     email: '<a href="mailto:partnership@propimo.com">partnership@propimo.com</a>').html_safe
+              %>
+            </p>
+
+            <%= render 'bid_form' %>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Propimo | Новое обращение <%= @bid.id %></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+      body {
+          font-family: Arial, Verdana, sans-serif;
+          font-size: 14px;
+          line-height: 1.5;
+          color: #555;
+          background-color: #f7f7f7;
+      }
+      .container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: #fff;
+          border-radius: 10px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      }
+      h1 {
+          font-size: 24px;
+          margin-top: 0;
+          margin-bottom: 10px;
+          color: #2e6da4;
+      }
+      p {
+          margin-top: 0;
+          margin-bottom: 10px;
+      }
+      a {
+          color: #2e6da4;
+          text-decoration: none;
+      }
+      a:hover {
+          text-decoration: underline;
+      }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Propimo | Новое обращение <%= @bid.id %></h1>
+  <p>Здравствуйте,</p>
+  <p>У вас новое обращение от клиента:</p>
+  <ul>
+    <li><strong><%= t(:client, scope: :devise) %>:</strong> <%= @bid.name %></li>
+    <li><strong><%= t(:phone, scope: :devise) %>:</strong> <%= @bid.phone %></li>
+    <li><strong>Email:</strong> <%= @bid.email %></li>
+    <li><strong><%= t(:comment, scope: :devise) %>:</strong> <%= @bid.message %></li>
+    <% if @bid.contact_ways.present? %>
+      <li><strong><%= t(:want_to_have_answer, scope: :contact_ways) %>:</strong>
+        <ul>
+          <% @bid.contact_ways.each do |contact_way| %>
+            <li><%= contact_way.way_type %></li>
+          <% end %>
+        </ul>
+      </li>
+    <% end %>
+  </ul>
+  <p>Для ответа на обращение перейдите на страницу <a href="<%= bids_url %>">propimo.com</a></p>
+</div>
+</body>
+</html>

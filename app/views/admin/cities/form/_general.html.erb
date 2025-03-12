@@ -1,0 +1,8 @@
+<%= render_location_form(form: f) %>
+
+<div class="form-group row">
+  <%= f.label :region_id, t(:show, scope: :regions), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.collection_select :region_id, regions, :id, :title, {}, { class: "form-control" } %>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<% title @page_title %>
+<h1><%= t(:new, scope: :regions) %></h1>
+
+<%= render 'form', locals: { region: @region, cities: @cities,
+                            countries: @countries, region_center: @region_center } %>
+
+<br>
+
+<%#= link_to t(:back, scope: :common), regions_path, class: "btn btn-primary" %>

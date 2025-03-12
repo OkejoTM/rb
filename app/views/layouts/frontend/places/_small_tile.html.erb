@@ -1,0 +1,11 @@
+<%
+  show_country_icon ||= false
+%>
+
+<div class="col-md-4">
+
+  <%= render partial: 'layouts/frontend/places/image_box',
+             locals: { area: area,
+                       show_country_icon: show_country_icon } %>
+
+</div>

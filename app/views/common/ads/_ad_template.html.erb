@@ -1,0 +1,21 @@
+<%
+  props ||= {}
+  data_attrs = props
+    .except(:class, :style, :data_ad_slot)
+    .transform_keys { |key| key.to_s.gsub('_', '-') }
+    .map { |key, val| "#{key}=#{val}" }
+    .join("\n")
+%>
+
+<!-- Object mobile top -->
+<ins class="adsbygoogle <%= props[:class] %>"
+     style="display:block; <%= props[:style] %>"
+     data-ad-client="ca-pub-6587789223765353"
+     data-ad-slot="<%= props[:data_ad_slot] %>"
+     <%= data_attrs %>
+     <%= 'data-adtest=on' if Rails.env.development? %>
+
+></ins>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>

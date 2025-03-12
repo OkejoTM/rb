@@ -1,0 +1,304 @@
+<br>
+
+<div class="row">
+  <div class="col-md-12">
+    <%= check_box_tag("has_active_property", "on", params[:has_active_property].present?) %>
+    <%= label_tag("has_active_property", t(:has_active_property, scope: :common)) %>
+
+    <%= check_box_tag("has_property", "on", params[:has_property].present?) %>
+    <%= label_tag("has_property", t(:has_property, scope: :common)) %>
+
+    <%= check_box_tag("with_seo_template", "on", params[:with_seo_template].present?) %>
+    <%= label_tag("with_seo_template", 'С сео шаблоном') %>
+  </div>
+</div>
+
+<br>
+
+<div id="area_search">
+  <div class="row">
+    <div class="form-inline form-group">
+      <div class="col-md-12">
+        <%= f.label :continent, 'Локация', class: 'control-label' %>
+        <br>
+
+        <%= select_tag :continent,
+                       options_for_select(LocationFilterOptions.continents, params[:continent]),
+                       include_blank: t(:all, scope: :common),
+                       class: "form-control select2-enable select-continent" %>
+
+        <%= select_tag :country_id,
+                       options_for_select([], params[:country_id]),
+                       include_blank: t(:all, scope: :common),
+                       class: "form-control select2-enable select-country",
+                       disabled: !(params[:continent].present? && params[:country_id].to_i > 0) %>
+
+        <%= select_tag :region_id,
+                       options_for_select([]),
+                       include_blank: t(:all, scope: :common),
+                       class: "form-control select2-enable select-region",
+                       disabled: !(params[:country_id].present? && params[:country_id].to_i > 0) %>
+
+        <%= select_tag :city_id,
+                       options_for_select([]),
+                       include_blank: t(:all, scope: :common),
+                       class: "form-control select2-enable select-city",
+                       disabled: !(params[:region_id].present? && params[:region_id].to_i > 0) %>
+
+        <%= text_field_tag :query, params[:query], placeholder: t(:enter_search_term, scope: :common), class: "form-control" %>
+
+        <button type="button" class="btn btn-default" id="areas_search"><i class="glyphicon glyphicon-search"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-md-12" id="areas_table">
+      <div class="text-center">Ничего не найдено</div>
+    </div>
+    <div class="col-md-12" id="areas_loading" style="display: none;">Загрузка...</div>
+  </div>
+
+  <div class="row text-center">
+    <button type="button" id="add_all_locations" class="btn btn-default">Добавить все</button>
+    <button type="button" id="add_selected_locations" class="btn btn-default">Добавить выбранное</button>
+    <button type="button" id="remove_all_locations" class="btn btn-default">Удалить все</button>
+    <button type="button" id="remove_selected_locations" class="btn btn-default">Удалить выбранное</button>
+  </div>
+</div>
+
+
+<script>
+    $(function () {
+        let format_error_messages = function(data) {
+            return "Ошибка: " + format_alert_message(data);
+        };
+
+        let format_alert_message = function(data) {
+            result = '';
+            $.each( data, function( key, value ) {
+                result += key + ": " + value;
+            });
+            return result;
+        };
+
+        let get_area_search_data = function () {
+            let data = {
+                id: <%= template.id %>,
+                location_type: get_location_type(),
+                has_active_property: $('#has_active_property').is(':checked') ? 'on' : '',
+                has_property: $('#has_property').is(':checked') ? 'on' : '',
+                page: $('#areas_current_page').val(),
+                query: $('#query').val()
+            };
+
+            if ($('#with_seo_template').is(':checked')) {
+                data['with_seo_template'] = <%= template.id %>;
+            }
+
+            switch (get_location_type()) {
+                case '<%= SeoTemplate::TYPE_COUNTRIES %>':
+                    break;
+                case '<%= SeoTemplate::TYPE_REGIONS %>':
+                    data['continent'] = $('#continent').val();
+                    data['country_id'] = $('#country_id').val();
+                    break;
+                case '<%= SeoTemplate::TYPE_CITIES %>':
+                    data['continent'] = $('#continent').val();
+                    data['country_id'] = $('#country_id').val();
+                    data['region_id'] = $('#region_id').val();
+                    break;
+                default:
+                    data['continent'] = $('#continent').val();
+                    data['country_id'] = $('#country_id').val();
+                    data['region_id'] = $('#region_id').val();
+            }
+
+            return data;
+        };
+
+        let update_locations = function () {
+            $.ajax({
+                method: "GET",
+                url: "/seo_templates/areas_index",
+                data: get_area_search_data(),
+            }).done(function (data) {
+                $('#areas_loading').hide();
+
+                $('#areas_table').show();
+                $('#areas_table').empty().append(data);
+
+                $('.pagination > li > a').click(function() {
+                    $('#areas_current_page').val($(this).text());
+                    update_locations();
+                    return false;
+                });
+            }).fail(function(data) {
+                alert(format_error_messages(data.responseJSON['errors']));
+            });
+        };
+
+        let init_search_locations = function () {
+            switch (get_location_type()) {
+                case '<%= SeoTemplate::TYPE_COUNTRIES %>':
+                    $("#area_search").show();
+
+                    $("#query").show();
+                    $(".select-continent").next(".select2-container").hide();
+                    $(".select-country").next(".select2-container").hide();
+                    $(".select-region").next(".select2-container").hide();
+                    $(".select-city").next(".select2-container").hide();
+                    $("#area_status").next(".select2-container").show();
+
+                    update_locations();
+
+                    break;
+                case '<%= SeoTemplate::TYPE_REGIONS %>':
+                    $("#area_search").show();
+
+                    $("#query").show();
+                    $(".select-continent").next(".select2-container").show();
+                    $(".select-country").next(".select2-container").show();
+                    $(".select-region").next(".select2-container").hide();
+                    $(".select-city").next(".select2-container").hide();
+                    $("#area_status").next(".select2-container").show();
+
+                    update_locations();
+
+                    break;
+                case '<%= SeoTemplate::TYPE_CITIES %>':
+                    $("#area_search").show();
+
+                    $("#query").show();
+                    $(".select-continent").next(".select2-container").show();
+                    $(".select-country").next(".select2-container").show();
+                    $(".select-region").next(".select2-container").show();
+                    $(".select-city").next(".select2-container").hide();
+                    $("#area_status").next(".select2-container").show();
+
+                    update_locations();
+
+                    break;
+                default:
+                    $("#area_search").hide();
+            }
+        };
+
+        let get_location_type = function () {
+            return $("#seo_template_template_location_type option:selected").val();
+        };
+
+        let disable_search_buttons = function (desibled) {
+            $('#add_all_locations, #add_selected_locations, #remove_all_locations, #remove_selected_locations')
+                .prop('disabled', desibled);
+        };
+
+        let get_selected_locations_ids = function () {
+            return $('input:checked[class=location_id]').map(function () {
+                return $(this).val();
+            }).get();
+        };
+
+
+        $(".select-continent, .select-country, .select-region, .select-city, .area-status").select2({width: 'resolve;'});
+
+        init_search_locations();
+
+
+        $('#seo_template_template_location_type').change(function (e) {
+            init_search_locations();
+        });
+
+        $('#areas_search').click(function () {
+            update_locations();
+        });
+
+
+        $('#add_all_locations').click(function () {
+            if(confirm("Вы уверены что хотите добавить все?")) {
+                disable_search_buttons(true);
+
+                let data = get_area_search_data();
+                data['location_type'] = get_location_type();
+
+                $.ajax({
+                    method: "PUT",
+                    url: "/seo_templates/add_all_locations",
+                    data: data,
+                    dataType: "json"
+                }).done(function (data) {
+                    update_locations();
+                }).fail(function(data) {
+                    alert(format_error_messages(data.responseJSON['errors']));
+                }).complete(function() {
+                    disable_search_buttons(false);
+                });
+            }
+        });
+
+        $('#add_selected_locations').click(function () {
+            disable_search_buttons(true);
+
+            $.ajax({
+                method: "PUT",
+                url: "/seo_templates/add_locations",
+                dataType: "json",
+                data: {
+                    id: <%= template.id %>,
+                    location_type: get_location_type(),
+                    locations: get_selected_locations_ids()
+                },
+            }).done(function (data) {
+                update_locations();
+            }).fail(function(data) {
+                alert(format_error_messages(data.responseJSON['errors']));
+            }).complete(function() {
+                disable_search_buttons(false);
+            });
+        });
+
+        $('#remove_all_locations').click(function () {
+            if(confirm("Вы уверены что хотите удалить все?")) {
+                disable_search_buttons(true);
+
+                $.ajax({
+                    method: "PUT",
+                    url: "/seo_templates/remove_all_locations",
+                    data: {
+                        id: <%= template.id %>
+                    },
+                    dataType: "json"
+                }).done(function (data) {
+                    update_locations();
+                }).fail(function (data) {
+                    alert(format_error_messages(data.responseJSON['errors']));
+                }).complete(function () {
+                    disable_search_buttons(false);
+                });
+            }
+        });
+
+        $('#remove_selected_locations').click(function () {
+            disable_search_buttons(true);
+
+            $.ajax({
+                method: "PUT",
+                url: "/seo_templates/remove_locations",
+                data: {
+                    id: <%= template.id %>,
+                    location_type: get_location_type(),
+                    locations: get_selected_locations_ids()
+                },
+                dataType: "json"
+            }).done(function (data) {
+                update_locations();
+            }).fail(function(data) {
+                alert(format_error_messages(data.responseJSON['errors']));
+            }).complete(function() {
+                disable_search_buttons(false);
+            });
+        });
+    });
+</script>

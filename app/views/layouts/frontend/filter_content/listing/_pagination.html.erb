@@ -1,0 +1,121 @@
+<!-- Pagination -->
+<%
+  rel_no_follow ||= false
+
+  permitted_params = params.permit
+  uri = if defined?(base_url)
+          create_uri(base_url)
+        end
+
+%>
+<div class="pagination-container margin-top-20">
+  <nav class="pagination center-block">
+    <ul>
+      <li>
+        <% rel = rel_no_follow ? "nofollow" : '1' %>
+        <% if pagination.current_page == 1 %>
+          <%= link_to "1",
+                      path_for_link(uri, 1, permitted_params),
+                      class: "current-page",
+                      rel: rel,
+                      page: '1',
+                      style: "pointer-events: none;" %>
+        <% else %>
+          <%= link_to "1",
+                      path_for_link(uri, 1, permitted_params),
+                      rel: rel,
+                      page: '1' %>
+        <% end %>
+      </li>
+
+      <% if pagination.current_page > 3 %>
+          <li class="blank">...</li>
+      <% end %>
+
+      <% unless pagination.current_page > pagination.pages_count + 3 %>
+          <% unless pagination.current_page == 1 %>
+              <% unless pagination.current_page == 2 %>
+                  <li>
+                    <% page_number = pagination.current_page - 1 %>
+                    <% rel = rel_no_follow ? "nofollow" : page_number %>
+                    <%= link_to page_number,
+                                path_for_link(uri, page_number, permitted_params),
+                                rel: rel,
+                                page: page_number %>
+                  </li>
+              <% end %>
+              <li>
+                <% page_number = pagination.current_page %>
+                <% rel = rel_no_follow ? "nofollow" : page_number %>
+                <%= link_to page_number,
+                            path_for_link(uri, page_number, permitted_params),
+                            class: "current-page",
+                            rel: rel,
+                            page: page_number,
+                            style: "pointer-events: none;" %>
+              </li>
+          <% end %>
+
+          <% unless pagination.current_page + 1 > pagination.pages_count %>
+              <li>
+                <% page_number = pagination.current_page + 1 %>
+                <% rel = rel_no_follow ? "nofollow" : page_number %>
+                <%= link_to page_number,
+                            path_for_link(uri, page_number, permitted_params),
+                            rel: rel,
+                            page: page_number %>
+              </li>
+          <% end %>
+      <% end %>
+
+      <% if pagination.current_page <= pagination.pages_count - 3 %>
+          <li class="blank">...</li>
+      <% end %>
+
+      <% unless pagination.current_page + 2 > pagination.pages_count %>
+          <li>
+            <% rel = rel_no_follow ? "nofollow" : pagination.pages_count %>
+            <%= link_to pagination.pages_count,
+                        path_for_link(uri, pagination.pages_count, permitted_params),
+                        rel: rel,
+                        page: pagination.pages_count %>
+          </li>
+      <% end %>
+
+    </ul>
+  </nav>
+
+  <% if pagination.pages_count > 1 %>
+      <nav class="pagination-next-prev">
+        <ul>
+          <li>
+            <% if pagination.current_page > 1 %>
+              <% rel = rel_no_follow ? "nofollow" : "prev" %>
+                <%= link_to t(:previous, scope: :pagination),
+                            path_for_link(uri, pagination.current_page - 1, permitted_params),
+                            class: "prev",
+                            rel: rel,
+                            page: pagination.current_page - 1 %>
+            <% end %>
+          </li>
+
+          <li>
+            <% if pagination.current_page < pagination.pages_count %>
+              <% rel = rel_no_follow ? "nofollow" : "next" %>
+                <%= link_to t(:next, scope: :pagination),
+                            path_for_link(uri, pagination.current_page + 1, permitted_params),
+                            class: "next",
+                            rel: rel,
+                            page: pagination.current_page + 1 %>
+            <% end %>
+          </li>
+        </ul>
+      </nav>
+  <% else %>
+      <nav class="pagination-next-prev">
+        <ul></ul>
+      </nav>
+  <% end %>
+
+</div>
+<!-- Pagination / End -->

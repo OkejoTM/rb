@@ -1,0 +1,106 @@
+<% title "#{@page_title}#{page_number_substr(@pagination.current_page)}" %>
+
+<br>
+<%= render_property_filter(search_url: "/properties/for_moderation") %>
+<br>
+<div class="alert save-alert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong class="save-alert-strong"></strong>
+</div>
+
+<br>
+<%= render_pagination @pagination %>
+
+<table class="table table-hover table-with-items">
+  <tr>
+    <th><%= t(:description_ru, scope: :common) %></th>
+    <th><%= t(:description_en, scope: :common) %></th>
+    <th><%= t(:photo, scope: :common) %></th>
+    <th style="text-align: center;"></th>
+    <th></th>
+  </tr>
+
+  <% @pagination.items.each do |property| %>
+    <tr>
+      <%= form_with model: property do |f| %>
+        <td>
+          <%= f.text_area :description_ru, class: "form-control classic_ckeditor" %>
+        </td>
+        <td>
+          <%= f.text_area :description_en, class: "form-control classic_ckeditor" %>
+        </td>
+        <td><%= render partial: 'admin/properties/form/photos_count', locals: {pics_array:  property.pics_urls.first(2)} %></td>
+        <td>
+          <%= t(:active_short, scope: :properties) %>
+          <%= f.check_box :is_active, class: "form-check" %>
+
+          <%= t(:moderated_short, scope: :properties) %>
+          <%= f.check_box :moderated, class: "form-check" %>
+
+          <br>
+
+          <%= t(:in_credit, scope: :properties) %>
+          <%= f.check_box :in_credit, class: "form-check" %>
+
+          <br>
+
+          <%= t(:in_mortgage, scope: :properties) %>
+          <%= f.check_box :in_mortgage, class: "form-check" %>
+
+          <br>
+
+          <%= t(:new_building, scope: :properties) %>
+          <%= f.check_box :new_building, class: "form-check" %>
+
+          <br>
+
+          <%= t(:from_builder, scope: :properties) %>
+          <%= f.check_box :from_builder, class: "form-check" %>
+
+          <br>
+
+          <%= t(:bank_property, scope: :properties) %>
+          <%= f.check_box :bank_property, class: "form-check" %>
+
+          <br>
+
+          <%= t(:show, scope: :property_types) %>
+          <%= f.collection_select :property_type_id,
+                                  @property_from_types,
+                                  :id,
+                                  :title_ru,
+                                  { include_blank: true },
+                                  { class: "form-control select2-enable", style: "max-width: 230px;" } %>
+
+          <%= t(:distance_to_city, scope: :properties) + " (km):" %>
+          <% if property.has_coordinates? && property.city.present? %>
+            <%= property.distance_to_city %>
+          <% else %>
+            <%= t(:no_coordinates, scope: :common) %>
+          <% end %>
+        </td>
+        <td>
+          <div class="btn-group btn-group-sm pull-right" style="min-width: 115px;">
+            <%= f.button :submit, class: 'btn btn-default property-save' do %>
+              <i class="glyphicon glyphicon glyphicon-floppy-saved"></i>
+            <% end %>
+            <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe,
+                        edit_property_path(property),
+                        class: 'btn btn-default',
+                        target: "_blank",
+                        title: t(:edit, scope: :common) %>
+            <%= link_to '<i class="glyphicon glyphicon-remove"></i>'.html_safe,
+                        property,
+                        method: :delete,
+                        class: 'btn btn-danger',
+                        data: {confirm: t(:delete_confirm, scope: :properties)},
+                        title: t(:delete, scope: :common) %>
+          </div>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<%= render_pagination @pagination %>
+<br>

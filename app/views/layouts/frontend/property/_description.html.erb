@@ -1,0 +1,67 @@
+<!-- Property Description -->
+<div class="col-lg-8 col-md-7">
+  <div class="property-description">
+
+    <!-- Main Features -->
+    <%= main_features(property) %>
+
+
+    <!-- Description -->
+    <% if property.description.present? %>
+      <h3 class="desc-headline"><%= t(:description, scope: :properties) %></h3>
+      <% moderated_description = property.moderated_description %>
+      <% description_show_more = description_show_more?(moderated_description) %>
+      <div class="show-more <%= "visible" unless description_show_more %>">
+        <p>
+          <%= sanitize moderated_description %>
+        </p>
+
+        <% if description_show_more %>
+          <a href="#" class="show-more-button">
+            <%= t(:show_more, scope: :common) %>
+            <i class="fas fa-angle-down"></i>
+          </a>
+        <% end %>
+      </div>
+    <% end %>
+
+
+    <!-- Details -->
+    <%= details(property) %>
+
+    <% if browser.device.mobile? %>
+      <%= render partial: 'common/ads/property_mobile' %>
+    <% else %>
+      <%= render partial: 'common/ads/content_property_desktop' %>
+    <% end %>
+
+    <!-- Features -->
+    <%= features(property) %>
+
+    <%#= render partial: 'layouts/frontend/property/description/floorplans' %>
+
+    <% if property.has_video_link? %>
+      <%= render partial: 'layouts/frontend/property/description/video' %>
+    <% end %>
+
+    <% if property.has_energy_efficiency? %>
+      <%= render partial: 'layouts/frontend/property/description/energy_efficiency', locals: { property: property } %>
+    <% end %>
+
+    <% if property.has_coordinates? %>
+      <%= render partial: 'layouts/frontend/property/description/location', locals: { property: property } %>
+    <% end %>
+
+    <%= render partial: 'layouts/frontend/property/description/contact_seller', locals: { property: property } %>
+
+    <%#= render partial: 'layouts/application/property/description/similar_listings' %>
+
+    <% if similar_properties.items.present? %>
+      <%= render partial: 'layouts/frontend/property/description/similar_listings',
+                 locals: { properties: similar_properties } %>
+    <% end %>
+
+    <br><br>
+  </div>
+</div>
+<!-- Property Description / End -->

@@ -1,0 +1,45 @@
+<%= render_location_form(form: f) %>
+
+<div class="form-group row">
+  <%= f.label :iso_alpha2, t(:iso_alpha2, scope: :countries), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :iso_alpha2, class: "form-control" %>
+  </div>
+</div>
+
+<% if cities.present? %>
+<div class="form-group row">
+  <%= f.label :capital, t(:capital, scope: :countries), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.select :capital, options_for_select(cities.collect {|p| [ p.title, p.id ] }, f.object.capital&.id), { include_blank: true }, { class: "form-control select2-enable" } %>
+  </div>
+</div>
+<% end %>
+
+<div class="form-group row">
+  <%= f.label :continent, t(:continent, scope: :countries), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :continent, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :currencycode, t(:currencycode, scope: :countries), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :currencycode, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :currencyname, t(:currencyname, scope: :countries), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :currencyname, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :languages, t(:languages, scope: :countries), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :languages, class: "form-control" %>
+  </div>
+</div>

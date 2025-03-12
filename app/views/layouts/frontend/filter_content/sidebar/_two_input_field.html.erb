@@ -1,0 +1,50 @@
+<%
+  label ||= ''
+  id_first_field ||= ''
+  placeholder_first_filed ||= ''
+  value_first_filed ||= ''
+  id_second_field ||= ''
+  placeholder_second_filed ||= ''
+  value_second_filed ||= ''
+  data_unit ||= ''
+  css_class ||= ''
+  column_class ||= 'col-md-6'
+%>
+<% if label.present? %>
+  <label><%= label %></label>
+<% end %>
+<div class="row with-forms">
+  <div class="<%= column_class %>">
+    <!-- Select Input -->
+    <div class="select-input">
+      <input type="text"
+             id="<%= id_first_field %>"
+             name="<%= id_first_field %>"
+             class="<%= css_class %>"
+             placeholder="<%= placeholder_first_filed %>"
+             data-unit="<%= data_unit %>"
+             inputmode="numeric"
+             value="<%= value_first_filed %>"
+      >
+    </div>
+    <!-- Select Input / End -->
+  </div>
+
+  <div class="<%= column_class %>">
+    <!-- Select Input -->
+    <div class="select-input">
+      <input type="text"
+             id="<%= id_second_field %>"
+             name="<%= id_second_field %>"
+             class="<%= css_class %>"
+             placeholder="<%= placeholder_second_filed %>"
+             data-unit="<%= data_unit %>"
+             inputmode="numeric"
+             value="<%= value_second_filed %>"
+      >
+    </div>
+    <!-- Select Input / End -->
+  </div>
+
+  <%= yield(:additional_fields) %>
+</div>

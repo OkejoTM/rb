@@ -1,0 +1,58 @@
+<%= render_pagination @pagination %>
+
+<table class="table table-striped table-hover">
+  <thead>
+  <tr>
+    <th>
+      <input type="checkbox" id="select_all_locations">
+    </th>
+    <th>№</th>
+    <th><%= t(:name, scope: :areas) %></th>
+    <th><%= t(:active_short, scope: :properties) %></th>
+    <th><%= t(:popular, scope: :common) %></th>
+    <th><%= t(:slug, scope: :areas) %></th>
+    <th><%= "#{t(:short_properties_count, scope: :common)}/#{t(:short_active, scope: :common)}/#{t(:short_active_and_moderated, scope: :common)}" %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <%
+    areas_ids = @template.locations.map(&:id)
+  %>
+  <% @pagination.items.each do |area| %>
+    <tr <%= 'class=success' if areas_ids.include?(area.id) %>>
+      <td>
+        <input type="checkbox" class="location_id" value="<%= area.id %>">
+      </td>
+      <td>
+        <%= area.id %><br>
+        <%= area.class.name %>
+      </td>
+      <td>
+        en: <%= area.title_en %><br>
+        ru: <%= area.title_ru %>
+      </td>
+      <td><%= Utils::Html::bool_glyphicon(area.is_active) %></td>
+      <td><%= Utils::Html::bool_glyphicon(area.is_popular) %></td>
+      <td><%= area.slug %></td>
+      <td>
+        <%= area.properties_count %> /
+        <%= area.active_properties_count %> /
+        <%= area.active_and_moderated_properties_count %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= render_pagination @pagination %>
+
+<input type="hidden" id="areas_current_page" value="<%= @pagination.current_page %>">
+
+<script>
+    $('#select_all_locations').click(function () {
+        is_checked = $(this).prop("checked");
+        $('.location_id').each(function () {
+            $(this).prop('checked', is_checked);
+        });
+    });
+</script>

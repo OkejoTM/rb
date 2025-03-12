@@ -1,0 +1,39 @@
+<%
+  show_obj_path ||= ''
+  hide_show_btn ||= false
+  hide_delete_btn ||= false
+  confirm_message ||= ''
+%>
+
+<div class="btn-group btn-group-sm pull-right" style="min-width: 115px;">
+  <% unless hide_show_btn %>
+    <%= link_to '<i class="glyphicon glyphicon-eye-open"></i>'.html_safe,
+                show_obj_path.present? ? show_obj_path : obj,
+                class: 'btn btn-default',
+                title: t(:show, scope: :common) %>
+  <% end %>
+
+  <% if edit_obj_path.present? %>
+    <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe,
+                edit_obj_path,
+                class: 'btn btn-default',
+                title: t(:edit, scope: :common) %>
+  <% end %>
+
+  <% if confirm_message.present? && !hide_delete_btn %>
+    <%= link_to '<i class="glyphicon glyphicon-remove"></i>'.html_safe,
+                obj,
+                class: 'btn btn-default',
+                data: { confirm: confirm_message,
+                        method: :delete },
+                title: t(:delete, scope: :common) %>
+  <% end %>
+  <!--  <%#= link_to '<i class="glyphicon glyphicon-remove"></i>'.html_safe,-->
+               obj,
+               class: 'btn btn-default',
+               data: { confirm: confirm_message,
+                       remote: true,
+                       method: :delete,
+                       type: :json },
+              title: t(:delete, scope: :common) %>-->
+</div>

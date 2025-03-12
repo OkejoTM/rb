@@ -1,0 +1,24 @@
+<%
+  disable_agency ||= false
+  currency ||= current_currency
+%>
+<!--Widget-->
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="margin-top-0 margin-bottom-30" style="font-size: 30px;"><%= t("common.favorite") %></h1>
+
+    <% if properties.present? %>
+      <table class="manage-table bookmarks-table responsive-table">
+        <tbody>
+        <%=
+          render partial: 'layouts/frontend/favorite/listing_item',
+                 collection: properties,
+                 as: :property,
+                 locals: { currency: currency }
+        %>
+        </tbody>
+      </table>
+    <% end %>
+    <p id="favorite-not-found" style="display: <%= properties.present? ? 'none' : 'block' %>"><%= t(:nothing_found) %></p>
+  </div>
+</div>

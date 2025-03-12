@@ -1,0 +1,141 @@
+<section id="contact">
+  <div id="contact-message"></div>
+
+  <form method="post"
+        name="contactform"
+        id="contactform"
+        autocomplete="on"
+  >
+    <div class="row">
+      <div class="col-md-12">
+        <div>
+          <input name="name"
+                 type="text"
+                 id="name"
+                 placeholder="<%= translate_with_asterisk('common.your_name') %>"
+                 required="required"
+            />
+
+          <%= danger_help_block(:name_error, css_class: 'input_error_message') %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div>
+          <input name="phone"
+                 type="text"
+                 id="phone"
+                 placeholder="<%= translate_with_asterisk('common.phone') %>"
+                 required="required"
+                 class="international-phone"
+            />
+
+          <%= danger_help_block(:phone_error, css_class: 'input_error_message') %>
+          <div class="contact-ways">
+            <%= render partial: 'layouts/frontend/bid/contact_ways',
+                       locals: {
+                           version: :short
+                       }
+            %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div>
+          <input name="email"
+                 type="email"
+                 id="email"
+                 placeholder="<%= translate_with_asterisk('common.email_address') %>"
+                 required="required"
+                 inputmode="email"
+            />
+
+          <%= danger_help_block(:email_error, css_class: 'input_error_message') %>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div>
+          <input name="website"
+                 type="text"
+                 id="website"
+                 placeholder="<%= t('common.website') %>"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div>
+          <%= collection_select :country,
+                                :id,
+                                @countries,
+                                :id,
+                                :title,
+                                { include_blank: t('common.country') },
+                                { id: 'country_id', class: 'chosen-select-no-single' }
+          %>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div>
+          <input name="agency_name"
+                 type="text"
+                 id="agency_name"
+                 placeholder="<%= translate_with_asterisk('common.agency_name') %>"
+                 required="required"
+            />
+
+          <%= danger_help_block(:agency_name_error, css_class: 'input_error_message') %>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <!-- message -->
+        <textarea name="message"
+                  cols="40"
+                  rows="3"
+                  id="message"
+                  placeholder="<%= translate_with_asterisk('common.message') %>"
+                  spellcheck="true"
+                  required="required"
+                  class="margin-top-0"
+        ></textarea>
+
+        <%= danger_help_block(:message_error, css_class: 'input_error_message') %>
+      </div>
+    </div>
+
+    <div class="margin-bottom-5">
+      <%= check_box_tag('i_agree',
+                        'on',
+                        false,
+                        style: 'display: inline-block; width: auto; height: auto;')
+      %>
+      <%= label_tag('i_agree',
+                    t('common.i_agree', terms: terms_path, privacy: privacy_path).html_safe,
+                    style: 'display: inline;')
+      %>
+    </div>
+
+    <input type="submit"
+           class="submit button disabled"
+           id="submit_agency_feedback_btn"
+           value="<%= t('common.submit_message') %>"
+           disabled
+    />
+
+    <img src="<%= asset_pack_path('images/loader.gif') %>"
+         id="loader"
+         class="loader"
+         style="display: none;"
+      />
+
+  </form>
+</section>

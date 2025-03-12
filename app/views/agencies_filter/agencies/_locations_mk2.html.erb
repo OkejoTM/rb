@@ -1,0 +1,41 @@
+<%
+  show_more ||= false
+%>
+
+<div class="container padding-bottom-20">
+  <div class="row">
+    <div class="col-md-12">
+
+      <% if show_more %>
+        <div class="show-more <%= "visible" unless countries_show_more?(countries_by_continent) %>">
+      <% end %>
+
+          <% countries_by_continent.each do |continent, countries| %>
+            <div class="row margin-bottom-15">
+              <div class="col-md-12">
+                <div class="h4" style="text-align: left;"><%= continent_name(continent) %></div>
+                <hr class="margin-top-15 margin-bottom-15">
+              </div>
+
+              <% countries.each do |country| %>
+                <% if country.show_agencies_on_website %>
+                  <div class="col-md-3">
+                    <%= country_icon(country) %>
+                    <a href="<%= seo_path.call(country) %>"><%= country.title %></a>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if show_more && countries_show_more?(countries_by_continent) %>
+            <a href="#" class="show-more-button" style="margin-bottom: 10px;"><%= t(:show_more, scope: :common) %> <i class="fas fa-angle-down"></i></a>
+          <% end %>
+
+      <% if show_more %>
+        </div>
+      <% end %>
+
+    </div>
+  </div>
+</div>

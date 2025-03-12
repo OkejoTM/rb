@@ -1,0 +1,41 @@
+<div class="form-group row">
+  <%= f.label :h1_ru, t(:h1_ru, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :h1_ru, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :h1_en, t(:h1_en, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :h1_en, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :title_ru, t(:page_title_ru, scope: :seo), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :title_ru, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :title_en, t(:page_title_en, scope: :seo), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :title_en, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :meta_description_ru, t(:meta_description_ru, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_area :meta_description_ru, class: "form-control" %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :meta_description_en, t(:meta_description_en, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_area :meta_description_en, class: "form-control" %>
+  </div>
+</div>

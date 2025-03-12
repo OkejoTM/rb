@@ -1,0 +1,25 @@
+<%
+  width ||= 0
+  height ||= 0
+%>
+
+<% if pictures&.count > 1 %>
+
+    <div class="listing-carousel">
+      <% pictures.each do |picture| %>
+        <div>
+          <img data-src="<%= picture %>" alt="" class="img_cover lazyload" style="<%= "width: #{width};" if width != 0 %><%= "height: #{height};" if height != 0 %>">
+
+        </div>
+      <% end %>
+    </div>
+
+<% else %>
+
+    <% if pictures.present? %>
+        <img data-src="<%= pictures.first %>" alt="" class="img_cover lazyload" style="<%= "width: #{width};" if width != 0 %><%= "height: #{height};" if height != 0 %>">
+    <% else %>
+        <img data-src="/images/listing-01.jpg" alt="" class="img_cover lazyload" style="<%= "width: #{width};" if width != 0 %><%= "height: #{height};" if height != 0 %>">
+    <% end %>
+
+<% end %>

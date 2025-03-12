@@ -1,0 +1,22 @@
+<% if elements.present? %>
+  <ul itemscope itemtype="https://schema.org/BreadcrumbList">
+    <% elements[0..-2].each_with_index do |element, index| %>
+      <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <% if element.path.present? %>
+          <% element.path = "/#{element.path}" unless element.path == :root_path || element.path[0] == '/' %>
+          <a href="<%= (element.path == :root_path) ? '/' : element.path %>" itemprop="item">
+            <span itemprop="name" style="color: #fff; font-size: 15px; font-weight: 500;"><%= element.name %></span>
+          </a>
+          <meta itemprop="position" content="<%= index + 1 %>" />
+        <% else %>
+          <%= element.name %>
+        <% end %>
+        <%= divider.html_safe %>
+      </li>
+    <% end %>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="active">
+      <span itemprop="name" style="color: #fff; font-size: 15px; font-weight: 500;"><%= elements.last.name %></span>
+      <meta itemprop="position" content="<%= elements.count %>" />
+    </li>
+  </ul>
+<% end %>

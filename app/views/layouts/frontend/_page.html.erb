@@ -1,0 +1,52 @@
+<%
+  edit_path = edit_page_path(page)
+%>
+
+<!-- Content
+================================================== -->
+<div class="container">
+
+  <!-- Blog Posts -->
+  <div class="blog-page">
+    <div class="row">
+
+      <!-- Post Content -->
+      <div class="col-md-12">
+
+        <!-- Blog Post -->
+        <div class="blog-post single-post">
+
+          <!-- Content -->
+          <div class="post-content">
+            <h1>
+              <%= page.h1 %>
+
+              <%= frontend_edit_icon(edit_path) %>
+            </h1>
+
+            <%= sanitize page.description %>
+            <!--
+            <p></p>
+
+            <div class="post-quote">
+              <span class="icon"></span>
+              <blockquote>
+                Mauris aliquet ultricies ante, non faucibus ante gravida sed. Sed ultrices pellentesque purus, vulputate volutpat ipsum hendrerit sed neque sed sapien rutrum.
+              </blockquote>
+            </div>
+            -->
+
+          </div>
+        </div>
+        <!-- Blog Post / End -->
+
+      </div>
+      <!-- Content / End -->
+
+      <!-- Sidebar
+      ================================================== -->
+    </div>
+    <!-- Sidebar / End -->
+
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--<title>Admin | Propimo</title>-->
+    <title><%= yield(:title).present? ? "Admin | #{yield(:title)}" : "Admin" %></title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="robots" content="noindex, nofollow">
+
+    <%= csrf_meta_tags %>
+
+    <%= favicon_link_tag(Rails.env.production? ? 'favicon_admin.ico' : 'favicon_admin_dev.ico') %>
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
+    <%#= stylesheet_link_tag    'metronic', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_pack_tag 'admin_style', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+    <%#= javascript_include_tag 'metronic', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'admin' %>
+
+  </head>
+
+  <body>
+    <%= browser_updater_block %>
+
+    <%= render partial: 'layouts/admin/admin_header' %>
+
+    <div class="hidden-xs" style="height: 74px; width: 100%;"></div>
+
+    <div class="container-fluid page-content">
+      <%= maintenance_status %>
+      <div>
+
+        <%= render_breadcrumbs separator: ' / ' %>
+
+        <% if notice.present? %>
+          <p class="notice"><%= notice %></p>
+        <% end %>
+
+        <% if alert.present? %>
+          <p class="alert"><%= alert %></p>
+        <% end %>
+
+        <%= yield %>
+
+      </div>
+    </div>
+
+    <%= switch_off_simulate_mode_btn %>
+
+    <%= render partial: 'layouts/admin/admin_footer' %>
+  </body>
+</html>

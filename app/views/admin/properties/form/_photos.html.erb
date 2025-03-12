@@ -1,0 +1,47 @@
+<div class="row margin-bottom-10">
+  <div class="form-group">
+    <div class="col-lg-6">
+      <%= f.fields_for :picture do |p| %>
+          <%= p.file_field :pic,
+                           id: 'load_images',
+                           multiple: true,
+                           style: "display: none;"
+          %>
+
+          <button onclick="$('#load_images').click()"
+                  class="btn btn-success"
+                  type="button"
+          >
+            <%= t('common.choose_photo') %>
+          </button>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<h4 id="new_pictures_title"
+    class="hide"
+>
+  <%= t('common.chosen_photos') %>
+</h4>
+<div id="new_pictures"
+     class="row margin-bottom-10 hide"
+>
+</div>
+
+<% if @property.pictures.present? %>
+  <h4><%= t('common.uploaded_photos') %></h4>
+  <div id="property_pictures"
+       class="row margin-bottom-10"
+  >
+    <%= render partial: 'admin/properties/form/thumbnail',
+               collection: @property.pictures,
+               as: :picture
+    %>
+  </div>
+<% else %>
+  <div id="property_pictures"
+       class="row margin-bottom-10"
+  >
+  </div>
+<% end %>

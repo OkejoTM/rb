@@ -1,0 +1,7 @@
+<p><%= t(:hello, scope: :devise)%><%= @resource.email %>!</p>
+
+<p><%= t(:information_lock, scope: :devise)%></p>
+
+<p><%= t(:click_to_unlock, scope: :devise)%></p>
+
+<p><%= link_to t(:unlock, scope: :devise), unlock_url(@resource, unlock_token: @token) %></p>

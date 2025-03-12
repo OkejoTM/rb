@@ -1,0 +1,44 @@
+<% title @page_title %>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong><%= t(:h1_ru, scope: :common) %>:</strong>
+  <%= @seo_page.h1_ru %>
+</p>
+
+<p>
+  <strong><%= t(:h1_en, scope: :common) %>:</strong>
+  <%= @seo_page.h1_en %>
+</p>
+
+<p>
+  <strong><%= t(:page_title_ru, scope: :seo) %>:</strong>
+  <%= @seo_page.title_ru %>
+</p>
+
+<p>
+  <strong><%= t(:page_title_en, scope: :seo) %>:</strong>
+  <%= @seo_page.title_en %>
+</p>
+
+<p>
+  <strong><%= t(:meta_description_ru, scope: :common) %>:</strong>
+  <%= @seo_page.meta_description_ru %>
+</p>
+
+<p>
+  <strong><%= t(:meta_description_en, scope: :common) %>:</strong>
+  <%= @seo_page.meta_description_en %>
+</p>
+
+<p>
+  <strong><%= t(:description_ru, scope: :common) %>:</strong>
+  <%= @seo_page.description_ru %>
+</p>
+
+<p>
+  <strong><%= t(:description_en, scope: :common) %>:</strong>
+  <%= @seo_page.description_en %>
+</p>
+
+<%#= link_to t(:edit, scope: :common), edit_seo_articles_page_path(@seo_page), class: 'btn btn-default', title: t(:edit, scope: :common) %>

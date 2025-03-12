@@ -1,0 +1,63 @@
+<% title @page_title %>
+<h2><%= t('client_feedbacks.index') %></h2>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th style="width: 130px;"><%= t('properties.create_at') %></th>
+    <th><%= t('properties.person_name') %></th>
+    <th><%= t('properties.contacts') %></th>
+    <th style="width: 10%"><%= t('contact_ways.preferred_ways') %></th>
+    <th><%= t('properties.message') %></th>
+<!--    <th><%#= t('common.comments') %></th>-->
+    <th><%= t('client_feedbacks.source') %></th>
+    <th style="width: 5%"><!-- Зона кнопочек --></th>
+  </tr>
+
+  <% @objects.each do |bid| %>
+      <tr>
+        <td>
+          <%= bid.id %><br>
+          <%= bid_source(bid) %><br>
+          <%= bitrix_sync_state(bid) %>
+        </td>
+        <td><%= date_format(bid.created_at, format_type: :simple_format) %></td>
+        <td class="word-break-bw"><%= bid.name %></td>
+        <td>
+          <%= bid.phone %>
+        </td>
+        <td>
+          <%= render partial: 'admin/contact_ways/chosen_contact_ways',
+                     locals: { contact_ways: bid.contact_ways }
+          %>
+        </td>
+        <td class="word-break-bw"><%= bid.message %></td>
+<!--        <td><%#= render_comments(bid) %></td>-->
+        <td>
+          <% if bid.has_source_page? %>
+            <a target="_blank" href="<%= bid.source %>"><%= bid.source %></a>
+          <% end %>
+        </td>
+
+        <td>
+          <%#= render_compact_control_buttons(obj: bid,
+                                             hide_show_btn: true,
+                                             hide_delete_btn: true,
+                                             edit_obj_path: '',
+                                             confirm_message: t(:delete_confirm, scope: :client_feedbacks))
+          %>
+          <div class="btn-group btn-group-sm">
+            <%= link_to_bitrix(bid.present) %>
+            <%= bitrix_sync_button(bid) %>
+            <%= render_comments(bid, bid.comments) %>
+          </div>
+        </td>
+      </tr>
+  <% end %>
+</table>
+<%= render partial: 'modals/comments_modal',
+           locals: {
+             modal_id: 'comments_modal_id',
+             modal_label_id: 'comments_modal_label_id',
+           }
+%>

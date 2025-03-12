@@ -1,0 +1,54 @@
+<!-- Widget -->
+<div class="widget">
+
+  <!-- Agent Widget -->
+  <div class="agent-widget" style="height: auto; position: relative; display: table;">
+    <div class="agent-title" style="display: table-row;">
+      <% if agency.logo&.pic? %>
+        <div class="agent-photo" style="display: table-cell; vertical-align: middle; padding-right: 5px; float: none;">
+          <img src="<%= agency.logo.pic.mini.url %>"
+               style="object-fit: cover;
+                      width: 100px;
+                      height: 100px;
+                      max-height: 72px;"/>
+        </div>
+      <% end %>
+
+      <div class="agent-details"
+          style="vertical-align: middle;
+                 display: table-cell;
+                 position: relative;
+                 transform: none;">
+        <h4>
+          <!--<a href="#">-->
+          <a href="<%= agencies_list_item_path(I18n.locale, agency.slug) %>" target="_blank">
+            <%= agency.name %>
+          </a>
+          <!--</a>-->
+        </h4>
+        <!--<div><i class="sl sl-icon-call-in"></i> (123) 123-456</div>-->
+        <% if agency.website.present? && show_agency_contacts?(agency) %>
+          <div><i class="fas fa-external-link-alt"></i> <a href="<%= agency.website %>" target="_blank" rel="nofollow">
+            <%= t(:open_site, scope: :common) %>
+          </a>
+          </div>
+        <% end %>
+        <div>
+          <a href="#bid" class="button fullwidth margin-top-5" id="write_seller"><%= t('properties.send_message') %></a>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+    <!--
+    <input type="text" placeholder="Your Email" pattern="^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})$">
+    <input type="text" placeholder="Your Phone">
+    <textarea>I'm interested in this property [ID 123456] and I'd like to know more details.</textarea>
+    <button class="button fullwidth margin-top-5">Send Message</button>
+    -->
+
+  </div>
+  <!-- Agent Widget / End -->
+
+</div>
+<!-- Widget / End -->

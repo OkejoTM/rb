@@ -1,0 +1,31 @@
+<!-- Content
+================================================== -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="row margin-bottom-15">
+        <div class="col-md-12">
+          <%= page_count_of_size(@pagination.current_page, @pagination.page_size, @agencies_count) %>
+        </div>
+      </div>
+
+
+      <% @pagination.items.each do |agency| %>
+        <!-- Agency -->
+        <% unless agency.linked_to_disabled_countries? %>
+          <%= render partial: "layouts/frontend/agency_list/agency_item", locals: { agency: agency } %>
+        <% end %>
+      <% end %>
+    </div>
+
+
+    <div class="col-md-12">
+      <div class="clearfix"></div>
+      <% if @pagination.pages_count > 1 %>
+        <%= render partial: 'layouts/frontend/filter_content/listing/pagination', locals: { pagination: @pagination } %>
+      <% end %>
+    </div>
+
+  </div>
+</div>

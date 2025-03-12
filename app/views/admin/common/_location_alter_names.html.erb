@@ -1,0 +1,29 @@
+<div class="form-group row">
+  <div class="col-lg-1"></div>
+  <div class="col-lg-6">
+    <% if form.object.alternate_names.present? %>
+        <strong><%= t(:alternate_names, scope: :areas) %>:</strong>
+        <table class="table table-striped table-hover table-with-items">
+          <tr>
+            <th><%= t(:language, scope: :areas) %></th>
+            <th><%= t(:name, scope: :areas) %></th>
+            <th></th>
+          </tr>
+          <% form.object.alternate_names.each do |alter_names| %>
+            <%= form.fields_for :alternate_names, alter_names do |alter_name_fields| %>
+                  <tr>
+                    <td><%= alter_name_fields.text_field :iso_language, class: "form-control" %></td>
+                    <td><%= alter_name_fields.text_field :alternate_name, class: "form-control" %></td>
+                    <td><% if alter_name_fields.object.persisted? %>
+                        <%= alter_name_fields.check_box :_destroy, class: "form-check" %>
+                        <%= alter_name_fields.label :_destroy, t(:delete, scope: :common) %>
+                    <% end %><td>
+                  </tr>
+              <% end %>
+          <% end %>
+        </table>
+    <% else %>
+        <strong><%= t(:no_alternate_names, scope: :areas) %></strong>
+    <% end %>
+  </div>
+</div>

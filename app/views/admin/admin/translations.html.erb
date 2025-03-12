@@ -1,0 +1,89 @@
+<% title "#{@page_title}#{page_number_substr(@pagination.current_page)}" %>
+
+<br>
+<div class="alert save-alert">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong class="save-alert-strong"></strong>
+</div>
+
+<br>
+
+<%= render_location_filter(location_filter: "", type: @pagination.items.first.class.name.underscore) %>
+
+<br>
+<%= render_pagination @pagination %>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th><%= t(:title_ru, scope: :common) %></th>
+    <th><%= t(:title_en, scope: :common) %></th>
+    <th><%= t(:title_genitive_ru, scope: :common) %></th>
+    <th><%= t(:title_genitive_en, scope: :common) %></th>
+    <th><%= t(:title_prepositional_ru, scope: :common) %></th>
+    <th><%= t(:title_prepositional_en, scope: :common) %></th>
+    <th><%= "#{t(:short_properties_count, scope: :common)}/#{t(:short_active, scope: :common)}/#{t(:short_active_and_moderated, scope: :common)}" %></th>
+    <th></th>
+  </tr>
+
+  <% @pagination.items.each do |location| %>
+    <tr>
+      <%= form_with model: location do |f| %>
+        <td>
+          <%= f.text_field :title_ru, class: "form-control" %>
+        </td>
+        <td>
+          <%= f.text_field :title_en, class: "form-control" %>
+        </td>
+
+        <td>
+          <%= f.text_field :title_genitive_ru, class: "form-control" %>
+        </td>
+        <td>
+          <%= f.text_field :title_genitive_en, class: "form-control" %>
+        </td>
+
+        <td>
+          <%= f.text_field :title_prepositional_ru, class: "form-control" %>
+        </td>
+        <td>
+          <%= f.text_field :title_prepositional_en, class: "form-control" %>
+        </td>
+
+        <td>
+          <%= location.properties_count %> /
+          <%= location.active_properties_count %> /
+          <%= location.active_and_moderated_properties_count %>
+        </td>
+
+        <td>
+          <div class="btn-group btn-group-sm pull-right" style="min-width: 115px;">
+            <%= f.button :submit, class: "btn btn-default translation-save" do %>
+              <i class="glyphicon glyphicon glyphicon-floppy-saved"></i>
+            <% end %>
+            <%= link_to '<i class="glyphicon glyphicon-pencil"></i>'.html_safe,
+                        send("edit_#{location.class.name.underscore}_path", location),
+                        class: 'btn btn-default',
+                        target: "_blank",
+                        title: t(:edit, scope: :common) %>
+
+            <div id="load_success" style="display: none;">
+              <i class="glyphicon glyphicon-ok"
+                 style="margin: 5px; color: green;"></i>
+            </div>
+            <div id="load_error" style="display: none;">
+              <i class="glyphicon glyphicon-remove"
+                 style="margin: 5px; color: red;"></i>
+            </div>
+            <img id="load_process"
+                 src="<%= asset_pack_path("images/loader.gif") %>"
+                 style="margin: 5px; display: none;">
+
+          </div>
+        </td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
+
+<%= render_pagination @pagination %>
+<br>

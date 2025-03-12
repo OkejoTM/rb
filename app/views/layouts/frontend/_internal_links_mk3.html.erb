@@ -1,0 +1,34 @@
+<%
+  nofollow ||= false
+  col_width = 100/group_links.count
+%>
+
+<!-- Fullwidth Section -->
+<section class="fullwidth internal_links_sections" data-background-color="#f7f7f7" id="internal_links_sections">
+
+  <!-- Box Headline -->
+  <div class="headline-box internal_links_sections_header"><%= box_title %></div>
+
+  <!-- Content -->
+  <div class="container">
+
+    <div class="row margin-bottom-15">
+      <% group_links.each do |group_title, links| %>
+        <div style="width: <%= col_width %>%; float: left;">
+          <div class="h4" style="text-align: left;"><%= group_title %></div>
+          <% links.each do |sl| %>
+            <div>
+              <% if nofollow %>
+                <%= link_to sl[:name], sl[:link], rel: "nofollow" %>
+              <% else %>
+                <%= link_to sl[:name], sl[:link] %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</section>
+<!-- Fullwidth Section / End -->

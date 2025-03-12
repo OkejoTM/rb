@@ -1,0 +1,23 @@
+<%
+  title ||= ""
+  edit_path ||= ""
+%>
+
+<h1 class="margin-top-0 margin-bottom-30" style="font-size: 30px;">
+  <%= title %>
+
+  <!-- Должно быть редактирование сео страницы
+  <%#= frontend_edit_icon(edit_path) %>
+  -->
+</h1>
+
+<% pagination.items.each do |article| %>
+  <%= render partial: 'layouts/frontend/blog/listing/article', locals: { article: article } %>
+<% end %>
+
+<!-- Pagination -->
+<div class="clearfix"></div>
+<% if pagination.pages_count > 1 %>
+  <%= render partial: 'layouts/frontend/filter_content/listing/pagination', locals: { pagination: pagination } %>
+<% end %>
+<div class="clearfix"></div>

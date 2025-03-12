@@ -1,0 +1,36 @@
+<% if pagination.items.present? %>
+
+  <!-- Sorting / Layout Switcher -->
+  <div class="row margin-bottom-15">
+
+    <div class="col-md-6"></div>
+
+    <div class="col-md-6">
+      <!-- Layout Switcher -->
+      <div class="layout-switcher">
+        <a href="#" class="list"><i class="fas fa-list"></i></a>
+        <a href="#" class="grid"><i class="fas fa-th-large"></i></a>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Listings -->
+  <%= render partial: 'layouts/frontend/common/listings', locals: { properties: pagination,
+                                                                    disable_agency: disable_agency } %>
+  <!-- Listings Container / End -->
+
+
+  <!-- Pagination -->
+  <% if pagination.pages_count > 1 %>
+    <%
+      locals = { pagination: pagination,
+                 rel_no_follow: true }
+      locals[:base_url] = base_url if defined?(base_url) && base_url.present?
+    %>
+    <%= render partial: 'layouts/frontend/filter_content/listing/pagination',
+               locals: locals %>
+  <% end %>
+<% else %>
+  <h4 style="margin-bottom: 20px;"><%= t(:no_property, scope: :agencies) %></h4>
+<% end %>

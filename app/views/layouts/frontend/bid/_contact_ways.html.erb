@@ -1,0 +1,21 @@
+<%
+  version ||= nil
+  scope ||= nil
+%>
+
+<div class="checkboxes in-row">
+  <% unless version == :short %>
+    <small class="hidden-xs"><%= t('contact_ways.want_to_have_answer') %></small>
+  <% end %>
+
+  <% ContactWay::CONTACT_WAYS.each do |contact_way, _| %>
+    <% id = "#{scope}contact_way_#{contact_way}" %>
+
+    <input type="checkbox"
+           name="contact_way"
+           id="<%= id %>"
+           value="<%= contact_way %>"
+    >
+    <label for="<%= id %>"><%= contact_way.to_s.humanize %></label>
+  <% end %>
+</div>

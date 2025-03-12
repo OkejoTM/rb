@@ -1,0 +1,9 @@
+<% if controller.action_name != 'new' && form.object.instance_eval(field).present? && form.object.instance_eval(field).mini.present? %>
+  <span>
+    <a class="item mfp-gallery" href="<%= form.object.instance_eval(field) %>">
+      <img src="<%= form.object.instance_eval(field).mini.url %>" class=img-thumbnail"/>
+    </a>
+  </span>
+  <%= form.check_box method %>
+  <%= form.label method, "Remove #{field}" %>
+<% end %>

@@ -1,0 +1,75 @@
+<%= simple_form_for @object, wrapper: :horizontal_form, html: { class: 'form-horizontal' } do |f| %>
+  <%= f.input :email, label: t(:email, scope: :users) %>
+  <%= f.input :subscribed, label: 'Подписан на email рассылку' %>
+  <%= f.input :timezone,
+      label: 'Таймзона',
+      collection: ActiveSupport::TimeZone.all.map { |tz| [tz.name, tz.name] },
+      input_html: { class: 'select2-enable' }
+  %>
+  <%= f.input :role,
+      label: 'Роль',
+      collection: roles,
+      input_html: { class: 'select2-enable' }
+  %>
+  <input type="hidden" id="role" name="role" value=<%= @object.role %>>
+  <input type="hidden" id="user_id" name="user_id" value=<%= @object.id %>>
+  <input type="hidden" id="current_user_id" name="current_user_id" value=<%= current_user.id %>>
+
+  <% if allowed_to? :simulate_role? %>
+    <div class='form-group'>
+      <%= label_tag :simulation, 'Режим симуляции', class: 'col-lg-2 control-label' %>
+      <div class='col-lg-9'>
+        <%= check_box_tag :simulation, 'on', false, class: "form-check" %>
+      </div>
+    </div>
+  <% end %>
+
+  <%= f.input :agency_id,
+              label: t('properties.agency'),
+              collection: @agencies,
+              include_blank: true,
+              input_html: { class: 'select2-enable' },
+              wrapper_html: { id: 'agency_block' },
+              hint: "Не нашли подходящее агентство? #{link_to 'Попробуйте создать сами', new_agency_path, target: :_blank}".html_safe
+  %>
+
+  <div class='form-group'>
+    <div class='col-lg-offset-2'>
+      <%= render_control_buttons(form: f,
+                                  obj: @object,
+                                  confirm_message: t(:delete_confirm, scope: :user)) %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  $(function () {
+    const $agency_block = $("#agency_block");
+    const $user_role = $("#user_role");
+    const $simulation_checkbox = $('#simulation');
+    const current_user_role = $('#role').val();
+    const user_id = $('#user_id').val();
+    const current_user_id = $('#current_user_id').val();
+
+    toggle_agency_block($user_role);
+    toggle_simulation_checkbox(current_user_role, $user_role.val());
+
+    $user_role.change(function () {
+      toggle_agency_block($(this));
+      toggle_simulation_checkbox(current_user_role, $(this).val());
+    });
+
+    function toggle_agency_block(user_role) {
+      if (user_role.find(':selected').val() === "agent") {
+        $agency_block.show();
+      } else {
+        $agency_block.hide();
+      }
+    }
+
+    function toggle_simulation_checkbox(current_role, selected_role) {
+      toggle = user_id === current_user_id && current_role !== selected_role
+      $simulation_checkbox.prop('checked', toggle);
+    }
+  });
+</script>

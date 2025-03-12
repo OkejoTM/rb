@@ -1,0 +1,23 @@
+<div class="form-group row">
+  <%= f.label :title_ru, t(:title_ru, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :title_ru, class: "form-control" %>
+    <%= danger_help_block(:title_ru) %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :title_en, t(:title_en, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :title_en, class: "form-control" %>
+    <%= danger_help_block(:title_en) %>
+  </div>
+</div>
+
+<div class="form-group row">
+  <%= f.label :slug, t(:slug, scope: :common), class: 'col-lg-2 control-label' %>
+  <div class="col-lg-6">
+    <%= f.text_field :slug, class: "form-control" %>
+    <%= danger_help_block(:slug) %>
+  </div>
+</div>

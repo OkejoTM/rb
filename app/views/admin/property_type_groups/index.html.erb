@@ -1,0 +1,30 @@
+<% title @page_title %>
+<h2><%= t(:index, scope: :property_type_groups) %>
+  <%= link_to t("common.add"), new_property_type_group_path, class: 'btn btn-primary' %>
+</h2>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= "Title Ru" %></th>
+    <th><%= "Title En" %></th>
+    <th><%= t('common.category') %></th>
+    <th><%= t(:properties_count, scope: :common) %></th>
+    <th></th>
+  </tr>
+
+  <% @objects.each_with_index do |property_type_group, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= property_type_group.title_ru %></td>
+        <td><%= property_type_group.title_en %></td>
+        <td><%= property_type_group.property_supertype&.title_ru %></td>
+        <td><%= property_type_group.properties.count %></td>
+        <td>
+          <%= render_compact_control_buttons(obj: property_type_group,
+                                             edit_obj_path: edit_property_type_group_path(property_type_group),
+                                             confirm_message: t(:delete_confirm, scope: :property_type_groups)) %>
+        </td>
+      </tr>
+  <% end %>
+</table>

@@ -1,0 +1,50 @@
+<%# if notice.present? %>
+<%#= render_alert(notice, 'success') %>
+<%# end %>
+
+<%# template.errors.full_messages.each do |msg| %>
+<!--  <p><%#= msg %></p>-->
+<%# end %>
+
+<ul class="nav nav-tabs">
+  <li class="active"><a data-toggle="tab" href="#template">SEO-шаблон</a></li>
+  <li><a data-toggle="tab" href="#filter">Фильтры</a></li>
+  <li><a data-toggle="tab" href="#text_settings">Текстовые настройки</a></li>
+  <% unless template.new_record? || template.is_main? %>
+    <li><a data-toggle="tab" href="#objects">Объекты</a></li>
+  <% end %>
+</ul>
+
+<%= form_with model: setup_seo_template(template), data: { remote: true, type: :json }, html: { 'data-ajax-submit' => '' } do |f| %>
+  <div class="tab-content">
+    <div id="template" class="tab-pane fade in active">
+      <%= render partial: 'admin/seo_templates/form/tab_template', locals: { f: f,
+                                                                       template: template,
+                                                                       property_supertypes: property_supertypes,
+                                                                       property_type_groups: property_type_groups,
+                                                                       property_types: property_types,
+                                                                       seo_templates_groups: seo_templates_groups } %>
+    </div>
+
+    <div id="filter" class="tab-pane fade">
+      <%= render partial: 'admin/seo_templates/form/tab_filter_params', locals: { f: f,
+                                                                            template: template,
+                                                                            filter_options: filter_options } %>
+    </div>
+
+    <div id="text_settings" class="tab-pane fade">
+      <%= render partial: 'admin/seo_templates/form/tab_text_settings', locals: { f: f, template: template } %>
+    </div>
+
+    <% unless template.new_record? %>
+      <div id="objects" class="tab-pane fade">
+        <%= render partial: 'admin/seo_templates/form/tab_objects', locals: { f: f, template: template } %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render_control_buttons(form: f,
+                             obj: template,
+                             hide_show_btn: true,
+                             confirm_message: t(:delete_confirm, scope: :seo_templates)) %>
+<% end %>

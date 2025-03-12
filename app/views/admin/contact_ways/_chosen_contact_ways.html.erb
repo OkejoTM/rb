@@ -1,0 +1,8 @@
+<div class="inline">
+  <% contact_ways.each do |contact_way| %>
+    <div><%= contact_way.way_type.humanize %></div>
+  <% end %>
+  <% if contact_ways.empty? %>
+    <div><%= t('common.not_filled') %></div>
+  <% end %>
+</div>

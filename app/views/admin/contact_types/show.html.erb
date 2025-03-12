@@ -1,0 +1,18 @@
+<% title @page_title %>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <i class="<%= @object.icon_class %>"></i>
+</p>
+
+<p>
+  <strong><%= t(:title_ru, scope: :common) %>:</strong>
+  <%= @object.title_ru %>
+</p>
+
+<p>
+  <strong><%= t(:title_en, scope: :common) %>:</strong>
+  <%= @object.title_en %>
+</p>
+
+<%= link_to t(:edit, scope: :common), edit_contact_type_path(@object), class: 'btn btn-default', title: t(:edit, scope: :common) %>

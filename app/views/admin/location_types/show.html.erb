@@ -1,0 +1,14 @@
+<% title @page_title %>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong><%= "Title" %>:</strong>
+  <%= @object.title_ru %>
+</p>
+
+<p>
+  <strong><%= "Title" %>:</strong>
+  <%= @object.title_en %>
+</p>
+
+<%= link_to t(:edit, scope: :common), edit_location_type_path(@object), class: 'btn btn-default', title: t(:edit, scope: :common) %>

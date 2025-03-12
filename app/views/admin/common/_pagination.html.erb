@@ -1,0 +1,64 @@
+<%
+  permitted_params = params.permit
+%>
+<% if pagination.pages_count > 1 %>
+  <div class="pull-right">
+    <ul class="pagination pagination-sm" style="margin-right:0;margin-top:5px; margin-bottom: 0px;">
+      <li <%= 'class="disabled"'.html_safe if pagination.current_page == 1 %>>
+        <%= link_to raw('<span aria-hidden="true">&laquo;</span>'), permitted_params.merge(page: pagination.current_page - 1) %>
+      </li>
+
+      <li class="<%= pagination.current_page == 1 ? "active" : '' %>">
+        <%= link_to '1', permitted_params.merge(page: 1) %>
+      </li>
+
+      <% if pagination.current_page > 3 %>
+          <li class="disabled">
+            <a href="#">...</a>
+          </li>
+      <% end %>
+
+      <% unless pagination.current_page > pagination.pages_count  +  3 %>
+          <% unless pagination.current_page == 1 %>
+              <% unless pagination.current_page == 2 %>
+                  <li class>
+                    <%= link_to pagination.current_page - 1, permitted_params.merge(page: pagination.current_page - 1) %>
+                  </li>
+              <% end %>
+              <li class="active">
+                <%= link_to pagination.current_page, permitted_params.merge(page: pagination.current_page) %>
+              </li>
+          <% end %>
+
+          <% unless pagination.current_page + 1 > pagination.pages_count %>
+              <li>
+                <%= link_to pagination.current_page + 1, permitted_params.merge(page: pagination.current_page + 1) %>
+              </li>
+          <% end %>
+      <% end %>
+
+      <% if pagination.current_page < pagination.pages_count - 3 %>
+          <li class="disabled">
+            <a href="#">...</a>
+          </li>
+      <% end %>
+
+      <% unless pagination.current_page + 2 > pagination.pages_count %>
+          <li>
+            <%= link_to pagination.pages_count, permitted_params.merge(page: pagination.pages_count) %>
+          </li>
+      <% end %>
+
+      <li <%= 'class="disabled"'.html_safe if pagination.current_page == pagination.pages_count %>>
+        <%= link_to raw('<span aria-hidden="true">&raquo;</span>'), permitted_params.merge(page: pagination.current_page + 1) %>
+      </li>
+
+    </ul>
+  </div>
+
+  <script type="text/javascript">
+      $('.pagination .disabled a, .pagination .active a').on('click', function(e) {
+          e.preventDefault();
+      });
+  </script>
+<% end %>

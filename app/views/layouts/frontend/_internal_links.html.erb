@@ -1,0 +1,17 @@
+<!-- Fullwidth Section -->
+<section class="fullwidth internal_links_sections" data-background-color="#f7f7f7" id="internal_links_sections">
+
+  <!-- Box Headline -->
+  <div class="headline-box internal_links_sections_header"
+       style="line-height: unset; padding: 12px 50px 12px 50px;"><%= box_title %></div>
+
+  <!-- Content -->
+  <div class="container">
+    <div class="row">
+      <% links.each do |sl| %>
+        <div class="col-lg-4 text-center"><%= link_to sl[:name], sl[:link] %></div>
+      <% end %>
+    </div>
+  </div>
+</section>
+<!-- Fullwidth Section / End -->

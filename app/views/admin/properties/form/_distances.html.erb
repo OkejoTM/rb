@@ -1,0 +1,87 @@
+<div class="form-group row">
+  <%= f.input :latitude,
+              label: t(:latitude, scope: :properties),
+              wrapper: :row_wrapper,
+              wrapper_html: { class: 'col-lg-5' },
+              label_html: { class: 'col-lg-5' },
+              input_html: { class: 'row' } %>
+
+  <%= f.input :longitude,
+            label: t(:longitude, scope: :properties),
+            wrapper: :row_wrapper,
+            wrapper_html: { class: 'col-lg-5' },
+            label_html: { class: 'col-lg-2' },
+            input_html: { class: 'row' } %>
+</div>
+
+<div class="form-group row">
+  <%= f.input :to_airport,
+              wrapper: :size_wrapper,
+              label: t(:to_airport, scope: :properties),
+              value_method: :id,
+              include_blank: true %>
+</div>
+
+<%= f.input :to_railroad_station,
+            wrapper: :horizontal_form,
+            label: t(:to_railroad_station, scope: :properties),
+            value_method: :id,
+            include_blank: true %>
+
+<%= f.input :to_beach,
+            wrapper: :horizontal_form,
+            label: t(:to_beach, scope: :properties),
+            value_method: :id,
+            include_blank: true %>
+
+<div class="form-group row">
+  <%= f.input :to_historical_city_center,
+              wrapper: :size_wrapper,
+              label: t(:to_historical_city_center, scope: :properties),
+              value_method: :id,
+              include_blank: true %>
+</div>
+
+<%= f.input :to_nearest_big_city,
+            wrapper: :horizontal_form,
+            label: t(:to_nearest_big_city, scope: :properties),
+            value_method: :id,
+            include_blank: true %>
+
+<%= f.input :to_food_stores,
+            wrapper: :horizontal_form,
+            label: t(:to_food_stores, scope: :properties),
+            value_method: :id,
+            include_blank: true %>
+
+<%= f.input :to_medical_facilities,
+            wrapper: :horizontal_form,
+            label: t(:to_medical_facilities, scope: :properties),
+            value_method: :id,
+            include_blank: true %>
+
+<%= f.input :to_ski_lift,
+            wrapper: :horizontal_form,
+            label: t(:to_ski_lift, scope: :properties),
+            value_method: :id,
+            include_blank: true %>
+
+<div class="form-group row">
+  <%= f.input :to_sea,
+              wrapper: :size_wrapper,
+              label: t(:to_sea, scope: :properties),
+              value_method: :id,
+              include_blank: true %>
+</div>
+
+<%= f.input :to_metro_station,
+            wrapper: :horizontal_form,
+            label: t(:to_metro_station, scope: :properties),
+            value_method: :id,
+            include_blank: true %>
+
+<%= f.input :to_state_border,
+            wrapper: :horizontal_form,
+            label: t(:to_state_border, scope: :properties),
+            value_method: :id,
+            include_blank: true %>

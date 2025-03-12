@@ -1,0 +1,94 @@
+<!-- Search
+================================================== -->
+<section class="search margin-bottom-50 margin-top-0" style="padding: 20px 0 20px 0;">
+  <div class="container">
+    <h1 class="margin-top-0 margin-bottom-20 text-center h2">
+      <%= @seo_page.h1 %>
+      <%= frontend_edit_icon(edit_path) %>
+    </h1>
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <!-- Form -->
+        <%= form_with url: "/#{I18n.locale}/main_search", method: "get", class:"main-search-form auto_width_margin" do %>
+          <div class="search-type" style="display: none;"><label class="active"></label></div>
+
+          <div class="main-search-box no-shadow">
+
+
+            <!-- Row With Forms -->
+            <div class="row with-forms">
+
+              <!-- Main Search Input -->
+              <div class="col-md-3">
+                <%= fulltext_search @country.present.full_title,
+                                    style: 'height: 51px;'
+                %>
+              </div>
+
+              <!-- Status -->
+              <div class="col-md-2">
+                <div class="select-input">
+                  <input type="text"
+                         id="price_from"
+                         name="price_from"
+                         class="formatted_number"
+                         placeholder="<%= t(:min_price, scope: :banner) %>"
+                         data-unit="<%= CurrencyRate::DEFAULT_CURRENCY %>"
+                         inputmode="numeric"
+                  >
+                </div>
+              </div>
+
+              <!-- Property Type -->
+              <div class="col-md-2">
+                <!-- Select Input -->
+                <div class="select-input">
+                  <input type="text"
+                         id="price_to"
+                         name="price_to"
+                         class="formatted_number"
+                         placeholder="<%= t(:max_price, scope: :banner) %>"
+                         data-unit="<%= CurrencyRate::DEFAULT_CURRENCY %>"
+                         inputmode="numeric"
+                  >
+                </div>
+                <!-- Select Input / End -->
+              </div>
+
+              <div class="col-md-1">
+                <%= select_tag :currency,
+                               options_for_select(active_currency_options_for_filter, selected = CurrencyRate::DEFAULT_CURRENCY),
+                               class: 'chosen-select-no-single'
+                %>
+              </div>
+
+              <div class="col-md-2">
+                <%= select_tag :property_supertype_id,
+                               options_for_select(@filter_options.supertypes),
+                               class: 'chosen-select-no-single'
+                %>
+              </div>
+
+              <div class="col-md-2">
+                <%= button_tag t(:search, scope: :common),
+                               class: 'button',
+                               id: 'search_button',
+                               style: 'width: 100%; height: 51px;'
+                %>
+              </div>
+            </div>
+            <!-- Row With Forms / End -->
+
+            <%= render partial: 'layouts/frontend/search_titlebar/more_options', locals: { filter_options: filter_options } %>
+
+
+          </div>
+        <% end %>
+
+          <!-- Box / End -->
+      </div>
+    </div>
+  </div>
+</section>

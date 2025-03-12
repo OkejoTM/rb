@@ -1,0 +1,34 @@
+<h2><%= t(:content_report, scope: :reports) %></h2>
+
+<%= form_with url: "/reports/updated_content_result", method: "get" do %>
+  <div class="row">
+    <div class="col-lg-6" id="sandbox-container">
+      <div class="input-group input-daterange">
+        <%= text_field("reports",
+                       "start_date",
+                       class: "form-control",
+                       autocomplete: "off",
+                       placeholder: t(:select_start_date, scope: :reports),
+                       required: true) %>
+        <div class="input-group-addon">-</div>
+        <%= text_field("reports",
+                       "end_date",
+                       class: "form-control",
+                       autocomplete: "off",
+                       placeholder: t(:select_end_date, scope: :reports)) %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col-lg-4">
+      <%= select("reports", "user", @users.collect {|p| [ p.email, p.id ] }, { include_blank: t(:select_user, scope: :reports) }, { class: "form-control" } ) %>
+    </div>
+  </div>
+
+  <br>
+
+  <%= submit_tag t(:generate_report, scope: :reports), class: "btn btn-primary" %>
+<% end %>

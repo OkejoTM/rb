@@ -1,0 +1,29 @@
+<%= form_with url: search_url, method: "get" do %>
+  <div class="row">
+    <div class="col-lg-2">
+      <div class="input-group">
+        <%= label_tag :by_role, t('users.role'), class: 'control-label' %>
+        <%= select_tag :by_role,
+                       options_for_select(roles, params[:by_role]),
+                       include_blank: t(:all, scope: :common),
+                       class: "form-control select2-enable" %>
+      </div>
+    </div>
+
+    <div class="col-lg-3">
+      <div class="input-group">
+        <%= label_tag :email, t('users.email'), class: 'control-label' %>
+        <%= text_field_tag :query,
+                           params[:query],
+                           placeholder: t(:enter_search_term, scope: :common),
+                           class: "form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row text-center">
+    <%= search_button %>
+  </div>
+<% end %>

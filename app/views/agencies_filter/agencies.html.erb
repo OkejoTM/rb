@@ -1,0 +1,39 @@
+<% title "#{@seo_page.title}#{page_number_substr(@current_page)}" %>
+<% meta_description "#{@seo_page.meta_description}#{page_number_substr(@current_page)}" %>
+
+<% meta_canonical_page(@seo_params.meta_canonical_path) if @seo_params.meta_canonical_path.present? %>
+
+<div class="margin-bottom-30">
+  <%= render partial: 'layouts/frontend/titlebar' %>
+</div>
+
+<div class="container">
+  <h1 class="margin-top-0 margin-bottom-30 text-center h2">
+    <%= @seo_page.h1 %>
+    <%= frontend_edit_icon(edit_agencies_main_seo_agencies_pages_path) %>
+  </h1>
+</div>
+
+<% if @countries_by_continent.present? %>
+  <%= render partial: "agencies_filter/agencies/locations_mk2", locals: { countries_by_continent: @countries_by_continent,
+                                                                          seo_path: -> (c) { c.seo_agencies_page.seo_path },
+                                                                          show_more: true } %>
+<% end %>
+
+<%= render partial: 'layouts/frontend/agensies' %>
+
+<% if @seo_page.description.present? %>
+  <div class="container">
+    <div class="row sticky-wrapper">
+      <div class="col-md-12">
+        <p><%= sanitize @seo_page.description %></p>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<% if @seo_agencies_pages.present? && @countries_by_continent.blank? %>
+  <%= render partial: 'layouts/frontend/internal_links',
+             locals: { links: @seo_agencies_pages,
+                       box_title: @seo_agencies_pages_title } %>
+<% end %>

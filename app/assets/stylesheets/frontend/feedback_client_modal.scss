@@ -1,0 +1,25 @@
+.panel-feedback-button {
+  border-radius: 17px 17px 0 0;
+  width: 250px;
+  font-size: 100%;
+  letter-spacing: 0.5px;
+  background-color: #274abb;
+  color: #fff;
+  padding: 2px 0 0 15px;
+  height: 30px;
+  overflow: hidden;
+  cursor: pointer;
+  position: fixed;
+  margin: auto;
+  transition-duration: 0.4s;
+  bottom: 0;
+  z-index: 1000;
+
+  @media (min-width: 320px) {
+    right: 0;
+  }
+
+  @media (min-width: 768px) {
+    right: 100px;
+  }
+}

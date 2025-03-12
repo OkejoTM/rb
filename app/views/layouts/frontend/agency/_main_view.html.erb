@@ -1,0 +1,43 @@
+<div class="agent agent-page agency agency-item">
+
+  <% if agency.logo&.pic? %>
+    <div class="agent-avatar">
+      <img src="<%= agency.logo.pic.url %>"/>
+    </div>
+  <% end %>
+
+  <div class="agent-content">
+    <div class="agent-name">
+      <h1 class="h2 margin-top-0">
+        <%= agency.name %>
+        <%= frontend_edit_icon(edit_agency_path(agency)) %>
+      </h1>
+      <div>
+        <% if agency&.website.present? && show_agency_contacts?(agency) %>
+          <i class="fas fa-external-link-alt"></i> <a href="<%= agency&.website %>"
+                                                      title="<%= t(:open_site, scope: :common) %>"
+                                                      target="_blank"
+                                                      rel="nofollow">
+            <%= agency&.website %>
+          </a>
+        <% end %>
+        <div><%= linked_countries(agency) %></div>
+      </div>
+    </div>
+
+    <% if agency.about.present? %>
+      <p><%= sanitize agency.about %></p>
+    <% end %>
+
+    <% if show_agency_contacts?(agency) %>
+      <%= render partial: 'layouts/frontend/agency/contacts', locals: { agency: agency } %>
+    <% end %>
+
+    <!--          <ul class="social-icons">-->
+    <!--            <li><a class="facebook" href="#"><i class="icon-facebook"></i></a></li>-->
+    <!--            <li><a class="gplus" href="#"><i class="icon-gplus"></i></a></li>-->
+    <!--          </ul>-->
+
+    <div class="clearfix"></div>
+  </div>
+</div>

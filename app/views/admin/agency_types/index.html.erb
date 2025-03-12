@@ -1,0 +1,28 @@
+<% title @page_title %>
+<h2><%= t(:index, scope: :agency_types) %>
+  <%= link_to t("common.add"), new_agency_type_path, class: 'btn btn-primary' %>
+</h2>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= t(:title_ru, scope: :common) %></th>
+    <th><%= t(:title_en, scope: :common) %></th>
+    <th><%= t(:agencies_count, scope: :common) %></th>
+    <th></th>
+  </tr>
+
+  <% @objects.each_with_index do |agency_type, index| %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= agency_type.title_ru %></td>
+        <td><%= agency_type.title_en %></td>
+        <td><%= agency_type.agencies.count %></td>
+        <td>
+          <%= render_compact_control_buttons(obj: agency_type,
+                                             edit_obj_path: edit_agency_type_path(agency_type),
+                                             confirm_message: t(:delete_confirm, scope: :agency_types)) %>
+        </td>
+      </tr>
+  <% end %>
+</table>

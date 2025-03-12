@@ -1,0 +1,173 @@
+<% title @page_title %>
+
+<h2 class="page-title"><%= t('seo_templates.index') %>
+  <span class="btn-group">
+    <%= link_to t("common.add"), new_seo_template_path, class: 'btn btn-primary' %>
+  </span>
+</h2>
+
+<br>
+
+<% if notice.present? %>
+  <div id="notice" class="alert alert-success">
+    <%= notice %>.
+  </div>
+<% end %>
+
+<%= form_with url: '', method: "get" do %>
+  <div class="row">
+    <div class="col-lg-10">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="input-group">
+            <%= label_tag :view_mode, t('common.display_mode'), class: 'control-label' %>
+            <%= select_tag :view_mode,
+                           options_for_select(template_view_modes, params[:view_mode]),
+                           include_blank: t(:all, scope: :common),
+                           class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="input-group">
+            <%= label_tag :template_location_type, t('areas.objects_type'), class: 'control-label' %>
+            <%= select_tag :template_location_type,
+                           options_for_select(template_location_types, params[:template_location_type]),
+                           include_blank: t(:all, scope: :common),
+                           class: 'form-control' %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="input-group">
+            <%= label_tag :property_supertype_id, t('property_supertypes.show'), class: 'control-label' %>
+            <%= select_tag :property_supertype_id,
+                           options_for_select(@property_supertypes, params[:property_supertype_id]),
+                           include_blank: t(:all, scope: :common),
+                           class: "form-control select2-enable select-property-supertype" %>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="input-group">
+            <%= label_tag :property_type_group_id, t('property_type_groups.show'), class: 'control-label' %>
+            <%= select_tag :property_type_group_id,
+                           options_for_select(@property_type_groups, params[:property_type_group_id]),
+                           include_blank: t(:all, scope: :common),
+                           class: "form-control select2-enable select-property-type-group",
+                           disabled: params[:property_supertype_id].blank? && params[:property_type_group_id].blank? %>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="input-group">
+            <%= label_tag :property_type_id, t('property_types.show'), class: 'control-label' %>
+            <%= select_tag :property_type_id,
+                         options_for_select(@property_types, params[:property_type_id]),
+                         include_blank: t(:all, scope: :common),
+                         class: "form-control select2-enable select-property-type",
+                         disabled: params[:property_type_group_id].blank? && params[:property_type_id].blank? %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2 text-center">
+      <%= search_button(style: "margin-top: 25px;") %>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div class="col=lg-2 col-lg-offset-10 text-center">
+      <button type="button"
+              id="show_more"
+              class="btn btn-xs btn-default"
+              style="margin-bottom: 5px;"><%= t('common.more') %></button>
+    </div>
+  </div>
+<% end %>
+
+<% if @seo_templates.present? %>
+  <table class="table table-bordered text-center table-hover">
+    <thead>
+    <tr>
+      <th class="text-center"><%= t('seo_templates.index') %></th>
+      <th class="text-center"><%= t('property_types.show') %></th>
+      <th class="text-center"><%= t('areas.objects_type') %></th>
+      <th class="text-center hidden"><%= t("seo_templates_groups.show") %></th>
+      <th class="text-center hidden">Slug</th>
+      <th class="text-center"><%= t('common.management') %></th>
+      <th class="text-center"><%= t('common.statistics') %></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @seo_templates.each do |template| %>
+      <tr <%= 'class="success" title="Базовый шаблон"'.html_safe if template.is_main? %>>
+        <td style="vertical-align: middle">
+          <%= template.name %>
+        </td>
+
+        <td>
+          <div style="min-width:85px;">
+            <%= template_property_type(template) %>
+          </div>
+        </td>
+
+        <td>
+          <div style="min-width:85px;">
+            <%= template_location_type_name(template) %>
+          </div>
+        </td>
+
+        <td class="hidden">
+          <div style="min-width:85px;">
+            <%= template.seo_templates_group&.title %>
+          </div>
+        </td>
+
+        <td class="hidden">
+          <div style="min-width:85px;">
+            <%= template.slug %>
+          </div>
+        </td>
+
+        <td>
+          <div class="pull-right">
+            <a class="btn btn-sq-sm btn-default" href="<%= edit_seo_template_url(template) %>">
+              <i class="glyphicon glyphicon-pencil"></i>
+            </a>
+          </div>
+        </td>
+
+        <td>
+          <% unless template.is_main? %>
+            <div style="min-width:85px;">
+              Страниц: <%= link_to template.pages_count,
+                                   controller: :seo_templates,
+                                   action: :browse_pages,
+                                   seo_template_id: template.id %>
+            </div>
+          <% end %>
+        </td>
+
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  Ещё не создано ни одного SEO-шаблона.
+<% end %>
+
+<script>
+    $(function () {
+        $('#show_more').click(function(){
+            $('.hidden').removeClass('hidden');
+            $(this).addClass('hidden');
+        });
+    });
+</script>

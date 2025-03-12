@@ -1,0 +1,9 @@
+<% title @page.title %>
+<% meta_description @page.meta_description %>
+<% meta_robots "noindex, nofollow" %>
+
+<div class="margin-bottom-30">
+  <%= render partial: 'layouts/frontend/titlebar' %>
+</div>
+
+<%= render partial: 'layouts/frontend/page', locals: { page: @page } %>

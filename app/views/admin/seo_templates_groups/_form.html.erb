@@ -1,0 +1,33 @@
+<%= form_with model: @object, data: { remote: true, type: :json }, html: { 'data-ajax-submit' => '' } do |f| %>
+  <div class="form-group row">
+    <%= f.label :title_ru, "Title Ru", class: 'col-lg-2 control-label' %>
+    <div class="col-lg-6">
+      <%= f.text_field :title_ru, class: "form-control" %>
+      <%= danger_help_block(:title_ru) %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :title_en, "Title En", class: 'col-lg-2 control-label' %>
+    <div class="col-lg-6">
+      <%= f.text_field :title_en, class: "form-control" %>
+      <%= danger_help_block(:title_en) %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <%= f.label :is_active, t(:is_active, scope: :areas), class: 'col-lg-2 control-label' %>
+    <div class="col-lg-6">
+      <%= f.check_box :is_active, class: "form-check" %>
+    </div>
+  </div>
+
+<!--  <div class="actions">-->
+    <%#= f.submit t(:save, scope: :common), class: "btn btn-primary" %>
+    <%#= link_to t(:show, scope: :common), @object, class: "btn btn-primary" unless @object.new_record? %>
+<!--  </div>-->
+
+  <%= render_control_buttons(form: f,
+                             obj: @object,
+                             confirm_message: t(:delete_confirm, scope: :seo_templates_group)) %>
+<% end %>

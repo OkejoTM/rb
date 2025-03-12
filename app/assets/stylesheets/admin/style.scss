@@ -1,0 +1,62 @@
+.block_left_align {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-with-items {
+  font-size: 12px;
+
+  td {
+    text-align: center;
+  }
+
+  th {
+    text-align: center;
+  }
+}
+
+.word-break-bw {
+  word-break: break-word;
+}
+
+.grabbable {
+  cursor: move; /* fallback if grab cursor is unsupported */
+  cursor: grab;
+}
+
+/* (Optional) Apply a "closed-hand" cursor during drag operation. */
+.grabbable:active {
+  cursor: grabbing;
+}
+
+.control-label .required, .form-group .required {
+  padding: 6px 12px;
+  color: #333333;
+  font-size: 14px;
+}
+
+.pr-20 {
+  padding-right: 20px;
+}
+
+.mr-30 {
+  margin-right: 30px;
+}
+
+.navbar-link-non-interactive {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  white-space: nowrap;
+  position: relative;
+  display: block;
+  padding: 15px 15px;
+}
+
+.navbar-link-interactive {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  white-space: nowrap;
+}

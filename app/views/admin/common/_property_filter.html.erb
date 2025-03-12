@@ -1,0 +1,175 @@
+<%= form_with url: search_url, method: "get" do %>
+  <div class="row">
+
+    <!--<div class="col-lg-4">-->
+    <!--<%#= date_field "created_date", "date", value: @day&.strftime('%Y-%m-%d'), class: 'form-control' %>-->
+    <!--</div>-->
+
+    <!--<div class="input-group date" data-provide="datepicker">-->
+    <!--<input type="text" class="form-control">-->
+    <!--<div class="input-group-addon">-->
+    <!--<span class="glyphicon glyphicon-th"></span>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<script>-->
+    <!--//        $('.datepicker').datepicker({-->
+    <!--//            format: 'mm/dd/yyyy',-->
+    <!--//            startDate: '-3d'-->
+    <!--//        });-->
+    <!--</script>-->
+
+    <!--<div class="col-lg-4">-->
+    <%#= select_tag :region, options_for_select(regions, params[:region]), class: "chosen-select-no-single" %>
+    <!--</div>-->
+    <% if allowed_to? :additional_links?, :property %>
+      <div class="col-lg-2">
+        <div class="input-group">
+          <%= select_tag :moderated_choice,
+                        options_for_select(properties_filter_moderated, params[:moderated_choice]),
+                        include_blank: t(:moderated_choice, scope: :properties),
+                        class: "form-control select2-enable" %>
+
+          <br>
+
+          <%= select_tag :active_choice,
+                        options_for_select(properties_filter_active, params[:active_choice]),
+                        include_blank: t(:active_choice, scope: :properties),
+                        class: "form-control select2-enable" %>
+
+          <br>
+
+          <%= check_box_tag("in_credit", "on", params[:in_credit].present?) %>
+          <%= label_tag("in_credit", t(:in_credit, scope: :properties)) %>
+
+          <br>
+
+          <%= check_box_tag("in_mortgage", "on", params[:in_mortgage].present?) %>
+          <%= label_tag("in_mortgage", t(:in_mortgage, scope: :properties)) %>
+
+          <br>
+
+          <%= check_box_tag("new_building", "on", params[:new_building].present?) %>
+          <%= label_tag("new_building", t(:new_building, scope: :properties)) %>
+
+          <br>
+
+          <%= check_box_tag("from_builder", "on", params[:from_builder].present?) %>
+          <%= label_tag("from_builder", t(:from_builder, scope: :properties)) %>
+
+          <br>
+
+          <%= check_box_tag("bank_property", "on", params[:bank_property].present?) %>
+          <%= label_tag("bank_property", t(:bank_property, scope: :properties)) %>
+
+          <br>
+
+          <%= check_box_tag("with_business", "on", params[:with_business].present?) %>
+          <%= label_tag("with_business", t(:with_business, scope: :properties)) %>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="row">
+          <%= select_tag :country_id,
+                        options_for_select(@countries, params[:country_id]),
+                        include_blank: t(:index, scope: :countries),
+                        class: "form-control select2-enable select-country" %>
+
+          <% if params[:country_id].present? && params[:country_id].to_i > 0 %>
+            <%= select_tag :region_id,
+                          options_for_select(@regions, params[:region_id]),
+                          include_blank: t(:index, scope: :regions),
+                          class: "form-control select2-enable select-region" %>
+          <% else %>
+            <%= select_tag :region_id,
+                          options_for_select([]),
+                          include_blank: t(:index, scope: :regions),
+                          class: "form-control select2-enable select-region",
+                          disabled: "disabled" %>
+          <% end %>
+
+          <% if params[:region_id].present? && params[:region_id].to_i > 0 %>
+            <%= select_tag :city_id,
+                          options_for_select(@cities, params[:city_id]),
+                          include_blank: t(:index, scope: :cities),
+                          class: "form-control select2-enable select-city" %>
+          <% else %>
+            <%= select_tag :city_id,
+                          options_for_select([]),
+                          include_blank: t(:index, scope: :cities),
+                          class: "form-control select2-enable select-city",
+                          disabled: "disabled" %>
+          <% end %>
+
+          <br>
+          <%= select_tag :agency_id,
+                        options_for_select(@agencies, params[:agency_id]),
+                        include_blank: t(:index, scope: :agencies),
+                        class: "form-control select2-enable"%>
+
+        </div>
+      </div>
+
+      <div class="col-lg-3">
+        <div class="input-group">
+          <%= label_tag :sort_property_by, t(:sort_by, scope: :sort), class: 'control-label' %>
+          <%= select_tag :sort_property_by,
+                        options_for_select(properties_filter_sort_options, params[:sort_property_by]),
+                        include_blank: t(:sort_by, scope: :sort),
+                        class: "form-control select2-enable" %>
+        </div>
+
+        <div class="input-group">
+          <%= label_tag :location_type_id, t(:location_types, scope: :properties), class: 'control-label' %>
+          <%= select_tag :location_type_id,
+                        options_for_select(@location_types, params[:location_type_id]),
+                        include_blank: t(:location_types, scope: :properties),
+                        class: "form-control select2-enable" %>
+        </div>
+
+        <br>
+
+        <%= check_box_tag("short_description", "on", params[:short_description].present?) %>
+        <%= label_tag("short_description", t('common.short_description')) %>
+      </div>
+    <% end %>
+
+    <div class="col-lg-3">
+      <div class="input-group">
+        <%= label_tag :property_supertype_id, t('property_supertypes.show'), class: 'control-label' %>
+        <%= select_tag :property_supertype_id,
+                       options_for_select(@property_supertypes, params[:property_supertype_id]),
+                       include_blank: t(:all, scope: :common),
+                       class: "form-control select2-enable select-property-supertype" %>
+      </div>
+
+      <div class="input-group">
+        <%= label_tag :property_type_group_id, t('property_type_groups.show'), class: 'control-label' %>
+        <%= select_tag :property_type_group_id,
+                        options_for_select(@property_type_groups, params[:property_type_group_id]),
+                        include_blank: t(:all, scope: :common),
+                        class: "form-control select2-enable select-property-type-group",
+                        disabled: params[:property_supertype_id].blank? && params[:property_type_group_id].blank? %>
+      </div>
+
+      <div class="input-group">
+        <%= label_tag :property_type_id, t('property_types.show'), class: 'control-label' %>
+        <%= select_tag :property_type_id,
+                       options_for_select(@property_types, params[:property_type_id]),
+                       include_blank: t(:all, scope: :common),
+                       class: "form-control select2-enable select-property-type",
+                       disabled: params[:property_supertype_id].blank? && params[:property_type_id].blank? %>
+      </div>
+    </div>
+
+  </div>
+
+  <br>
+
+  <div class="row text-center">
+    <!--<span class="input-group-btn">-->
+    <%#= button_tag '<i class="glyphicon glyphicon-search"></i>'.html_safe, class: 'btn btn-default' %>
+    <%= search_button %>
+    <!--</span>-->
+  </div>
+<% end %>

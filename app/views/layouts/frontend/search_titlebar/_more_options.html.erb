@@ -1,0 +1,49 @@
+<% content_for :additional_fields do %>
+  <!-- Bedrooms -->
+  <div class="col-md-3">
+    <%= select_tag :bedrooms, options_for_select(filter_options.bedrooms),
+                   class: 'chosen-select-no-single'
+    %>
+  </div>
+
+  <!-- Bathrooms -->
+  <div class="col-md-3">
+    <%= select_tag :bathrooms, options_for_select(filter_options.bathrooms),
+                   class: 'chosen-select-no-single'
+    %>
+  </div>
+<% end %>
+
+<!-- More Search Options -->
+<a href="#" class="more-search-options-trigger" id="country-more-options"
+   data-open-title="<%= t('banner.more_options.more_options_btn') %>"
+   data-close-title="<%= t('banner.more_options.less_options_btn') %>"
+></a>
+
+<div class="more-search-options relative">
+  <div class="more-search-options-container">
+    <%= render template: 'layouts/frontend/filter_content/sidebar/_two_input_field',
+               locals: {
+                 id_first_field: 'area_from',
+                 placeholder_first_filed: t('banner.more_options.min_area'),
+                 value_first_filed: nil,
+                 id_second_field: 'area_to',
+                 placeholder_second_filed: t('banner.more_options.max_area'),
+                 value_second_filed: nil,
+                 data_unit: t('squares.sq_m'),
+                 css_class: 'formatted_number',
+                 column_class: 'col-md-3'
+               }
+    %>
+
+    <!-- Checkboxes -->
+    <div class="checkboxes in-row">
+      <%= check_box_tag('with_price', 'on') %>
+      <%= label_tag('with_price', t(:with_price, scope: :properties)) %>
+    </div>
+    <!-- Checkboxes / End -->
+
+  </div>
+
+</div>
+<!-- More Search Options / End -->

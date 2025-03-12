@@ -1,0 +1,114 @@
+<%
+  display ||= 'none'
+%>
+
+<div id="additional-modal-content" style="display: <%= display %>">
+  <div id="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin: 3px; text-indent: unset;">
+      <span aria-hidden="true">x</span>
+    </button>
+    <h4 class="modal-title" id="client_feedback_modal_label_id"><%= t(:we_help_to_find) %></h4>
+  </div>
+
+  <div id="modal-body">
+    <section id="client-feedback">
+
+      <div id="feedback-message"></div>
+
+      <form method="post"
+            name="feedbackform"
+            id="feedbackform"
+            autocomplete="on"
+      >
+        <div class="row">
+          <div class="col-md-12">
+            <div>
+              <input name="client_feedback_name"
+                     type="text"
+                     id="client_feedback_name"
+                     placeholder="<%= translate_with_asterisk('common.your_name') %>"
+                     required="required"
+                />
+
+              <%= danger_help_block(:name_error, css_class: 'input_error_message') %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div>
+              <input name="client_feedback_phone"
+                     type="text"
+                     id="client_feedback_phone"
+                     placeholder="<%= translate_with_asterisk('common.phone') %>"
+                     required="required"
+                />
+
+              <%= danger_help_block(:phone_error, css_class: 'input_error_message') %>
+            </div>
+            <div class="contact-ways">
+              <%= render partial: 'layouts/frontend/bid/contact_ways',
+                         locals: {
+                           version: :short,
+                           scope: 'modal'
+                         }
+              %>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div>
+              <!-- message -->
+              <textarea name="client_feedback_message"
+                        cols="20"
+                        rows="3"
+                        id="client_feedback_message"
+                        placeholder="<%= translate_with_asterisk('common.message') %>"
+                        spellcheck="true"></textarea>
+
+              <%= danger_help_block(:message_error, css_class: 'input_error_message') %>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <%= check_box_tag('i_agree_client_feedback',
+                            'on',
+                            false,
+                            style: 'display: inline-block; width: auto; height: auto;')
+          %>
+          <%= label_tag('i_agree_client_feedback',
+                        t('common.i_agree', terms: terms_path(I18n.locale), privacy: privacy_path(I18n.locale)).html_safe,
+                        style: 'display: inline;')
+          %>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <div id="modal-footer">
+    <img src="<%= asset_pack_path('images/loader.gif') %>"
+         id="loader_client_modal"
+         class="loader"
+         style="display: none;"
+      />
+
+    <button type="button"
+            class="btn btn-primary"
+            id="submit_client_feedback_btn"
+            disabled
+    >
+      <%= t(:'common.submit_bid') %>
+    </button>
+
+    <!-- <button type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+    >
+      <%= t(:'no_thanks') %>
+    </button> -->
+  </div>
+</div>

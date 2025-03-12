@@ -1,0 +1,48 @@
+<div id="<%= picture.id %>"
+     class="col-md-2 margin-bottom-10"
+>
+  <figure class="figure drag_and_drop_image" draggable="true">
+    <div class="photo-container">
+      <input type="hidden" value="<%= picture.id %>"
+             name="property[pictures_attributes][<%= picture_counter %>][id]"
+             id="property_pictures_attributes_<%= picture_counter %>_id">
+      <%= image_tag picture.pic.mini.url,
+                    class: 'figure-img img-fluid'
+      %>
+
+      <div class="photo-overlay">
+        <div class="photo-icons">
+
+          <!-- Удалить -->
+          <a id="<%= picture.id %>_icon"
+             title="<%= t(:delete, scope: :common) %>"
+             class="photo-icon icon-danger"
+          >
+            <i class="fas fa-times"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </figure>
+
+  <script>
+    $("#<%= picture.id %>_icon").click(function (e) {
+      if (!confirm('<%= t(:photo_delete_confirm, scope: :common) %>')) {
+        return
+      }
+
+      $.ajax({
+        type: 'DELETE',
+        dataType: 'json',
+        url: "<%= picture_path(picture.id) %>",
+        success: function (res) {
+          let id = res['id'];
+          $(`#${id}`).remove();
+        },
+        cache: false,
+        contentType: false,
+        processData: false
+      });
+    });
+  </script>
+</div>

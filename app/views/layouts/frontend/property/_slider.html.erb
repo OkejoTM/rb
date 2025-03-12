@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="row margin-bottom-50">
+    <div class="col-md-12">
+
+      <% unless property.is_active? %>
+        <%= disabled_obj_alert(:properties).html_safe %>
+      <% end %>
+
+      <!-- Slider -->
+      <div class="property-slider default">
+        <% photos_version_slider(property).each do |pic_url| %>
+          <a href="<%= pic_url %>" data-background-image="<%= pic_url %>" class="item mfp-gallery"></a>
+        <% end %>
+      </div>
+
+      <!-- Slider Thumbs -->
+      <div class="property-slider-nav">
+        <%# property.pics_urls.each do |pic_url| %>
+        <% property.mini_pics_urls.each do |pic_url| %>
+          <div class="item"><img src="<%= pic_url %>" alt="<%= property.page_h1 %>"/></div>
+        <% end %>
+      </div>
+
+    </div>
+  </div>
+</div>

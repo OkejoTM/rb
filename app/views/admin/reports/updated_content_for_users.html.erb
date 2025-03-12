@@ -1,0 +1,21 @@
+<% title "#{@page_title}" %>
+<h2><%= generate_date_interval_title(params["reports"]["start_date"], params["reports"]["end_date"]) %></h2>
+
+<br>
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th>email</th>
+    <th><%= t(:properties_count, scope: :common) %></th>
+    <th><%= t(:index, scope: :seo_templates) %></th>
+  </tr>
+
+  <% @user_table.each do |user| %>
+    <tr>
+      <td><%= user[:id] %></td>
+      <td><%= link_to user[:email], updated_content_result_path(reports: request.params["reports"].merge(user: user[:id])) %></td>
+      <td><%= user[:properties_count] %></td>
+      <td><%= user[:seo_templates_count] %></td>
+    </tr>
+  <% end %>
+</table>

@@ -1,0 +1,26 @@
+<!-- Widget -->
+<div class="widget margin-bottom-0">
+
+  <h3><%= t('countries.show') %></h3>
+
+  <div class="row with-forms">
+    <div class="col-md-12">
+      <%= select_tag :country_url,
+                     options_for_select(articles_countries_options, selected_country_url(params)),
+                     class: "chosen-select-no-single" %>
+    </div>
+  </div>
+
+
+  <!--
+  <% Article.all.map(&:country).uniq.each do |country| %>
+    <h4 style="margin-bottom: 15px;">
+      <a href="<%= "/#{I18n.locale}#{articles_path}/#{country.slug}" %>">
+        <%= country_icon(country) %> <%= "#{country.title}" %>
+      </a> <%= "(#{country.articles.count})" %>
+    </h4>
+  <% end %>
+  -->
+
+</div>
+<!-- Widget / End-->

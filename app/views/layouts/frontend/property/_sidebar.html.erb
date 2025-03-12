@@ -1,0 +1,29 @@
+<!-- Sidebar -->
+<div class="col-lg-4 col-md-5">
+  <div class="sidebar sticky right">
+
+    <%= render partial: 'layouts/frontend/property/sidebar/some_buttons',
+               locals: {
+                 property: property
+               }
+    %>
+
+    <% if agency.show_on_website? && !agency.linked_to_disabled_countries? %>
+      <%= render partial: 'layouts/frontend/property/sidebar/agent_widget',
+                 locals: {
+                   agency: agency
+                 }
+      %>
+    <% end %>
+
+    <% unless browser.device.mobile? %>
+      <%= render partial: 'common/ads/sidebar_property_desktop' %>
+    <% end %>
+
+    <%#= render partial: 'layouts/frontend/property/sidebar/mortgage_calculator' %>
+
+    <%#= render partial: 'layouts/frontend/property/sidebar/featured_listings' %>
+
+  </div>
+</div>
+<!-- Sidebar / End -->

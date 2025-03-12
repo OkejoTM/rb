@@ -1,0 +1,98 @@
+<%= form_with url: location_filter, method: "get" do %>
+    <div class="row">
+      <div class="col-lg-11">
+        <div class="input-group">
+          <%= check_box_tag("has_active_and_moderated_property", "on", params[:has_active_and_moderated_property].present?) %>
+          <%= label_tag("has_active_and_moderated_property", t(:has_active_and_moderated_property, scope: :common)) %>
+          <br>
+
+          <%= check_box_tag("has_active_property", "on", params[:has_active_property].present?) %>
+          <%= label_tag("has_active_property", t(:has_active_property, scope: :common)) %>
+          <br>
+
+          <%= check_box_tag("has_property", "on", params[:has_property].present?) %>
+          <%= label_tag("has_property", t(:has_property, scope: :common)) %>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="col-lg-2">
+        <%= select_tag :sort_location_by,
+                       options_for_select(LocationFilterOptions.sort_options, params[:sort_location_by]),
+                       include_blank: t(:sort_by, scope: :sort),
+                       class: "form-control select2-enable" %>
+      </div>
+
+      <div class="col-lg-2">
+        <%= select_tag :has_not_locale,
+                       options_for_select(@locales, params[:has_not_locale]),
+                       include_blank: t(:has_not_locale, scope: :common),
+                       class: "form-control" %>
+      </div>
+
+      <% if type == "country" %>
+          <div class="col-lg-6">
+            <%= text_field_tag :query,
+                               params[:query],
+                               placeholder: t(:enter_search_term, scope: :common),
+                               class: "form-control" %>
+          </div>
+      <% else %>
+          <div class="col-lg-3">
+            <% if type == "city" %>
+                <%= select_tag :continent,
+                               options_for_select(LocationFilterOptions.continents, params[:continent]),
+                               include_blank: t(:all, scope: :common),
+                               class: "form-control select2-enable select-continent" %>
+
+                <% if params[:continent].present? && params[:country_id].to_i > 0 %>
+                    <%= select_tag :country_id,
+                                   options_for_select(@countries, params[:country_id]),
+                                   include_blank: t(:all, scope: :common),
+                                   class: "form-control select2-enable select-country" %>
+                <% else %>
+                    <%= select_tag :country_id,
+                                   options_for_select([], params[:country_id]),
+                                   include_blank: t(:all, scope: :common),
+                                   class: "form-control select2-enable select-country",
+                                   disabled: "disabled" %>
+                <% end %>
+
+                <% if params[:country_id].present? && params[:country_id].to_i > 0 %>
+                    <%= select_tag :region_id,
+                                   options_for_select(@regions, params[:region_id]),
+                                   include_blank: t(:all, scope: :common),
+                                   class: "form-control select2-enable select-region" %>
+                <% else %>
+                    <%= select_tag :region_id,
+                                   options_for_select([]),
+                                   include_blank: t(:all, scope: :common),
+                                   class: "form-control select2-enable select-region",
+                                   disabled: "disabled" %>
+                <% end %>
+            <% end %>
+
+            <% if type == "region" %>
+                <%= select_tag :country_id,
+                               options_for_select(@countries, params[:country_id]),
+                               include_blank: t(:all, scope: :common),
+                               class: "form-control select2-enable select-country" %>
+            <% end %>
+          </div>
+
+          <div class="col-lg-3">
+            <%= text_field_tag :query, params[:query], placeholder: t(:enter_search_term, scope: :common), class: "form-control" %>
+          </div>
+      <% end %>
+
+      <div class="col-lg-2">
+        <div class="btn-group" role="group">
+          <%= search_button %>
+          <button type="submit" class="btn btn-default" name="download_csv">
+            <i class="glyphicon glyphicon-download-alt"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+<% end %>

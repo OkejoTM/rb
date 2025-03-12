@@ -1,0 +1,91 @@
+<%
+  title ||= ""
+  subtitle ||= ""
+  edit_path ||= ""
+  articles ||= nil
+%>
+
+<%#= render partial: 'layouts/frontend/map_titlebar' %>
+
+<!-- Content
+================================================== -->
+<div class="container">
+  <div class="row sticky-wrapper">
+      <% if browser.device.mobile? %>
+        <div class="col-md-4">
+          <%= render partial: 'layouts/frontend/filter_content/filter_h1',
+                     locals: {
+                       title: title,
+                       edit_path: edit_path,
+                       subtitle: subtitle
+                     }
+          %>
+        </div>
+      <% end %>
+
+    <%= render partial: 'layouts/frontend/filter_content/sidebar',
+               locals: { filter_options: filter_options,
+                         filter_properties: filter_properties,
+                         template: template,
+                         currency: currency,
+                         articles: articles } %>
+
+    <div class="col-md-8" id="property-body">
+      <% unless browser.device.mobile? %>
+        <div>
+          <%= render partial: 'layouts/frontend/filter_content/filter_h1',
+                     locals: {
+                       title: title,
+                       edit_path: edit_path,
+                       subtitle: subtitle
+                     }
+          %>
+        </div>
+      <% end %>
+
+      <% unless browser.device.mobile? %>
+      <!-- Кнопка карты -->
+      <div class="row margin-bottom-15">
+        <div class="col-md-12 container">
+          <button id="show_map"
+                  type="button"
+                  class="button fullwidth map_button"
+                  style="background: url(<%= asset_pack_path('images/map_bg.png') %>);">
+            <%= t(:map_show, scope: :common) %>
+          </button>
+        </div>
+      </div>
+      <% end %>
+
+      <!-- Sorting / Layout Switcher -->
+      <div class="row">
+        <%= render partial: 'layouts/frontend/filter_content/listing/sort_by',
+                   locals: {
+                     filter_options: filter_options,
+                     template: template
+                   }
+        %>
+
+        <%= render partial: 'layouts/frontend/filter_content/listing/layout_switcher' %>
+      </div>
+
+      <div id="properties_list">
+        <%= render partial: 'layouts/frontend/filter_content/listing',
+                   locals: {
+                     pagination: pagination,
+                     properties_count: properties_count,
+                     base_url: base_url,
+                     currency: currency
+                   }
+        %>
+      </div>
+      <%= render partial: 'layouts/frontend/additional_offer_to_create_request' %>
+      <div id="map-tab"
+           style="display: none;"
+      >
+        <%= render partial: 'layouts/frontend/common/map' %>
+      </div>
+    </div>
+
+  </div>
+</div>

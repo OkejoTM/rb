@@ -1,0 +1,101 @@
+<!-- Main Search Container -->
+<div class="main-search-container">
+  <h1><%= t(:title, scope: :banner) %></h1>
+
+  <!-- Main Search -->
+  <%= form_with url: "/#{I18n.locale}/main_search", method: "get", class: "main-search-form" do %>
+
+
+    <!-- Хак, чтобы навбар работал при скроллинге корректно -->
+    <div class="search-type" style="display: none;"><label class="active"></label></div>
+    <%#= render partial: 'layouts/frontend/banner/main_search/types' %>
+
+    <!-- Box -->
+    <div class="main-search-box">
+
+      <!-- Main Search Input -->
+      <div class="main-search-input larger-input" id="multiple-datasets">
+        <%= fulltext_search(params[:query]) %>
+        <!-- Desktop devices search button -->
+        <%= button_tag t(:search, scope: :common),
+                       class: 'button hidden-xs hidden-sm'
+        %>
+      </div>
+
+      <!-- Row -->
+      <div class="row with-forms">
+
+        <!-- Property Type -->
+        <div class="col-md-4">
+          <%= select_tag :property_supertype_id, options_for_select(@filter_options.supertypes), class: "chosen-select-no-single" %>
+        </div>
+
+        <!-- Min Price -->
+        <div class="col-md-3">
+
+          <!-- Select Input -->
+          <div class="select-input">
+            <input type="text"
+                   id="price_from"
+                   name="price_from"
+                   class="formatted_number"
+                   placeholder="<%= t(:min_price, scope: :banner) %>"
+                   data-unit="<%= CurrencyRate::DEFAULT_CURRENCY %>"
+                   inputmode="numeric"
+            >
+          </div>
+          <!-- Select Input / End -->
+
+        </div>
+
+
+        <!-- Max Price -->
+        <div class="col-md-3">
+
+          <!-- Select Input -->
+          <div class="select-input">
+            <input type="text"
+                   id="price_to"
+                   name="price_to"
+                   class="formatted_number"
+                   placeholder="<%= t(:max_price, scope: :banner) %>"
+                   data-unit="<%= CurrencyRate::DEFAULT_CURRENCY %>"
+                   inputmode="numeric"
+            >
+          </div>
+          <!-- Select Input / End -->
+
+        </div>
+
+        <div class="col-md-2">
+          <%= select_tag :currency,
+                         options_for_select(active_currency_options_for_filter, current_currency),
+                         class: 'chosen-select-no-single',
+                         id: 'currency'
+          %>
+        </div>
+
+        <!-- Mobile devices search button -->
+        <div class="col-md-4 visible-xs-block visible-sm-block">
+          <%= button_tag t(:search, scope: :common),
+                         class: 'button',
+                         style: 'width: 100%'
+          %>
+        </div>
+      </div>
+      <!-- Row / End -->
+
+      <%= render partial: 'layouts/frontend/banner/main_search/more_options',
+                 locals: {
+                   filter_options: filter_options
+                 }
+      %>
+
+    </div>
+    <!-- Box / End -->
+
+  <% end %>
+  <!-- Main Search -->
+
+</div>
+<!-- Main Search Container / End -->

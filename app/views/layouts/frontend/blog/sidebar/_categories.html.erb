@@ -1,0 +1,16 @@
+<!-- Widget -->
+<div class="widget">
+
+  <h3><%= t('common.categories') %></h3>
+
+  <% ArticleCategory.active.each do |article_category| %>
+    <% if article_category_available?(article_category, params) %>
+      <h4 class="margin-bottom-15 article_category <%= "link_active" if article_category_chosen?(article_category, params) %>"
+          data-category-url="<%= article_category.slug %>">
+        <a href="<%= article_category.seo_path %>"><%= "#{article_category.title}" %></a> <%= "(#{article_category.articles.count})" %>
+      </h4>
+    <% end %>
+  <% end %>
+
+</div>
+<!-- Widget / End-->

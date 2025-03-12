@@ -1,0 +1,22 @@
+<%= form_with model: @object, data: { remote: true, type: :json }, html: { 'data-ajax-submit' => '' } do |f| %>
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
+    <li role="presentation"><a href="#seo" aria-controls="seo" role="tab" data-toggle="tab">SEO</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="general">
+      <%= render partial: "admin/articles/form/general", locals: { f: f } %>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="seo">
+      <%= render partial: "admin/articles/form/seo", locals: { f: f } %>
+    </div>
+  </div>
+
+  <%= render_control_buttons(form: f,
+                             obj: @object,
+                             show_obj_path: @object.seo_path,
+                             confirm_message: t(:delete_confirm, scope: :article)) %>
+<% end %>

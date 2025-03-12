@@ -1,0 +1,24 @@
+<% title "#{@page_title}#{page_number_substr(@pagination.current_page)}" %>
+<h2><%= generate_user_title(@user, @properties_count, params["reports"]["start_date"], params["reports"]["end_date"]) %></h2>
+
+<br>
+<%= render_pagination @pagination %>
+
+<% if @pagination.items.present? %>
+  <table class="table table-striped table-hover table-with-items">
+    <tr>
+      <th>H1</th>
+    </tr>
+
+    <% @pagination.items.each do |property| %>
+      <% property = property.present %>
+      <tr>
+        <td>
+          <%= link_to property.page_h1, property_path(property) %><br>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <h3><%= t(:no_property, scope: :agencies) %></h3>
+<% end %>

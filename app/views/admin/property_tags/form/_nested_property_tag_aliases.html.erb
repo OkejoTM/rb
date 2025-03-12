@@ -1,0 +1,70 @@
+<h3>
+  <%= t('property_tag_aliases.aliases') %>
+  <button type="button"
+          class="btn btn-success"
+          id="add-alias-tag"
+  >
+    <%= t('common.add') %> <i class="glyphicon glyphicon-plus"></i>
+  </button>
+</h3>
+
+<div class="display-none"
+     data-template="property_tag_alias"
+>
+  <div class="form-group row"
+       data-tag-index=""
+       data-form-root
+  >
+    <%= label_tag :name,
+                  t('common.tag_alias_name'),
+                  class: 'col-lg-2 control-label'
+    %>
+
+    <div class="col-lg-6">
+      <div class="input-group">
+        <%= text_field_tag :name,
+                           '',
+                           class: 'form-control tag-input'
+        %>
+        <span class="input-group-btn">
+          <a class="btn btn-default"
+             title="<%= t('common.delete') %>"
+             data-tag-remove-index=""
+          >
+            <i class="glyphicon glyphicon-remove-sign"></i>
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-forms-container>
+  <%= form.fields_for :property_tag_aliases do |tag_form| %>
+    <div class="form-group row"
+         data-tag-index="<%= tag_form.index %>"
+         data-form-root
+    >
+      <%= tag_form.label :name,
+                         t('common.tag_alias_name'),
+                         class: 'col-lg-2 control-label'
+      %>
+
+      <div class="col-lg-6">
+        <div class="input-group">
+          <%= tag_form.text_field :name,
+                                  class: 'form-control'
+          %>
+          <span class="input-group-btn">
+            <a class="btn btn-default"
+               title="<%= t('common.delete') %>"
+               data-tag-remove-index="<%= tag_form.index %>"
+            >
+              <i class="glyphicon glyphicon-remove-sign"></i>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

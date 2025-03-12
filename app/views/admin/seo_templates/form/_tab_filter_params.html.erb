@@ -1,0 +1,228 @@
+<%= f.fields_for :filter_params, object_from_hash(template.filter_params) do |fields| %>
+  <div class="row">
+    <div class="col-md-4">
+      <h4><%= fields.label :main_options, 'Основные параметры фильтра' %></h4>
+    </div>
+  </div>
+
+  <!--room_count-->
+  <div class="row">
+    <div class="col-md-2">
+      <%= fields.label :room_count, 'Комнаты', class: 'control-label' %>
+      <%= fields.select :room_count,
+                        filter_options.room_count,
+                        { include_blank: true },
+                        class: 'form-control' %>
+    </div>
+  </div>
+
+  <!--bedrooms-->
+  <div class="row">
+    <div class="col-md-2">
+      <%= fields.label :bedrooms, 'Спальни', class: 'control-label' %>
+      <%= fields.select :bedrooms,
+                        filter_options.bedrooms,
+                        { include_blank: true },
+                        class: 'form-control' %>
+    </div>
+  </div>
+
+  <!--bedrooms-->
+  <div class="row">
+    <div class="col-md-2">
+      <%= fields.label :bathrooms, 'Ванные', class: 'control-label' %>
+      <%= fields.select :bathrooms,
+                        filter_options.bathrooms,
+                        { include_blank: true },
+                        class: 'form-control' %>
+    </div>
+  </div>
+
+  <!--area_from-->
+  <!--area_to-->
+  <div class="row">
+    <div class="col-md-2">
+      <%= fields.label :area_from, 'Площадь От', class: 'control-label' %>
+      <%= fields.text_field :area_from, class: 'form-control' %>
+    </div>
+
+    <div class="col-md-2">
+      <%= fields.label :area_from, 'Площадь До', class: 'control-label' %>
+      <%= fields.text_field :area_to, class: 'form-control' %>
+    </div>
+  </div>
+
+  <!--plot_area_from-->
+  <!--plot_area_to-->
+  <div class="row">
+    <div class="col-md-2">
+      <%= fields.label :plot_area_from, 'Площадь участка От', class: 'control-label' %>
+      <%= fields.text_field :plot_area_from, class: 'form-control' %>
+    </div>
+
+    <div class="col-md-2">
+      <%= fields.label :plot_area_to, 'Площадь участка До', class: 'control-label' %>
+      <%= fields.text_field :plot_area_to, class: 'form-control' %>
+    </div>
+  </div>
+
+  <!--price_from-->
+  <!--price_to-->
+  <div class="row">
+    <div class="col-md-2">
+      <%= fields.label :price_from, 'Цена От', class: 'control-label' %>
+      <%= fields.text_field :price_from, class: 'form-control' %>
+    </div>
+
+    <div class="col-md-2">
+      <%= fields.label :price_to, 'Цена До', class: 'control-label' %>
+      <%= fields.text_field :price_to, class: 'form-control' %>
+    </div>
+
+    <div class="col-md-2">
+      <%= fields.label :currency, '', class: 'control-label' %><br>
+      <%= fields.select :currency,
+                   options_for_select(CurrencyRate::ACTIVE_CURRENCIES,
+                                      template.filter_params['currency'].presence || CurrencyRate::DEFAULT_CURRENCY),
+                   class: "form-control"
+      %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <%= fields.check_box :with_price, {}, 'on' %>
+      <%= fields.label :with_price, t(:with_price, scope: :properties), class: 'control-label' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <%= fields.label :construction_phase, t(:construction_phase, scope: :properties), class: 'control-label' %>
+      <%= fields.select :construction_phase, filter_options.construction_phase, { include_blank: true }, class: "form-control" %>
+    </div>
+  </div>
+
+  <!--more_options-->
+  <div class="row">
+    <div class="col-md-4">
+      <h4><%= fields.label :more_options, 'Дополнительные параметры фильтра' %></h4>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <%= fields.label :location_type_id, t(:location, scope: :common), class: 'control-label' %>
+      <%= fields.select :location_type_id, filter_options.location_types, { include_blank: true }, class: "form-control" %>
+    </div>
+  </div>
+
+  <!--more_options_range-->
+  <div class="row">
+    <div class="col-md-2">
+      <%= fields.label :rentable_area, t(:rentable_area, scope: :properties), class: 'control-label' %>
+      <%= fields.text_field :rentable_area, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2">
+      <%= fields.label :rental_yield_per_year, t(:rental_yield_per_year, scope: :properties), class: 'control-label' %>
+      <%= fields.text_field :rental_yield_per_year, class: 'form-control' %>
+    </div>
+
+    <div class="col-md-2">
+      <%= fields.label :rental_yield_per_month, t(:rental_yield_per_month, scope: :properties), class: 'control-label' %>
+      <%= fields.text_field :rental_yield_per_month, class: 'form-control' %>
+    </div>
+
+    <div class="col-md-2">
+      <%= fields.label :min_absolute_income, t(:min_absolute_income, scope: :properties), class: 'control-label' %>
+      <%= fields.text_field :min_absolute_income, class: 'form-control' %>
+    </div>
+
+    <div class="col-md-2">
+      <%= fields.label :min_amount_of_own_capital, t(:min_amount_of_own_capital, scope: :properties), class: 'control-label' %>
+      <%= fields.text_field :min_amount_of_own_capital, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2">
+      <%= fields.label :level_count, t(:level_count, scope: :properties), class: 'control-label' %>
+      <%= fields.text_field :level_count, class: 'form-control' %>
+    </div>
+
+    <div class="col-md-2">
+      <%= fields.label :level, t(:level, scope: :properties), class: 'control-label' %>
+      <%= fields.text_field :level, class: 'form-control' %>
+    </div>
+
+    <div class="col-md-4">
+      <br>
+
+      <%= fields.check_box :not_last_level, {}, 'on' %>
+      <%= fields.label :not_last_level, t(:not_last_level, scope: :properties), class: 'control-label' %>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <% @property_tag_categories.each do |property_tag_category| %>
+      <div class="col-lg-3">
+        <h4><%= property_tag_category.title %></h4>
+
+        <% property_tag_category.property_tags.each do |property_tag| %>
+          <div class="form-group row">
+            <%= f.label :studio, property_tag.title, class: 'col-lg-8 control-label' %>
+            <div class="col-lg-4">
+              <%= check_box_tag "seo_template[property_tag_ids][]",
+                                property_tag.id,
+                                @template.property_tag_ids.include?(property_tag.id),
+                                class: "form-check"
+              %>
+            </div>
+          </div>
+        <% end %>
+
+      </div>
+    <% end %>
+  </div>
+
+
+  <!--sort_by-->
+  <div class="row">
+    <div class="col-md-4">
+      <h4><%= fields.label :main_options, 'Сортировка' %></h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <%= fields.select :sort_by,
+                        filter_options.sort_by,
+                        { include_blank: true },
+                        class: 'form-control' %>
+    </div>
+  </div>
+
+  <!--
+    <div class="col-md-2 compact-checklist">
+      <%#= fields.label :categories, 'Категории', class: 'compact-checklist-title' %>
+      <%#= fields.collection_check_boxes :categories, CampSuperCategory.all.map { |c| object_from_hash(id: c.id.to_s, plural: c.plural) }, :id, :plural do |builder| %>
+        <p>
+          <%#= builder.check_box %> <%#= builder.text %>
+        </p>
+      <%# end %>
+    </div>
+
+    <div class="col-md-2 compact-checklist">
+      <%#= fields.label :prices, 'Цены', class: 'compact-checklist-title' %>
+      <%#= fields.collection_check_boxes :prices, Camp::PRICE_RANGES, :index, :range do |builder| %>
+        <p>
+          <%#= builder.check_box %> <%#= builder.text %>
+        </p>
+      <%# end %>
+    </div>
+-->
+<% end %>
+<br>

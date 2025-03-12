@@ -1,0 +1,166 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+  </button>
+  <h4 class="modal-title" id="myModalLabel"><%= t('seo_templates.seo_fields_edition') + page.seo_template.name %></h4>
+</div>
+
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6">
+      <strong><%= t('common.field') %></strong>
+    </div>
+    <div class="col-md-6">
+      <strong><%= t('seo_templates.seo_value') %></strong>
+    </div>
+  </div>
+
+  <br>
+
+  <%= form_with url: {}, id: 'fieldsForm' do %>
+    <%= fields_for :seo_location_page, object_from_hash(page.attributes), id: 'fields_form' do |f| %>
+      <%= f.hidden_field :id %>
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :h1, 'H1 RU', class: 'control-label' %>
+        </div>
+        <div class="col-md-6">
+          <%= f.text_field :h1_ru, class: 'form-control' %>
+        </div>
+        <div class="col-md-6">
+          <%= string_or_dummy(template_fieldset.h1_ru, t('property_tag_categories.not_stated')) %>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :h1, 'H1 EN', class: 'control-label' %>
+        </div>
+        <div class="col-md-6">
+          <%= f.text_field :h1_en, class: 'form-control' %>
+        </div>
+        <div class="col-md-6">
+          <%= string_or_dummy(template_fieldset.h1_en, t('property_tag_categories.not_stated')) %>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :title_ru, 'Title RU', class: 'control-label' %>
+        </div>
+        <div class="col-md-6">
+          <%= f.text_field :title_ru, class: 'form-control' %>
+        </div>
+        <div class="col-md-6">
+          <%= string_or_dummy(template_fieldset.title_ru, t('property_tag_categories.not_stated')) %>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :title_en, 'Title EN', class: 'control-label' %>
+        </div>
+        <div class="col-md-6">
+          <%= f.text_field :title_en, class: 'form-control' %>
+        </div>
+        <div class="col-md-6">
+          <%= string_or_dummy(template_fieldset.title_en, t('property_tag_categories.not_stated')) %>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :meta_description_ru, t('seo.meta_description_ru'), class: 'control-label' %>
+        </div>
+        <div class="col-md-6">
+          <%= f.text_area :meta_description_ru, class: 'form-control' %>
+        </div>
+        <div class="col-md-6">
+          <%= string_or_dummy(template_fieldset.meta_description_ru, t('property_tag_categories.not_stated')) %>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :meta_description_en, t('seo.meta_description_en'), class: 'control-label' %>
+        </div>
+        <div class="col-md-6">
+          <%= f.text_area :meta_description_en, class: 'form-control' %>
+        </div>
+        <div class="col-md-6">
+          <%= string_or_dummy(template_fieldset.meta_description_en, t('property_tag_categories.not_stated')) %>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :description_ru, t('seo.description_ru'), class: 'control-label' %>
+        </div>
+        <div class="col-md-6">
+          <%= f.text_area :description_ru, class: "form-control classic_ckeditor" %>
+        </div>
+        <div class="col-md-6">
+          <%= string_or_dummy(template_fieldset.description_ru, t('property_tag_categories.not_stated')) %>
+        </div>
+      </div>
+
+      <br>
+
+      <div class="row">
+        <div class="col-md-12">
+          <%= f.label :description_en, t('seo.description_en'), class: 'control-label' %>
+        </div>
+        <div class="col-md-6">
+          <%= f.text_area :description_en, class: "form-control classic_ckeditor" %>
+        </div>
+        <div class="col-md-6">
+          <%= string_or_dummy(template_fieldset.description_en, t('property_tag_categories.not_stated')) %>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
+  <br>
+
+  <%= snippets_description(:area) %>
+  <br>
+  <%= snippets_description(:property) %>
+  <br>
+  <%= snippets_description(:common) %>
+</div>
+
+<div class="modal-footer">
+  <a href="#" data-dismiss="modal" class="btn btn-default"><%= t('common.cancel') %></a>
+  <a href="#" id="fieldsSaveButton" class="btn btn-primary"><%= t('common.save') %></a>
+</div>
+
+<%#= javascript_pack_tag 'admin' %>
+
+<script>
+    $(function () {
+        $('#fieldsSaveButton').on('click', function () {
+            // $('#page_description').val(editor.getData());
+
+            $.ajax({
+                url: '/seo_templates/update_seo_page',
+                type: 'PUT',
+                data: $('#fieldsForm').serializeArray()
+            }).done(function (data) {
+                $('#area_fields_modal').modal('hide');
+            }).error(function (data) {
+                alert('error');
+            })
+        });
+    });
+</script>

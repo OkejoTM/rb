@@ -1,0 +1,17 @@
+<% title @page_title %>
+<p id="notice"><%= notice %></p>
+
+<%= render_location_show(location: @region) %>
+
+<p>
+    <strong><%= t(:show, scope: :countries) %>:</strong>
+    <%= link_to @region.country&.name, country_path(@region.country) if @region.country.present? %>
+</p>
+
+<p>
+
+  <strong><%= t(:region_center, scope: :areas) %>:</strong>
+  <%= link_to @region_center&.name, city_path(@region_center) if @region_center.present? %>
+</p>
+
+<%= link_to t(:edit, scope: :common), edit_region_path(@region), class: 'btn btn-default', title: t(:edit, scope: :common) %>

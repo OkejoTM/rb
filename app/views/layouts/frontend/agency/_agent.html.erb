@@ -1,0 +1,28 @@
+<div class="col-lg-3 col-md-3 col-xs-6">
+  <div class="agent">
+
+    <div class="agent-avatar">
+      <% if agent.avatar&.pic? %>
+        <img src="<%= agent.avatar.pic.middle.url %>"/>
+      <% end %>
+    </div>
+
+    <div class="agent-content">
+      <div class="agent-name">
+        <h4><%= agent.name %></h4>
+        <span><%= agent.role %></span>
+      </div>
+
+      <% if agent.contacts.present? && show_agency_contacts?(agent.agency) %>
+        <ul class="agent-contact-details">
+          <% agent.contacts.each do |contact| %>
+            <li title="<%= contact&.title %>"><i class="<%= contact&.icon_class.html_safe %>"></i><%= contact&.value %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <div class="clearfix"></div>
+    </div>
+
+  </div>
+</div>

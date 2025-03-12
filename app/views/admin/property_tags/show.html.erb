@@ -1,0 +1,34 @@
+<% title @page_title %>
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong><%= "Title Ru" %>:</strong>
+  <%= @object.title_ru %>
+</p>
+
+<p>
+  <strong><%= "Title En" %>:</strong>
+  <%= @object.title_en %>
+</p>
+
+<p>
+  <strong><%= "Property Tag Category" %>:</strong>
+  <%= @object.property_tag_category&.title_ru %>
+</p>
+
+<p>
+  <strong><%= "Property Supertype" %>:</strong>
+  <%= @object.property_supertype&.title_ru %>
+</p>
+
+<p>
+  <strong><%= t(:moderated, scope: :property_tags) %>:</strong>
+  <%= Utils::Html::bool_glyphicon(@object.moderated) %>
+</p>
+
+<p>
+  <strong><%= t(:show_in_filter, scope: :common).capitalize %>:</strong>
+  <%= Utils::Html::bool_glyphicon(@object.show_in_filter) %>
+</p>
+
+<%= link_to t(:edit, scope: :common), edit_property_tag_path(@object), class: 'btn btn-default', title: t(:edit, scope: :common) %>

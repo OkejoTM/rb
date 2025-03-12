@@ -1,0 +1,36 @@
+<%
+  is_popular ||= false
+  show_country_icon ||= false
+  cant_follow = area.coming_soon? && current_user.blank?
+%>
+
+<!-- Image Box -->
+<% if cant_follow %>
+  <div class="img-box" data-background-image="<%= area&.image&.middle_horizontal&.url %>">
+<% else %>
+  <a href="<%= area.seo_path %>" class="img-box" data-background-image="<%= area&.image&.middle_horizontal&.url %>" target="_blank">
+<% end %>
+
+  <% if is_popular %>
+    <%= render partial: 'layouts/frontend/places/badge' %>
+  <% end %>
+
+  <div class="img-box-content visible">
+    <h4>
+      <% if show_country_icon %>
+        <%= country_icon(area, class: "media-middle", style: "font-size: 20px; margin-bottom: 5px;") %>
+      <% end %>
+      <%= area.title %>
+    </h4>
+    <% if area.coming_soon? %>
+      <h4><%= t(:coming_soon) %>...</h4>
+    <% else %>
+      <span><%= page_count_objects(area.active_and_moderated_properties_count) %></span>
+    <% end %>
+  </div>
+
+<% if cant_follow %>
+  </div>
+<% else %>
+  </a>
+<% end %>

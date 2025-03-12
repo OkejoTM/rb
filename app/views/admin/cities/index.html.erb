@@ -1,0 +1,58 @@
+<% title "#{@page_title}#{page_number_substr(@pagination.current_page)}" %>
+
+<h2><%= t(:index, scope: :cities) %>
+  <%= link_to t("common.add"), new_city_path, class: 'btn btn-primary' %>
+</h2>
+
+<br>
+<%= render_location_filter(location_filter: "/cities", type: "city") %>
+<br>
+
+<%= link_to t(:without_translation, scope: :cities), "#{translations_cities_path}?has_active_and_moderated_property=on" %>
+
+<br>
+<%= render_pagination @pagination %>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= t(:name, scope: :areas) %></th>
+    <th><%= t(:show, scope: :regions) %></th>
+    <th><%= t(:show, scope: :countries) %></th>
+    <th><%= t(:active_short, scope: :properties) %></th>
+    <th><%= t(:popular, scope: :common) %></th>
+    <th><%= t(:slug, scope: :areas) %></th>
+    <th><%= "#{t(:short_properties_count, scope: :common)}/#{t(:short_active, scope: :common)}/#{t(:short_active_and_moderated, scope: :common)}" %></th>
+    <th><%= t("common.seo_pages") %></th>
+    <th></th>
+  </tr>
+
+  <% @pagination.items.order(is_popular: :desc).each do |city| %>
+      <tr>
+        <td><%= city.id %></td>
+        <td>
+          en: <%= city.title_en %><br>
+          ru: <%= city.title_ru %>
+        </td>
+        <td><%= city.region&.title %></td>
+        <td><%= city.country&.title %></td>
+        <td><%= Utils::Html::bool_glyphicon(city.is_active) %></td>
+        <td><%= Utils::Html::bool_glyphicon(city.is_popular) %></td>
+        <td><%= link_to city.slug, city.seo_path %></td>
+        <td>
+          <%= link_to city.properties_count, properties_path(city_id: city.id) %> /
+          <%= link_to city.active_properties_count, properties_path(city_id: city.id, active: "on") %> /
+          <%= link_to city.active_and_moderated_properties_count, properties_path(city_id: city.id, active: "on", moderated: "on") %>
+        </td>
+        <td><%= link_to city.seo_location_pages.count, city_browse_pages_path(city) %></td>
+        <td>
+          <%= render_compact_control_buttons(obj: city,
+                                             edit_obj_path: edit_city_path(city),
+                                             confirm_message: t(:delete_confirm, scope: :cities)) %>
+        </td>
+      </tr>
+  <% end %>
+</table>
+
+<%= render_pagination @pagination %>
+<br>

@@ -1,0 +1,13 @@
+<% title t("meta.favorite_title") %>
+<% #meta_description t("meta.index_description") %>
+<% meta_robots "noindex, follow" %>
+
+<div class="margin-bottom-30">
+  <%= render partial: 'layouts/frontend/titlebar' %>
+</div>
+
+<div class="container">
+  <%= render partial: 'layouts/frontend/favorite/listings',
+             locals: { properties: pagination }
+  %>
+</div>

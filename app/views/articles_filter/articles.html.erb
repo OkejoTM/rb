@@ -1,0 +1,13 @@
+<% title "#{@seo_page.title}#{page_number_substr(@current_page)}" %>
+<% meta_description "#{@seo_page.meta_description}#{page_number_substr(@current_page)}" %>
+
+<% meta_canonical_page(@meta_canonical_path) if @meta_canonical_path.present? %>
+
+<!--<div id="titlebar_breadcrumbs">-->
+<div class="margin-bottom-30">
+  <%= render partial: 'layouts/frontend/titlebar' %>
+</div>
+<!--</div>-->
+
+<%= render partial: 'layouts/frontend/blog', locals: { title: @seo_page.h1,
+                                                       pagination: @pagination } %>

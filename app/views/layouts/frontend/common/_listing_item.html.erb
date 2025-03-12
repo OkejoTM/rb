@@ -1,0 +1,133 @@
+<%
+  featured ||= false
+  enable_add_to_bookmarks ||= true
+  enable_add_to_compare ||= true
+  disable_agency ||= false
+
+  currency ||= current_currency
+
+  property_seo_path = property.seo_path
+
+  is_favorite = property.favorite?(cookies)
+  is_compare = property.favorite?(cookies, :compare)
+  photo_ver = photos_version(property)
+  img_path_property = photo_ver.present? ? photo_ver.first : asset_pack_path('images/listing-01.jpg')
+  icon_compare_path = asset_pack_path('_/_/_/vendor/assets/components/findeo/images/compare-icon.svg')
+  icon_compare_path_alt = asset_pack_path('_/_/_/vendor/assets/components/findeo/images/compare-icon-yellow.svg')
+%>
+<!-- Listing Item -->
+<div class="listing-item">
+
+  <a href="<%= property_seo_path %>" class="listing-img-container" style="height: auto;" target="_blank" rel="nofollow">
+
+    <div class="listing-badges">
+      <% if featured %>
+        <span class="featured">Featured</span>
+      <% end %>
+
+      <span><%= property.sale_type %></span>
+    </div>
+
+    <div class="listing-img-content">
+      <span class="listing-price">
+        <% if property.for_sale %>
+          <%= Formatters::PriceFormatter.format_price(property, currency: currency) %>
+          <i><%= Formatters::PriceFormatter.format_price_for_area(property, currency: currency) %></i>
+        <% else %>
+          $900 <i>monthly</i>
+        <% end %>
+      </span>
+
+      <% if enable_add_to_bookmarks %>
+        <span
+          class="like-icon with-tip <%= property.favorite_css_class(cookies) %>"
+          data-tip-content="<%= is_favorite ? t('common.remove_from_bookmark') : t('common.add_to_bookmark') %>"
+          data-tip-content-alt="<%= is_favorite ? t('common.add_to_bookmark') : t('common.remove_from_bookmark') %>"
+          data-property_id="<%= property.id %>"
+        ></span>
+      <% end %>
+
+      <% if enable_add_to_compare %>
+        <span
+          id="compare-button-<%= property.id %>"
+          class="compare-button with-tip <%= property.favorite_css_class(cookies, :compare) %>"
+          style="<%= "background-image: url(#{icon_compare_path_alt})" if is_compare %>"
+          data-call_place="card"
+          data-property_id="<%= property.id %>"
+          data-property_title="<%= property.short_page_title %>"
+          data-seo_path="<%= property_seo_path %>"
+          data-img_path="<%= img_path_property %>"
+          data-sale_type="<%= property.sale_type %>"
+          data-price="<%= Formatters::PriceFormatter.format_price(property, currency: currency) %>"
+          data-tip-content="<%= is_compare ? t('common.remove_from_compare') : t('common.add_to_compare') %>"
+          data-tip-content-alt="<%= is_compare ? t('common.add_to_compare') : t('common.remove_from_compare') %>"
+          data-compare_image="<%= icon_compare_path %>"
+          data-compare_image_alt="<%= icon_compare_path_alt %>"
+        ></span>
+      <% end %>
+    </div>
+
+    <%= render partial: 'layouts/frontend/carousel/images', locals: { pictures: photo_ver } %>
+    <%#= render partial: 'layouts/frontend/carousel/images', locals: { pictures: property.pics_urls } %>
+
+  </a>
+
+  <div class="listing-content">
+
+    <div class="listing-title">
+      <h4><a href="<%= property_seo_path %>"
+             target="_blank"
+             title="<%= property.short_page_title %>"
+             rel="nofollow"
+             style="font-size: 19px;"><%= property.short_page_title %></a></h4>
+      <% if property.has_coordinates? %>
+        <span href="<%= map_point_link(property.latitude, property.longitude) %>"
+              class="listing-address popup-gmaps"
+              style="cursor: pointer;">
+          <i class="fas fa-map-marker"></i>
+          <%= property.address %>
+        </span>
+      <% else %>
+        <%= property.address %>
+      <% end %>
+
+      <a href="<%= property_seo_path %>"
+         class="details button border"
+         style="top: 51%;"
+         target="_blank"
+         rel="nofollow"><%= t(:details, scope: :common) %></a>
+    </div>
+
+    <%= listing_features(property) %>
+
+    <% if property.agency.show_on_website? && !disable_agency && property.country.show_agencies_on_website %>
+      <div class="listing-footer">
+        <a href="<%= agencies_list_item_path(I18n.locale, property.agency.slug) %>" target="_blank"><i class="fas fa-user"></i> <%= property.agency&.name %>
+        </a>
+        <!--<span><i class="fas fa-calendar"></i> <%#= days_ago_pluralize(property) %></span>-->
+      </div>
+    <% end %>
+
+  </div>
+
+</div>
+<% if defined?(property_counter) && property_counter == 2 %>
+  <div style="margin: 0 0 30px 0;">
+    <% if browser.device.mobile? %>
+      <%= render partial: 'common/ads/property_list_mobile' %>
+    <% else %>
+      <%= render partial: 'common/ads/property_list_desktop' %>
+    <% end %>
+  </div>
+<% end %>
+
+<% if defined?(property_counter) && property_counter == 11 %>
+  <div style="margin: 0 0 30px 0;">
+    <% if browser.device.mobile? %>
+      <%= render partial: 'common/ads/property_list_mobile3' %>
+    <% else %>
+      <%= render partial: 'common/ads/property_list_desktop3' %>
+    <% end %>
+  </div>
+<% end %>
+<!-- Listing Item / End -->

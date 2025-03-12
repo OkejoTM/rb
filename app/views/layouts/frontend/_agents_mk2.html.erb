@@ -1,0 +1,33 @@
+<!-- Agents Section -->
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3 class="headline centered margin-top-20 margin-bottom-20">
+        <%= t(:popular_agencies, area_locative: country.title_prepositional) -%>
+      </h3>
+    </div>
+
+    <div class="col-md-12">
+      <div class="carousel property-main-carousel">
+        <!-- Agents Container -->
+        <% agencies.each do |agency| %>
+          <div class="carousel-item">
+            <%= render partial: 'layouts/frontend/agents/agent_mk3', locals: { agency: agency } %>
+          </div>
+        <% end %>
+        <!-- Agents Container / End -->
+
+        <% if country.agencies.count > FrontendController::COUNTRY_AGENCIES_COUNT %>
+          <div class="carousel-item">
+            <%= render partial: 'layouts/frontend/agents/agent_mk3_default',
+                       locals: { agencies_count: country.visible_agencies.count,
+                                 agencies_path: frontend_country_agencies_path(country.slug) } %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- Agents Section / End -->

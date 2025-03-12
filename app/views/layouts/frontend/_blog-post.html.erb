@@ -1,0 +1,76 @@
+<%
+  edit_path = edit_article_path(article)
+%>
+
+<!-- Content
+================================================== -->
+<div class="container">
+
+  <!-- Blog Posts -->
+  <div class="blog-page">
+    <div class="row">
+
+      <% unless article.is_active? %>
+        <%= disabled_obj_alert(:articles).html_safe %>
+      <% end %>
+
+      <!-- Post Content -->
+      <div class="col-md-12">
+
+        <!-- Blog Post -->
+        <div class="blog-post single-post">
+
+          <!-- Img -->
+          <img class="post-img" src="images/blog-post-02a.jpg" alt="">
+
+          <!-- Content -->
+          <div class="post-content">
+            <h1>
+              <%= article.h1 %>
+
+              <%= frontend_edit_icon(edit_path) %>
+            </h1>
+
+            <ul class="post-meta">
+              <li><%= date_format(article.created_at) %></li>
+              <!--<li><a href="#">5 Comments</a></li>-->
+            </ul>
+
+            <%= sanitize article.description %>
+            <!--
+            <p></p>
+
+            <div class="post-quote">
+              <span class="icon"></span>
+              <blockquote>
+                Mauris aliquet ultricies ante, non faucibus ante gravida sed. Sed ultrices pellentesque purus, vulputate volutpat ipsum hendrerit sed neque sed sapien rutrum.
+              </blockquote>
+            </div>
+            -->
+
+            <%#= render partial: 'layouts/frontend/blog-post/shared_buttons' %>
+
+          </div>
+        </div>
+        <!-- Blog Post / End -->
+
+        <%#= render partial: 'layouts/frontend/blog-post/post_navigation' %>
+        <%#= render partial: 'layouts/frontend/blog-post/about_author' %>
+        <%#= render partial: 'layouts/frontend/blog-post/related_posts' %>
+        <%#= render partial: 'layouts/frontend/blog-post/reviews' %>
+        <%#= render partial: 'layouts/frontend/blog-post/add_comment' %>
+      </div>
+      <!-- Content / End -->
+
+      <!-- Sidebar
+      ================================================== -->
+
+      <!-- Widgets -->
+      <!--<div class="col-md-4">-->
+        <%#= render partial: 'layouts/frontend/blog/sidebar' %>
+      <!--</div>-->
+    </div>
+    <!-- Sidebar / End -->
+
+  </div>
+</div>

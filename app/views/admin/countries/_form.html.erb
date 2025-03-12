@@ -1,0 +1,34 @@
+<%= form_with model: @country, data: { remote: true, type: :json }, html: { 'data-ajax-submit' => '' } do |f| %>
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+      <a href="#general" aria-controls="general" role="tab" data-toggle="tab">General</a></li>
+    <li role="presentation">
+      <a href="#alternames" aria-controls="alternames" role="tab" data-toggle="tab">Alternate names</a></li>
+    <% unless @country.new_record? %>
+      <li role="presentation"><a href="#seo_pages" aria-controls="seo_pages" role="tab" data-toggle="tab">SEO pages</a>
+      </li>
+    <% end %>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="general">
+      <%= render partial: "admin/countries/form/general", locals: {f: f, cities: @cities} %>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="alternames">
+      <%= render_location_alter_names(form: f) %>
+    </div>
+
+    <% unless @country.new_record? %>
+      <div role="tabpanel" class="tab-pane" id="seo_pages">
+        <%= render_location_seo_pages(form: f, location: @country) %>
+      </div>
+    <% end %>
+  </div>
+
+  <%= render_control_buttons(form: f,
+                             obj: @country,
+                             confirm_message: t(:delete_confirm, scope: :country)) %>
+<% end %>

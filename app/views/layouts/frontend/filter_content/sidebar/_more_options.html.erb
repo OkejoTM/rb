@@ -1,0 +1,46 @@
+<% #@deprecated %>
+
+<!-- TODO отрефакторить -->
+
+<!-- More Search Options -->
+<a href="#"
+   class="more-search-options-trigger margin-bottom-10 margin-top-30 <%= 'active' if filter_properties.show_more_options?(params) %>"
+   data-open-title="<%= t(:additional_features) %>"
+   data-close-title="<%= t(:additional_features) %>"></a>
+
+<div class="more-search-options relative <%= 'active' if filter_properties.show_more_options?(params) %>"
+     <%= 'style="display: block;"'.html_safe if filter_properties.show_more_options?(params) %>>
+
+  <div>
+
+    <% filter_properties.more_options_range.each do |la, data_unit| %>
+      <%= render partial: 'layouts/frontend/filter_content/sidebar/two_input_field',
+                 locals: {
+                     label: t(la, scope: :properties),
+                     id_first_field: "#{la}_from",
+                     placeholder_first_filed: t(:from, scope: :common),
+                     value_first_filed: value_for_filter("#{la}_from".to_sym, template),
+                     id_second_field: "#{la}_to",
+                     placeholder_second_filed: t(:to, scope: :common),
+                     value_second_filed: value_for_filter("#{la}_to".to_sym, template),
+                     data_unit: data_unit,
+                     css_class: 'formatted_number'
+                 }
+      %>
+    <% end %>
+
+  </div>
+
+  <!-- Checkboxes -->
+  <div class="checkboxes one-in-row margin-bottom-10">
+
+    <% filter_properties.more_options_bool.each do |la| %>
+      <%= check_box_tag(la.to_s, "on", checkbox_value_for_filter(la, template)) %>
+      <%= label_tag(la.to_s, t(la, scope: :properties)) %>
+    <% end %>
+
+  </div>
+  <!-- Checkboxes / End -->
+
+</div>
+<!-- More Search Options / End -->

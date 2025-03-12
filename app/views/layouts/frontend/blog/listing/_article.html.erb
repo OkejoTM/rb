@@ -1,0 +1,36 @@
+<%
+  edit_path = edit_article_path(article)
+%>
+
+<!-- Blog Post -->
+<div class="blog-post blog-post-hover">
+  <a href="<%= article.seo_path %>">
+    <!-- Img -->
+    <!--
+    <a href="blog-post.html" class="post-img">
+      <img src="images/blog-post-01a.jpg" alt="">
+    </a>
+    -->
+
+    <!-- Content -->
+    <div class="post-content">
+
+      <h3>
+        <%= article.h1 %>
+
+        <%= frontend_edit_icon(edit_path) %>
+      </h3>
+      <!--<h3><a href="<%= article.seo_path %>"><%= article.h1 %></a></h3>-->
+
+      <ul class="post-meta">
+        <li><%= date_format(article.created_at) %></li> <!-- Должно зависеть отлокали -->
+        <!--<li>Novemer 12, 2016</li>-->
+        <!--<li><a href="#">5 Comments</a></li>-->
+      </ul>
+
+      <span style="color: #707070;"><%= article.short_description.html_safe %></span>
+
+    </div>
+  </a>
+</div>
+<!-- Blog Post / End -->
