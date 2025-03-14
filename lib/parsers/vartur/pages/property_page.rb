@@ -31,7 +31,6 @@ class Parsers::Vartur::Pages::PropertyPage
         property_attrs = merge_attributes(en_attrs, ru_attrs)
         next if property_attrs.blank?
 
-        # Сохраняем используя EN версию как основную ссылку
         process_parsed(urls[:en], property_attrs)
       rescue => e
         @logger.error("Ошибка при парсинге. #{urls[:en]}\n#{e.message}\n#{e.backtrace.first}\n")
@@ -58,7 +57,9 @@ class Parsers::Vartur::Pages::PropertyPage
           bedroom_count: :bedroom_count,
           sale_price: :sale_price,
           description_en: :description,
-          area_unit: :area_unit
+          area_unit: :area_unit,
+          parsed: :parsed,
+          moderated: :moderated
         },
         ru: {
           h1_ru: :h1,
@@ -84,7 +85,7 @@ class Parsers::Vartur::Pages::PropertyPage
     end
 
     def property_upsert
-      @property_upsert ||= Parsers::Vartur::Operations::Property::Upsert.new
+      @property_upsert = Parsers::Vartur::Operations::Property::Upsert.new
     end
 
     def process_parsed(property_url, attrs)

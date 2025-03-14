@@ -40,7 +40,7 @@ class Parsers::Vartur::Pages::SearchPage < Parser::BasePage
   private
 
     def parse_property_urls(page)
-      links = page.css('td.whitespace-nowrap.px-2.py-4.w-48 a').map { |a| a['href'] }
+      links = page.css('td.whitespace-nowrap.px-2.py-4.w-48.min-w-40 a').map { |a| a['href'] }.uniq
 
       links.map do |url|
         property_id = url.match(/\d+$/).to_s

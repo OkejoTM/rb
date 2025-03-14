@@ -22,7 +22,7 @@ class Parsers::Vartur::Schema
       new_properties, existed_property_urls = *separate_properties(property_urls)
       deactivate_not_founded_properties(AGENCY_URL, existed_property_urls)
       log_separated_properties(new_properties, existed_property_urls)
-      parse_properties(property_urls, AGENCY_URL)
+      parse_properties(property_urls)
 
       true
     rescue => e
@@ -61,13 +61,12 @@ class Parsers::Vartur::Schema
     end
 
     def deactivate_not_founded_properties(agency_url, existed_property_urls)
-      en_urls = existed_property_urls.to_a.pluck(:en)
 
       ::Property
         .parsed
         .joins(:agency)
         .where('agencies.parse_source': agency_url)
-        .where.not(external_link: en_urls)
+        .where.not(external_link: existed_property_urls)
         .update_all(is_active: false)
     rescue => e
       raise 'Ошибка при деактивации старых недвижимостей'
@@ -79,7 +78,7 @@ class Parsers::Vartur::Schema
       logger.info(separated_properties_info)
     end
 
-    def parse_properties(property_urls, agency_url)
+    def parse_properties(property_urls)
       property_page_parser = Parsers::Vartur::Pages::PropertyPage.new(agent, logger)
       property_page_parser.call(property_urls)
       logger.info('Парсинг завершен')

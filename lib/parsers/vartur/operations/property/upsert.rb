@@ -7,7 +7,7 @@ class Parsers::Vartur::Operations::Property::Upsert
   AGENCY_URL = 'www.vartur.com'
 
   def call(property_url, attributes)
-    @entity = find_existing(property_url, attributes)
+    @entity = find_existing(property_url)
 
     if @entity.new_record?
       add_country(attributes, countries: countries_preload)
@@ -33,7 +33,7 @@ class Parsers::Vartur::Operations::Property::Upsert
       %i[ru en]
     end
 
-    def find_existing(property_url, attributes)
+    def find_existing(property_url)
       existed_properties = ::Property.includes(:country,
                                                :region,
                                                :city,
@@ -44,13 +44,13 @@ class Parsers::Vartur::Operations::Property::Upsert
                                                :property_tags)
                                      .where(external_link: property_url)
 
-      entity = existed_properties.find { |entity| existing_record_condition(entity, attributes) }
+      entity = existed_properties.find { |entity| existing_record_condition(entity, property_url) }
 
       entity.presence || ::Property.new
     end
 
-    def existing_record_condition(property, attributes)
-      property.external_link == attributes[:external_link]
+    def existing_record_condition(property, property_url)
+      property.external_link == property_url
     end
 
     def add_country(attributes, countries: nil)
@@ -197,20 +197,33 @@ class Parsers::Vartur::Operations::Property::Upsert
       noncommercial_attrs
     end
 
-    def save(entity, attributes)
-      permitted_attrs = permitted_params(attributes)
+  def save(entity, attributes)
+    permitted_attrs = permitted_params(attributes)
 
-      if permitted_attrs[:pictures_attributes]
-        permitted_attrs[:pictures_attributes] = permitted_attrs[:pictures_attributes].first(1)
+    # Разделяем атрибуты и изображения
+    pictures_attrs = permitted_attrs.delete(:pictures_attributes)
+
+    # Сохраняем основную сущность
+    entity.assign_attributes(permitted_attrs)
+
+    if entity.save
+      # Если есть изображения, пробуем их добавить одно за другим
+      if pictures_attrs.present?
+        pictures_attrs.each do |pic_data|
+          begin
+            Picture.create(
+              imageable: entity,
+              description: pic_data[:description],
+              remote_pic_url: pic_data[:remote_pic_url]
+            )
+          end
+        end
       end
 
-      entity.assign_attributes(permitted_attrs)
-
-      if entity.save
-        entity
-      else
-        error_msg = entity&.errors&.messages&.to_json
-        raise error_msg
-      end
+      entity
+    else
+      raise entity&.errors&.messages&.to_json
     end
+  end
+
 end

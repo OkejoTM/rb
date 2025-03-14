@@ -1,4 +1,6 @@
 class Parsers::Vartur::Attributes::PropertyAttributes < Parser::BaseAttributes
+  include Parser::PropertyBaseAttributes
+
   def locales
     %i[ru en]
   end
