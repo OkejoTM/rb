@@ -197,33 +197,33 @@ class Parsers::Vartur::Operations::Property::Upsert
       noncommercial_attrs
     end
 
-  def save(entity, attributes)
-    permitted_attrs = permitted_params(attributes)
+    def save(entity, attributes)
+      permitted_attrs = permitted_params(attributes)
 
-    # Разделяем атрибуты и изображения
-    pictures_attrs = permitted_attrs.delete(:pictures_attributes)
+      # Разделяем атрибуты и изображения
+      pictures_attrs = permitted_attrs.delete(:pictures_attributes)
 
-    # Сохраняем основную сущность
-    entity.assign_attributes(permitted_attrs)
+      # Сохраняем основную сущность
+      entity.assign_attributes(permitted_attrs)
 
-    if entity.save
-      # Если есть изображения, пробуем их добавить одно за другим
-      if pictures_attrs.present?
-        pictures_attrs.each do |pic_data|
-          begin
-            Picture.create(
-              imageable: entity,
-              description: pic_data[:description],
-              remote_pic_url: pic_data[:remote_pic_url]
-            )
+      if entity.save
+        # Если есть изображения, пробуем их добавить одно за другим
+        if pictures_attrs.present?
+          pictures_attrs.each do |pic_data|
+            begin
+              Picture.create(
+                imageable: entity,
+                description: pic_data[:description],
+                remote_pic_url: pic_data[:remote_pic_url]
+              )
+            end
           end
         end
-      end
 
-      entity
-    else
-      raise entity&.errors&.messages&.to_json
+        entity
+      else
+        raise entity&.errors&.messages&.to_json
+      end
     end
-  end
 
 end

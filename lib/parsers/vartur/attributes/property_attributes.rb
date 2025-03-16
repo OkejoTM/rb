@@ -28,7 +28,7 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parser::BaseAttributes
     breadcrumbs = response.css('nav[aria-label="Breadcrumb"] ol li')
     return if breadcrumbs.size < 4
 
-    breadcrumbs[3].at('a')&.text&.strip
+    breadcrumbs[-2].at('a')&.text&.strip
   end
 
   def city
@@ -37,7 +37,7 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parser::BaseAttributes
     breadcrumbs = response.css('nav[aria-label="Breadcrumb"] ol li')
     return if breadcrumbs.size < 5
 
-    breadcrumbs[4].at('a')&.text&.strip
+    breadcrumbs[-1].at('a')&.text&.strip
   end
 
   def property_type
@@ -46,7 +46,8 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parser::BaseAttributes
     breadcrumbs = response.css('nav[aria-label="Breadcrumb"] ol li')
     return if breadcrumbs.size < 2
 
-    breadcrumbs[1].at('a')&.text&.strip
+    type = breadcrumbs[1].at('a')&.text&.strip
+    property_type_mapping[type] || type
   end
 
   def bathroom_count
@@ -129,6 +130,12 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parser::BaseAttributes
     if match = text.match(/Number of Rooms:\s*(\d+)/)
       match[1]
     end
+  end
+
+  def property_type_mapping
+    {
+      'Land' => 'Land plot'
+    }
   end
 
   def is_active

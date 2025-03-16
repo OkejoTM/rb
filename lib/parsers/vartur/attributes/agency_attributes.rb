@@ -61,7 +61,7 @@ class Parsers::Vartur::Attributes::AgencyAttributes < Parser::BaseAttributes
   def logo
     img_el = take_last_element('div.flex > a.flex > img')
     return if img_el.blank?
-    img_el['src']
+    website + img_el['src']
   end
 
   def other_contacts_en
@@ -72,16 +72,14 @@ class Parsers::Vartur::Attributes::AgencyAttributes < Parser::BaseAttributes
     footer = response.css('footer')
     return contacts if footer.blank?
 
-    # Get contact types from database
-    phone_type = ContactType.find_by(title_en: 'Phone')
-    email_type = ContactType.find_by(title_en: 'E-mail')
+    phone_type = 'Phone'
+    email_type = 'E-mail'
 
-    # Extract phone from footer
     phone_link = footer.css('ul li a[href^="tel:"]').first
     if phone_link && phone_type
       phone = phone_link['href'].gsub('tel:', '').strip
       contacts << {
-        title: phone_type, # Используем объект ContactType
+        title: phone_type,
         content: [phone]
       }
     end
@@ -91,12 +89,16 @@ class Parsers::Vartur::Attributes::AgencyAttributes < Parser::BaseAttributes
     if email_link && email_type
       email = email_link['href'].gsub('mailto:', '').strip
       contacts << {
-        title: email_type, # Используем объект ContactType
+        title: email_type,
         content: [email]
       }
     end
 
     contacts
+  end
+
+  def other_contacts_ru
+    []
   end
 
   def contacts_en
@@ -108,19 +110,11 @@ class Parsers::Vartur::Attributes::AgencyAttributes < Parser::BaseAttributes
     end
   end
 
+  def contacts_ru
+    []
+  end
+
   def is_active
     true
   end
-
-  # private
-  #
-  # def take_last_element(css_rule, resp: response)
-  #   return if resp.blank?
-  #   resp.css(css_rule).last
-  # end
-  #
-  # def take_last_element_text(css_rule, resp: response)
-  #   element = take_last_element(css_rule, resp: resp)
-  #   element&.text&.strip
-  # end
 end

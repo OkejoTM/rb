@@ -79,8 +79,9 @@ class Parsers::Vartur::Pages::AgencyPage
           agency_attrs.merge!(about_attrs)
         end
 
-      end
 
+
+      end
       contact_page = load_contacts(@agent)
       agency_attrs.merge!(parse_attributes(contact_page, %i[en contact_page]))
 
