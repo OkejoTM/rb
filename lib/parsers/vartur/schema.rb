@@ -17,7 +17,7 @@ class Parsers::Vartur::Schema
     return false unless valid?
 
     begin
-      parse_agency_info(AGENCY_URL)
+      # parse_agency_info(AGENCY_URL)
       property_urls = parse_property_links
       new_properties, existed_property_urls = *separate_properties(property_urls)
       deactivate_not_founded_properties(AGENCY_URL, existed_property_urls)
@@ -46,14 +46,12 @@ class Parsers::Vartur::Schema
     end
 
     def separate_properties(property_urls)
-      en_urls = property_urls.to_a.pluck(:en)
-
       existing_properties =
         ::Property
-          .where(external_link: en_urls)
+          .where(external_link: property_urls)
           .pluck(:external_link)
 
-      new_properties = property_urls.reject { |urls| urls[:en].in?(existing_properties) }
+      new_properties = property_urls.reject { |urls| urls.in?(existing_properties) }
 
       [new_properties, existing_properties]
     rescue => e
@@ -61,7 +59,6 @@ class Parsers::Vartur::Schema
     end
 
     def deactivate_not_founded_properties(agency_url, existed_property_urls)
-
       ::Property
         .parsed
         .joins(:agency)

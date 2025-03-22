@@ -1,10 +1,8 @@
 class Parsers::Vartur::Operations::Property::Upsert
   include ActiveModel::Validations
-  include Parser::Operation::Property::Base
+  include Parsers::Operation::Property::Base
 
   attr_reader :entity
-
-  AGENCY_URL = 'www.vartur.com'
 
   def call(property_url, attributes)
     @entity = find_existing(property_url)
@@ -14,7 +12,7 @@ class Parsers::Vartur::Operations::Property::Upsert
       add_region(attributes, regions: regions_preload)
       add_city(attributes, cities: cities_preload)
       add_property_type(attributes, property_types: property_types_preload)
-      add_agency(attributes, existed_agencies: existed_agencies)
+      add_agency(attributes, existed_agency: existed_agency)
       add_external_link(property_url, attributes)
     end
 
@@ -34,7 +32,7 @@ class Parsers::Vartur::Operations::Property::Upsert
     end
 
     def find_existing(property_url)
-      existed_properties = ::Property.includes(:country,
+      entity = ::Property.includes(:country,
                                                :region,
                                                :city,
                                                :agency,
@@ -43,14 +41,9 @@ class Parsers::Vartur::Operations::Property::Upsert
                                                :pictures,
                                                :property_tags)
                                      .where(external_link: property_url)
-
-      entity = existed_properties.find { |entity| existing_record_condition(entity, property_url) }
+                                     .first
 
       entity.presence || ::Property.new
-    end
-
-    def existing_record_condition(property, property_url)
-      property.external_link == property_url
     end
 
     def add_country(attributes, countries: nil)
@@ -65,7 +58,12 @@ class Parsers::Vartur::Operations::Property::Upsert
     end
 
     def add_region(attributes, regions: nil)
+      attributes[:region_en] = attributes[:city_en] if attributes[:region_en].blank?
       region = find_region(regions, attributes, locales)
+      if region.blank?
+        region = find_region_by_alternate_name(attributes)
+      end
+
       return attributes if region.blank?
 
       attributes[:region_id] = region.id
@@ -79,31 +77,12 @@ class Parsers::Vartur::Operations::Property::Upsert
                            .to_a
     end
 
-    def find_region(regions, attributes, locales)
-      if regions.present?
-        regions.find do |region|
-          next if region.country_id != attributes[:country_id]
-
-          locales.any? do |l|
-            region_name = attributes[:"region_#{l}"]
-            next false if region_name.blank?
-
-            region.send(:"title_#{l}").downcase == region_name.downcase
-          end
-        end
-      else
-        Region.where(
-          'title_ru ILIKE :title_ru or title_en ILIKE :title_en',
-          title_ru: attributes[:region_ru],
-          title_en: attributes[:region_en]
-        ).select(:id)
-              .limit(1)
-              .last
-      end
-    end
-
     def add_city(attributes, cities: nil)
       city = find_city(cities, attributes, locales)
+      if city.blank?
+        city = find_city_by_alternate_name(attributes)
+      end
+
       return attributes if city.blank?
 
       attributes[:city_id] = city.id
@@ -113,33 +92,8 @@ class Parsers::Vartur::Operations::Property::Upsert
 
     def cities_preload
       @cities_preload ||= City
-                            .select(:id, :title_ru, :title_en, :name, :region_id)
+                            .select(:id, :title_ru, :title_en, :name)
                             .to_a
-    end
-
-    def find_city(cities, attributes, locales)
-      if cities.present?
-        if attributes[:region_id].present?
-          cities.find do |c|
-            next if c.region_id != attributes[:region_id]
-
-            locales.any? do |l|
-              city_name = attributes[:"city_#{l}"]
-              next false if city_name.blank?
-
-              c.send(:"title_#{l}").downcase == city_name.downcase
-            end
-          end
-        end
-      else
-        City.where(
-          'title_ru ILIKE :title_ru or title_en ILIKE :title_en',
-          title_ru: attributes[:city_ru],
-          title_en: attributes[:city_en]
-        ).select(:id)
-            .limit(1)
-            .last
-      end
     end
 
     def add_property_type(attributes, property_types: nil)
@@ -158,15 +112,15 @@ class Parsers::Vartur::Operations::Property::Upsert
                                     .to_a
     end
 
-    def add_agency(attributes, existed_agencies:)
-      attributes[:agency_id] = existed_agencies.first.id
+    def add_agency(attributes, existed_agency:)
+      attributes[:agency_id] = existed_agency.id
     end
 
-    def existed_agencies
-      @existed_agencies ||= ::Agency
-                              .select(:id, :prian_link, :website, :parse_source)
-                              .where('prian_link=:link OR website=:link', link: "https://#{AGENCY_URL}")
-                              .to_a
+    def existed_agency
+      @existed_agency ||= ::Agency
+                              .select(:id, :website, :parse_source)
+                              .where('website=:link', link: Parsers::ParserUtils.wrap_url(Parsers::Vartur::Schema::AGENCY_URL))
+                              .first
     end
 
     def add_external_link(link, attributes)

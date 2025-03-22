@@ -1,11 +1,11 @@
 class Parsers::Vartur::Operations::Agency::Upsert
-  include Parser::Operation::Agency::Base
+  include Parsers::Operation::Agency::Base
   include ActiveModel::Validations
 
   attr_reader :entity
 
   def call(agency_url, attributes)
-    @entity = find_agency(agency_url, attributes)
+    @entity = find_agency(agency_url)
 
     if @entity.new_record?
       # Создание нового агентства
@@ -25,8 +25,8 @@ class Parsers::Vartur::Operations::Agency::Upsert
 
   private
 
-    def find_agency(agency_url, attributes)
-      existed_agencies =
+    def find_agency(agency_url)
+      entity =
         ::Agency.includes(:logo,
                           :contacts,
                           :agency_other_contacts,
@@ -34,15 +34,10 @@ class Parsers::Vartur::Operations::Agency::Upsert
                           :messengers,
                           messengers: [:messenger_type],
                           contact_people: [:contacts])
-                .where(website: "https://#{agency_url}")
-
-      entity = existed_agencies.find { |entity| existing_record_condition(entity, attributes) }
+                .where(website: Parsers::ParserUtils.wrap_url(agency_url))
+                .first
 
       entity.presence || ::Agency.new
-    end
-
-    def existing_record_condition(entity, attributes)
-      entity.website == attributes[:website]
     end
 
     def create_agency(attributes)
@@ -52,7 +47,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
     end
 
     def update_agency(entity, attributes)
-      agency_where_cond = ["website = ?", entity.website ]
+      agency_where_cond = ["website = ?", entity.website]
       update_op = Parser::Operation::Agency::Update.preload(
         agency_where_cond: agency_where_cond
       )

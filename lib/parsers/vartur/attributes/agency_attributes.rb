@@ -1,4 +1,4 @@
-class Parsers::Vartur::Attributes::AgencyAttributes < Parser::BaseAttributes
+class Parsers::Vartur::Attributes::AgencyAttributes < Parsers::BaseAttributes
   def name
     'vartur'
   end
@@ -55,7 +55,7 @@ class Parsers::Vartur::Attributes::AgencyAttributes < Parser::BaseAttributes
   end
 
   def website
-    Parser::ParserUtils.wrap_url("//#{response.uri.host}")
+    Parser::ParserUtils.wrap_url(response.uri.host)
   end
 
   def logo
@@ -97,10 +97,6 @@ class Parsers::Vartur::Attributes::AgencyAttributes < Parser::BaseAttributes
     contacts
   end
 
-  def other_contacts_ru
-    []
-  end
-
   def contacts_en
     other_contacts_en.map do |c|
       {
@@ -108,10 +104,6 @@ class Parsers::Vartur::Attributes::AgencyAttributes < Parser::BaseAttributes
         contact_type: c[:title]
       }
     end
-  end
-
-  def contacts_ru
-    []
   end
 
   def is_active

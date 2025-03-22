@@ -1,4 +1,4 @@
-class Parsers::Vartur::Pages::AgencyPage
+class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
   include ActiveModel::Validations
 
   attr_reader :agent, :logger
@@ -14,12 +14,14 @@ class Parsers::Vartur::Pages::AgencyPage
   end
 
   def call(agency_url)
+    return false unless valid?
     @logger.info("Старт парсинга агенства\n")
 
     agency_attrs = parse_pages
     return if agency_attrs.blank?
 
-    process_parsed(agency_url, agency_attrs)
+    handler = Parsers::Vartur::Operations::Agency::Upsert.new
+    process_parsed(handler, agency_attrs, identifier: agency_url)
   rescue => e
     @logger.error("Ошибка при парсинге. #{agency_url}\n#{e.message}\n#{e.backtrace.first}\n")
     false
@@ -51,66 +53,29 @@ class Parsers::Vartur::Pages::AgencyPage
       }
     end
 
-    def process_parsed(agency_url, attrs)
-      handler = Parsers::Vartur::Operations::Agency::Upsert.new
-      result = handler.call(agency_url, attrs)
-
-      if handler.errors.present?
-        @logger.error(handler.errors.full_messages)
-      else
-        entity = handler.entity
-        new_or_updated = entity.new_record? ? 'добавлена' : 'изменена'
-        @logger.info("Сущность #{entity.id} была #{new_or_updated}")
-        @logger.info("Переданные параметры: #{attrs}")
-      end
-
-      result
-    end
-
     def parse_pages
       agency_attrs = {}
 
       LOCALES.each do |locale|
         @agent.reset
 
-        about_page = load_about(@agent, locale)
+        about_page = @agent.load_page(about_url(locale))
         if about_page.present?
-          about_attrs = parse_attributes(about_page, [locale, :about_page])
+          about_attrs = parse_attributes(about_page, [locale, :about_page], Parsers::Vartur::Attributes::AgencyAttributes)
           agency_attrs.merge!(about_attrs)
         end
-
-
-
       end
       contact_page = load_contacts(@agent)
-      agency_attrs.merge!(parse_attributes(contact_page, %i[en contact_page]))
+      agency_attrs.merge!(parse_attributes(contact_page, %i[en contact_page], Parsers::Vartur::Attributes::AgencyAttributes))
 
       agency_attrs
     end
 
-    def parse_attributes(page, map_path)
-      parsed_hash = {}
-      handler = Parsers::Vartur::Attributes::AgencyAttributes.new(page)
-      method_list =
-        if map_path.is_a? Array
-          attribute_parser_map.dig(*map_path)
-        else
-          attribute_parser_map[map_path]
-        end
-
-      method_list.each do |attribute, method|
-        parsed_hash[attribute] = handler.public_send(method)
-      end
-      parsed_hash
-    end
-
-    def load_about(agent, locale)
-      case locale
-        when :en
-          agent.load_page('https://www.vartur.com/about-us')
-        when :ru
-          agent.load_page('https://www.vartur.com/ru/o-nas')
-      end
+    def about_url(locale)
+      {
+        en: 'https://www.vartur.com/about-us',
+        ru: 'https://www.vartur.com/ru/o-nas'
+      }[locale]
     end
 
     def load_contacts(agent)

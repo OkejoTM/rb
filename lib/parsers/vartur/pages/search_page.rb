@@ -1,6 +1,6 @@
-class Parsers::Vartur::Pages::SearchPage < Parser::BasePage
+class Parsers::Vartur::Pages::SearchPage < Parsers::BasePage
   include ActiveModel::Validations
-  include Parser::ParserUtils
+  include Parsers::ParserUtils
 
   attr_reader :agent, :logger
 
@@ -13,6 +13,7 @@ class Parsers::Vartur::Pages::SearchPage < Parser::BasePage
   end
 
   def call
+    return false unless valid?
     property_urls = []
     page_num = 1
 
@@ -29,6 +30,7 @@ class Parsers::Vartur::Pages::SearchPage < Parser::BasePage
       break if new_property_urls.blank?
 
       property_urls.concat(new_property_urls)
+      break
     rescue => e
       @logger.error("Ошибка при парсинге #{page_num} страницы недвижимости.\n #{e.message}\n#{e.backtrace.join("\n")}")
     end
@@ -39,18 +41,13 @@ class Parsers::Vartur::Pages::SearchPage < Parser::BasePage
   private
 
     def parse_property_urls(page)
-      links = page.css('td.whitespace-nowrap.px-2.py-4.w-48.min-w-40 a').map { |a| a['href'] }.uniq
-
-      links.map do |url|
-        property_id = url.match(/\d+$/).to_s
-        {
-          en: "https://www.vartur.com/listings/#{property_id}",
-          ru: "https://www.vartur.com/ru/spiski/#{property_id}"
-        }
-      end
+      page.css('td.whitespace-nowrap.px-2.py-4.w-48.min-w-40 a')
+          .map { |a| a['href'] }
+          .uniq
+          .map { |url| "#{wrap_url(Parsers::Vartur::Schema::AGENCY_URL)}/listings/#{url.match(/\d+$/).to_s}" }
     end
 
     def page_url(page_num)
-      "https://vartur.com/property/for-sale/turkey?page=#{page_num}"
+      "#{wrap_url(Parsers::Vartur::Schema::AGENCY_URL)}/property/for-sale/turkey?page=#{page_num}"
     end
 end
