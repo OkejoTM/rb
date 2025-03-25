@@ -55,7 +55,7 @@ class Parsers::Vartur::Attributes::AgencyAttributes < Parsers::BaseAttributes
   end
 
   def website
-    Parser::ParserUtils.wrap_url(response.uri.host)
+    Parsers::ParserUtils.wrap_url(response.uri.host)
   end
 
   def logo

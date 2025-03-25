@@ -20,8 +20,7 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
 
         next if property_attrs.blank?
 
-        handler = Parsers::Vartur::Operations::Property::Upsert.new
-        process_parsed(handler, property_attrs, identifier: url)
+        process_parsed(url, property_attrs)
       rescue => e
         @logger.error("Ошибка при парсинге. #{url}\n#{e.message}\n#{e.backtrace.first}\n")
         false
@@ -62,21 +61,37 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
       }
     end
 
-  def parse_pages(url)
-    # Загружаем обе версии страницы
-    en_page = load_property_page(url)
-    ru_page = load_property_page(url.gsub(%r{/listings/(\d+)$}, '/ru/spiski/\1'))
+    def parse_pages(url)
+      # Загружаем обе версии страницы
+      en_page = @agent.load_page(url)
+      ru_page = @agent.load_page(url.gsub(%r{/listings/(\d+)$}, '/ru/spiski/\1'))
 
-    if en_page.blank? || ru_page.blank?
-      @logger.warn("Пропущена #{url} т.к. ответ был пустым")
-      return nil
+      if en_page.blank? || ru_page.blank?
+        @logger.warn("Пропущена #{url} т.к. ответ был пустым")
+        return nil
+      end
+
+      # Парсим данные с обеих страниц
+      en_attrs = parse_attributes(en_page, :en, Parsers::Vartur::Attributes::PropertyAttributes)
+      ru_attrs = parse_attributes(ru_page, :ru, Parsers::Vartur::Attributes::PropertyAttributes)
+
+      # Объединяем атрибуты
+      en_attrs.merge(ru_attrs)
     end
 
-    # Парсим данные с обеих страниц
-    en_attrs = parse_attributes(en_page, :en, Parsers::Vartur::Attributes::PropertyAttributes)
-    ru_attrs = parse_attributes(ru_page, :ru, Parsers::Vartur::Attributes::PropertyAttributes)
+    def process_parsed(property_url, attrs)
+      handler = Parsers::Vartur::Operations::Property::Upsert.new
+      result = handler.call(property_url, attrs)
 
-    # Объединяем атрибуты
-    en_attrs.merge(ru_attrs)
-  end
+      if handler.errors.present?
+        @logger.error(handler.errors.full_messages)
+      else
+        entity = handler.entity
+        new_or_updated = entity.new_record? ? 'добавлена' : 'изменена'
+        @logger.info("Сущность #{entity.id} была #{new_or_updated}")
+        @logger.info("Переданные параметры: #{attrs}")
+      end
+
+      result
+    end
 end

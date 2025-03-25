@@ -6,7 +6,7 @@ class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
   validates :agent, presence: true
   validates :logger, presence: true
 
-  LOCALES = %i[en ru].freeze
+  LOCALES = Parsers::Vartur::Schema::LOCALES
 
   def initialize(agent, logger)
     @agent = agent
@@ -20,8 +20,7 @@ class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
     agency_attrs = parse_pages
     return if agency_attrs.blank?
 
-    handler = Parsers::Vartur::Operations::Agency::Upsert.new
-    process_parsed(handler, agency_attrs, identifier: agency_url)
+    process_parsed(agency_url, agency_attrs)
   rescue => e
     @logger.error("Ошибка при парсинге. #{agency_url}\n#{e.message}\n#{e.backtrace.first}\n")
     false
@@ -71,14 +70,30 @@ class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
       agency_attrs
     end
 
+    def process_parsed(agency_url, attrs)
+      handler = Parsers::Vartur::Operations::Agency::Upsert.new
+      result = handler.call(agency_url, attrs)
+
+      if handler.errors.present?
+        @logger.error(handler.errors.full_messages)
+      else
+        entity = handler.entity
+        new_or_updated = entity.new_record? ? 'добавлена' : 'изменена'
+        @logger.info("Сущность #{entity.id} была #{new_or_updated}")
+        @logger.info("Переданные параметры: #{attrs}")
+      end
+
+      result
+    end
+
     def about_url(locale)
       {
-        en: 'https://www.vartur.com/about-us',
-        ru: 'https://www.vartur.com/ru/o-nas'
+        en: "#{Parsers::ParserUtils.wrap_url(Parsers::Vatrur::Schema::AGENCY_URL)}/about-us",
+        ru: "#{Parsers::ParserUtils.wrap_url(Parsers::Vatrur::Schema::AGENCY_URL)}/ru/o-nas"
       }[locale]
     end
 
     def load_contacts(agent)
-      agent.load_page('https://www.vartur.com/contact-us')
+      agent.load_page("#{Parsers::ParserUtils.wrap_url(Parsers::Vatrur::Schema::AGENCY_URL)}/contact-us")
     end
 end

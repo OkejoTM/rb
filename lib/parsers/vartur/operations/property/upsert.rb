@@ -2,15 +2,18 @@ class Parsers::Vartur::Operations::Property::Upsert
   include ActiveModel::Validations
   include Parsers::Operation::Property::Base
 
+  LOCALES = Parsers::Vartur::Schema::LOCALES
+
   attr_reader :entity
 
   def call(property_url, attributes)
+    return false unless valid?
     @entity = find_existing(property_url)
 
     if @entity.new_record?
-      add_country(attributes, countries: countries_preload)
-      add_region(attributes, regions: regions_preload)
-      add_city(attributes, cities: cities_preload)
+      add_country(attributes)
+      add_region(attributes)
+      add_city(attributes)
       add_property_type(attributes, property_types: property_types_preload)
       add_agency(attributes, existed_agency: existed_agency)
       add_external_link(property_url, attributes)
@@ -27,10 +30,6 @@ class Parsers::Vartur::Operations::Property::Upsert
 
   private
 
-    def locales
-      %i[ru en]
-    end
-
     def find_existing(property_url)
       entity = ::Property.includes(:country,
                                                :region,
@@ -46,23 +45,19 @@ class Parsers::Vartur::Operations::Property::Upsert
       entity.presence || ::Property.new
     end
 
-    def add_country(attributes, countries: nil)
-      country = find_country(countries, attributes, locales)
+    def add_country(attributes)
+      country_search = Parsers::Operation::Country::Search.new(attributes, LOCALES)
+      country_search.call
+      country = country_search.result
+
       attributes[:country_id] = country.id
     end
 
-    def countries_preload
-      @countries_preload ||= Country
-                               .select(:id, :title_ru, :title_en, :name)
-                               .to_a
-    end
-
-    def add_region(attributes, regions: nil)
+    def add_region(attributes)
       attributes[:region_en] = attributes[:city_en] if attributes[:region_en].blank?
-      region = find_region(regions, attributes, locales)
-      if region.blank?
-        region = find_region_by_alternate_name(attributes)
-      end
+      region_search = Parsers::Operation::Region::Search.new(attributes, LOCALES)
+      region_search.call
+      region = region_search.result
 
       return attributes if region.blank?
 
@@ -71,16 +66,12 @@ class Parsers::Vartur::Operations::Property::Upsert
       attributes[:region_name_ru] = region.title_ru
     end
 
-    def regions_preload
-      @regions_preload = Region
-                           .select(:id, :title_ru, :title_en, :name, :country_id)
-                           .to_a
-    end
-
-    def add_city(attributes, cities: nil)
-      city = find_city(cities, attributes, locales)
+    def add_city(attributes)
+      city = find_city(attributes)
       if city.blank?
-        city = find_city_by_alternate_name(attributes)
+        city_search = Parsers::Operation::City::Search.new(attributes, LOCALES)
+        city_search.call
+        city = city_search.result
       end
 
       return attributes if city.blank?
@@ -90,14 +81,27 @@ class Parsers::Vartur::Operations::Property::Upsert
       attributes[:city_name_ru] = city.title_ru
     end
 
-    def cities_preload
-      @cities_preload ||= City
-                            .select(:id, :title_ru, :title_en, :name)
-                            .to_a
+    def find_city(attributes)
+      conditions = []
+      params = {}
+
+      LOCALES.each do |locale|
+        city_name = attributes[:"city_#{locale}"]
+        next if city_name.blank?
+
+        conditions << "title_#{locale} ILIKE :title_#{locale}"
+        params[:"title_#{locale}"] = city_name
+      end
+
+      return nil if conditions.empty?
+
+      City.where(region_id: attributes[:region_id])
+          .where(conditions.join(' OR '), params)
+          .first
     end
 
     def add_property_type(attributes, property_types: nil)
-      property_type = find_property(property_types, attributes, locales)
+      property_type = find_property(property_types, attributes, LOCALES)
       attributes[:property_type_id] =
         if property_type.present?
           property_type.id

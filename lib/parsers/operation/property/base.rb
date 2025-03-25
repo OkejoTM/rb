@@ -3,20 +3,10 @@ module Parsers::Operation::Property::Base
   # Pictures
 
   def check_pictures(pictures_attrs, pictures: [])
-    new_pictures = []
-    return new_pictures if pictures.blank? && pictures_attrs.blank?
+    return [] if pictures.blank? && pictures_attrs.blank?
 
     filtered = filter_corrupted_picture(pictures_attrs)
-
-    # remove all
-    deleted_pics = mark_deleted_pictures(filtered, pictures)
-    new_pictures.concat(deleted_pics)
-
-    # add new
-    new_pics = add_not_existed_pictures(filtered, pictures)
-    new_pictures.concat(new_pics)
-
-    new_pictures
+    mark_deleted_pictures(filtered, pictures) + add_not_existed_pictures(filtered, pictures)
   end
 
   def filter_corrupted_picture(picture_links)
@@ -26,109 +16,22 @@ module Parsers::Operation::Property::Base
   end
 
   def mark_deleted_pictures(pictures_attrs, pictures)
-    deleted_pics = []
-    pictures.each do |picture|
+    pictures.reduce([]) do |memo, picture|
       # check if name of picture is in any of links
       pic_exist = pictures_attrs.any? { |picture_attrs| picture.pic&.file&.filename&.in?(picture_attrs[:src]) }
 
-      deleted_pics.push(id: picture.id, _destroy: true) unless pic_exist
+      memo.push(id: picture.id, _destroy: true) unless pic_exist
+      memo
     end
-    deleted_pics
   end
 
   def add_not_existed_pictures(pictures_attrs, pictures)
-    new_pictures = []
+    pictures_attrs.reduce([]) do |memo, picture_attrs|
+      pic_exist = pictures.any? { |picture| picture.pic&.file&.filename&.in?(picture_attrs[:src]) }
 
-    pictures_attrs.each do |picture_attrs|
-      pic = pictures.find { |picture| picture.pic&.file&.filename&.in?(picture_attrs[:src]) }
-      next if pic.present?
-
-      new_pictures.push(remote_pic_url: picture_attrs[:src], description: picture_attrs[:alt])
+      memo.push(remote_pic_url: picture_attrs[:src], description: picture_attrs[:alt]) unless pic_exist
+      memo
     end
-
-    new_pictures
-  end
-
-  # Location finders
-
-  def find_country(countries, attributes, locales)
-    if countries.present?
-      countries.find { |c| locales.any? { |l| c.send(:"title_#{l}") == attributes[:"country_name_#{l}"] } }
-    else
-      Country.where(
-        'title_ru ILIKE :title_ru or title_en ILIKE :title_en',
-        title_ru: attributes[:country_name_ru],
-        title_en: attributes[:country_name_en]
-      ).select(:id)
-       .limit(1)
-       .last
-    end
-  end
-
-  def find_region(regions, attributes, locales)
-    if regions.present?
-      regions.find do |region|
-        next if region.country_id != attributes[:country_id]
-
-        locales.any? do |l|
-          region_name = attributes[:"region_#{l}"]
-          next false if region_name.blank?
-
-          region.send(:"title_#{l}").downcase == region_name.downcase
-        end
-      end
-    else
-      Region.where(
-        'title_ru ILIKE :title_ru or title_en ILIKE :title_en',
-        title_ru: attributes[:region_ru],
-        title_en: attributes[:region_en]
-      ).select(:id)
-       .last
-    end
-  end
-
-  def find_city(cities, attributes, locales)
-    if cities.present?
-      cities.find do |c|
-        locales.any? do |l|
-          city_name = attributes[:"city_#{l}"]
-          next false if city_name.blank?
-
-          c.send(:"title_#{l}").downcase == city_name.downcase
-        end
-      end
-    else
-      City.where(
-        'title_ru ILIKE :title_ru or title_en ILIKE :title_en',
-        title_ru: attributes[:city_ru],
-        title_en: attributes[:city_en]
-      ).select(:id)
-       .last
-    end
-  end
-
-  def find_city_by_alternate_name(attributes)
-    city_name = attributes[:city_en]
-    region_id = attributes[:region_id]
-
-    city_alternates = AlternateName.where("lower(alternate_name) = lower(?)", city_name)
-    matching_city_ids = city_alternates.pluck(:geoname_id)
-    cities = City.where(id: matching_city_ids)
-
-    cities = cities.where(region_id: region_id) if region_id.present?
-    cities.first
-  end
-
-  def find_region_by_alternate_name(attributes)
-    region_name = attributes[:region_en]
-    country_id = attributes[:country_id]
-
-    region_alternates = AlternateName.where("lower(alternate_name) = lower(?)", region_name)
-    matching_region_ids = region_alternates.pluck(:geoname_id)
-    regions = Region.where(id: matching_region_ids)
-
-    regions = regions.where(country_id: country_id) if country_id.present?
-    regions.first
   end
 
   # Property
@@ -243,7 +146,7 @@ module Parsers::Operation::Property::Base
       # то property_tag_ids перезапишут property_tags_attributes
       # Если property_tags_attributes идет после property_tag_ids
       # то мы получаем оба набора тегов в сущности
-      acceptable_params = subject_class.attribute_names.deep_dup.map(&:to_sym).push(
+      acceptable_params = ::Property.attribute_names.deep_dup.map(&:to_sym).push(
         :commercial_property_attribute_attributes,
         :noncommercial_property_attribute_attributes,
         :pictures_attributes,
@@ -252,9 +155,5 @@ module Parsers::Operation::Property::Base
       )
 
       params.slice(*acceptable_params)
-    end
-
-    def subject_class
-      ::Property
     end
 end

@@ -2,6 +2,7 @@ class Parsers::Vartur::Schema
   include ActiveModel::Validations
 
   AGENCY_URL = 'www.vartur.com'
+  LOCALES = %i[en ru].freeze
 
   attr_reader :agent, :logger
 
@@ -17,7 +18,7 @@ class Parsers::Vartur::Schema
     return false unless valid?
 
     begin
-      # parse_agency_info(AGENCY_URL)
+      parse_agency_info(AGENCY_URL)
       property_urls = parse_property_links
       new_properties, existed_property_urls = *separate_properties(property_urls)
       deactivate_not_founded_properties(AGENCY_URL, existed_property_urls)

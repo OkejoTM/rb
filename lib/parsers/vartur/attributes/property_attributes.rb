@@ -1,5 +1,4 @@
 class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
-  include Parsers::PropertyBaseAttributes
 
   def locales
     %i[ru en]
@@ -136,6 +135,14 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
     {
       'Land' => 'Land plot'
     }
+  end
+
+  def moderated
+    true
+  end
+
+  def parsed
+    true
   end
 
   def is_active

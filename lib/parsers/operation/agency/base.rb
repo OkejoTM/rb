@@ -21,8 +21,4 @@ module Parsers::Operation::Agency::Base
 
       params.slice(*acceptable_params)
     end
-
-    def subject_class
-      Agency
-    end
 end
