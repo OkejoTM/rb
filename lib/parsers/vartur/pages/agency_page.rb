@@ -72,28 +72,29 @@ class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
 
     def process_parsed(agency_url, attrs)
       handler = Parsers::Vartur::Operations::Agency::Upsert.new
-      result = handler.call(agency_url, attrs)
+      success = handler.call(agency_url, attrs)
 
-      if handler.errors.present?
+      if !success
         @logger.error(handler.errors.full_messages)
       else
-        entity = handler.entity
-        new_or_updated = entity.new_record? ? 'добавлена' : 'изменена'
+        entity = handler.result
+        new_or_updated = entity.previously_new_record? ? 'добавлена' : 'изменена'
         @logger.info("Сущность #{entity.id} была #{new_or_updated}")
         @logger.info("Переданные параметры: #{attrs}")
       end
-
-      result
+      success
     end
 
     def about_url(locale)
-      {
-        en: "#{Parsers::ParserUtils.wrap_url(Parsers::Vatrur::Schema::AGENCY_URL)}/about-us",
-        ru: "#{Parsers::ParserUtils.wrap_url(Parsers::Vatrur::Schema::AGENCY_URL)}/ru/o-nas"
-      }[locale]
+      @about_url ||= {
+        en: "#{Parsers::ParserUtils.wrap_url(Parsers::Vartur::Schema::AGENCY_URL)}/about-us",
+        ru: "#{Parsers::ParserUtils.wrap_url(Parsers::Vartur::Schema::AGENCY_URL)}/ru/o-nas"
+      }
+
+      @about_url[locale]
     end
 
     def load_contacts(agent)
-      agent.load_page("#{Parsers::ParserUtils.wrap_url(Parsers::Vatrur::Schema::AGENCY_URL)}/contact-us")
+      agent.load_page("#{Parsers::ParserUtils.wrap_url(Parsers::Vartur::Schema::AGENCY_URL)}/contact-us")
     end
 end

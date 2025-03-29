@@ -6,6 +6,10 @@ class Parsers::Vartur::Operations::Property::Upsert
 
   attr_reader :entity
 
+  def initialize(agency = nil)
+    @agency = agency
+  end
+
   def call(property_url, attributes)
     return false unless valid?
     @entity = find_existing(property_url)
@@ -15,7 +19,7 @@ class Parsers::Vartur::Operations::Property::Upsert
       add_region(attributes)
       add_city(attributes)
       add_property_type(attributes, property_types: property_types_preload)
-      add_agency(attributes, existed_agency: existed_agency)
+      add_agency(attributes)
       add_external_link(property_url, attributes)
     end
 
@@ -32,15 +36,15 @@ class Parsers::Vartur::Operations::Property::Upsert
 
     def find_existing(property_url)
       entity = ::Property.includes(:country,
-                                               :region,
-                                               :city,
-                                               :agency,
-                                               :property_type,
-                                               :noncommercial_property_attribute,
-                                               :pictures,
-                                               :property_tags)
-                                     .where(external_link: property_url)
-                                     .first
+                                   :region,
+                                   :city,
+                                   :agency,
+                                   :property_type,
+                                   :noncommercial_property_attribute,
+                                   :pictures,
+                                   :property_tags)
+                         .where(external_link: property_url)
+                         .first
 
       entity.presence || ::Property.new
     end
@@ -101,7 +105,7 @@ class Parsers::Vartur::Operations::Property::Upsert
     end
 
     def add_property_type(attributes, property_types: nil)
-      property_type = find_property(property_types, attributes, LOCALES)
+      property_type = find_property_type(property_types, attributes, LOCALES)
       attributes[:property_type_id] =
         if property_type.present?
           property_type.id
@@ -116,15 +120,8 @@ class Parsers::Vartur::Operations::Property::Upsert
                                     .to_a
     end
 
-    def add_agency(attributes, existed_agency:)
-      attributes[:agency_id] = existed_agency.id
-    end
-
-    def existed_agency
-      @existed_agency ||= ::Agency
-                              .select(:id, :website, :parse_source)
-                              .where('website=:link', link: Parsers::ParserUtils.wrap_url(Parsers::Vartur::Schema::AGENCY_URL))
-                              .first
+    def add_agency(attributes)
+      attributes[:agency_id] = @agency.id
     end
 
     def add_external_link(link, attributes)
@@ -155,7 +152,7 @@ class Parsers::Vartur::Operations::Property::Upsert
       noncommercial_attrs
     end
 
-    def save(entity, attributes)
+    def save!(entity, attributes)
       permitted_attrs = permitted_params(attributes)
 
       # Разделяем атрибуты и изображения
@@ -168,13 +165,11 @@ class Parsers::Vartur::Operations::Property::Upsert
         # Если есть изображения, пробуем их добавить одно за другим
         if pictures_attrs.present?
           pictures_attrs.each do |pic_data|
-            begin
-              Picture.create(
-                imageable: entity,
-                description: pic_data[:description],
-                remote_pic_url: pic_data[:remote_pic_url]
-              )
-            end
+            Picture.create(
+              imageable: entity,
+              description: pic_data[:description],
+              remote_pic_url: pic_data[:remote_pic_url]
+            )
           end
         end
 

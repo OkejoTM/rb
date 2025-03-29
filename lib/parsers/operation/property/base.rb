@@ -36,7 +36,7 @@ module Parsers::Operation::Property::Base
 
   # Property
 
-  def find_property(property_types, attributes, locales)
+  def find_property_type(property_types, attributes, locales)
     if property_types.present?
 
       property_types.find do |c|
@@ -83,18 +83,9 @@ module Parsers::Operation::Property::Base
 
   def check_property_tags(property_tags, property_tag_attrs, all_property_tags)
     # Оставляем теги, которые есть в полученных с сайта тегах
-    existed_tags = property_tags&.reduce([]) do |result, tag|
-
-      is_found = property_tag_attrs.any? do |attr|
-        compare_tags(tag, attr)
-      end
-
-      next result unless is_found
-
-      result.push(tag)
-    end
-
-    existed_tags ||= []
+    existed_tags = property_tags&.filter do |tag|
+      property_tag_attrs.any? { |attr| compare_tags(tag, attr) }
+    end || []
 
     # добавить новые теги, которые нужно создать
     tags_for_create = property_tag_attrs&.reduce([]) do |result, tag_attr|

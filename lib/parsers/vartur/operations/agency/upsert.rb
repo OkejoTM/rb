@@ -4,7 +4,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
 
   LOCALES = Parsers::Vartur::Schema::LOCALES
 
-  attr_reader :entity
+  attr_reader :result
 
   def call(agency_url, attributes)
     @entity = find_agency(agency_url)
@@ -18,7 +18,8 @@ class Parsers::Vartur::Operations::Agency::Upsert
     process_other_contacts(attributes)
     process_logo(attributes)
 
-    save(@entity, attributes)
+    @result = save(@entity, attributes)
+    true
   rescue => e
     errors.add(:base, message: e.message)
     false
@@ -53,7 +54,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
 
       add_other_contacts(parsed_attributes, agency_other_contacts_attributes)
 
-      update_other_contacts(parsed_attributes, agency_other_contacts, agency_other_contacts_attributes)
+      update_other_contacts(parsed_attributes, agency_other_contacts_attributes)
 
       if agency_other_contacts_attributes.present?
         attributes[:agency_other_contacts_attributes] = agency_other_contacts_attributes
@@ -61,42 +62,24 @@ class Parsers::Vartur::Operations::Agency::Upsert
     end
 
     def mark_delete_other_contacts(agency_other_contacts, parsed_attributes, agency_other_contacts_attributes)
-      for_delete = []
-
-      agency_other_contacts.each do |contact|
-        found = false
-
-        LOCALES.each do |locale|
-          contacts_attrs = parsed_attributes[:"other_contacts_#{locale}"] || []
-
-          contacts_attrs.each do |contact_attr|
-            if contact_attr[:title] == contact.send(:"title_#{locale}")
-              found = true
-              break
-            end
-          end
-
-          break if found
-        end
-
-        unless found
-          for_delete.push(id: contact.id, _destroy: true)
-        end
+      found_contacts_ids = parsed_attributes.values.reduce([]) do |memo, contacts_attrs|
+        found = contacts_attrs.map { |contact_attr| find_agency_other_contacts_by_title(contact_attr[:title]) }.compact
+        memo | found.map(&:id)
       end
 
-      agency_other_contacts_attributes.concat(for_delete) if for_delete.present?
+      to_delete_contacts_ids = agency_other_contacts.map(&:id) - found_contacts_ids
+      to_delete_params = to_delete_contacts_ids.map { |contact_id| { id: contact_id, _destroy: true } }
+
+      agency_other_contacts_attributes.concat(to_delete_params) if to_delete_params.present?
     end
 
     def add_other_contacts(parsed_attributes, agency_other_contacts_attributes)
-      agency_contacts = @entity&.agency_other_contacts || []
-
       LOCALES.each do |locale|
         contacts_attrs = parsed_attributes[:"other_contacts_#{locale}"] || []
 
         contacts_attrs.each do |contact_attr|
-          existing_contact = agency_contacts.find { |c| c.send(:"title_#{locale}") == contact_attr[:title] }
+          existing_contact = find_agency_other_contacts_by_title(contact_attr[:title])
 
-          # Если контакт уже существует, пропускаем его (он будет обработан в update_other_contacts)
           next if existing_contact.present?
 
           new_contact = {
@@ -109,12 +92,12 @@ class Parsers::Vartur::Operations::Agency::Upsert
       end
     end
 
-    def update_other_contacts(parsed_attributes, agency_other_contacts, agency_other_contacts_attributes)
+    def update_other_contacts(parsed_attributes, agency_other_contacts_attributes)
       LOCALES.each do |locale|
         contacts_attrs = parsed_attributes[:"other_contacts_#{locale}"] || []
 
         contacts_attrs.each do |contact_attr|
-          other_contact = agency_other_contacts.find { |c| c.send(:"title_#{locale}") == contact_attr[:title] }
+          other_contact = find_agency_other_contacts_by_title(contact_attr[:title])
 
           if other_contact.present?
             updated_contact = {
@@ -141,7 +124,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
 
       mark_delete_contacts(contacts, parsed_attributes, contacts_attributes)
 
-      add_contacts(parsed_attributes, contacts, contacts_attributes)
+      add_contacts(parsed_attributes, contacts_attributes)
 
       if contacts_attributes.present?
         attributes[:contacts_attributes] = contacts_attributes
@@ -149,37 +132,26 @@ class Parsers::Vartur::Operations::Agency::Upsert
     end
 
     def mark_delete_contacts(contacts, parsed_attributes, contacts_attributes)
-      for_delete = []
-
-      contacts.each do |contact|
-        found = false
-
-        parsed_attributes.values.flatten.each do |contact_attr|
-          if contact_attr[:value] == contact.value
-            found = true
-            break
-          end
-        end
-
-        unless found
-          for_delete.push(id: contact.id, _destroy: true)
-        end
+      found_contacts_ids = parsed_attributes.values.reduce([]) do |memo, contact_attrs|
+        found_contacts = contact_attrs.map { |contact_attr| find_agency_contacts_by_value(contact_attr[:value]) }.compact
+        memo | found_contacts.map(&:id)
       end
 
-      contacts_attributes.concat(for_delete) if for_delete.present?
+      to_delete_contacts_ids = contacts.map(&:id) - found_contacts_ids
+      to_delete_params = to_delete_contacts_ids.map { |contact_id| { id: contact_id, _destroy: true } }
+
+      contacts_attributes.concat(to_delete_params) if to_delete_params.present?
     end
 
-    def add_contacts(parsed_attributes, contacts, contacts_attributes)
-      contact_types = ContactType.all.to_a
-
+    def add_contacts(parsed_attributes, contacts_attributes)
       LOCALES.each do |locale|
         contacts_attrs = parsed_attributes[:"contacts_#{locale}"] || []
 
         contacts_attrs.each do |contact_attr|
-          contact = contacts.find { |c| c.value == contact_attr[:value] }
+          contact = find_agency_contacts_by_value(contact_attr[:value])
           next if contact.present?
 
-          contact_type = contact_types.find { |ct| ct.send("title_#{locale}") == contact_attr[:contact_type] }
+          contact_type = find_contact_by_type(contact_attr[:contact_type])
           next if contact_type.blank?
 
           new_contact = {
@@ -209,7 +181,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
       attributes[:seo_agency_page] = SeoAgencyPage.new_default_agency_page
     end
 
-    def save(entity, attributes)
+    def save!(entity, attributes)
       permitted_attrs = permitted_params(attributes)
       entity.assign_attributes(permitted_attrs)
 
@@ -217,6 +189,23 @@ class Parsers::Vartur::Operations::Agency::Upsert
         entity
       else
         raise entity&.errors&.messages&.to_json
+      end
+    end
+
+    def find_agency_other_contacts_by_title(title)
+      @entity&.agency_other_contacts&.find do |contact|
+        LOCALES.any? { |locale| contact.send(:"title_#{locale}") == title }
+      end
+    end
+
+    def find_agency_contacts_by_value(value)
+      @entity&.contacts&.find { |contact| contact.value == value }
+    end
+
+    def find_contact_by_type(type)
+      @contact_types ||= ContactType.all.to_a
+      @contact_types.find do |contact|
+        LOCALES.any? { |locale| contact.send(:"title_#{locale}") == type }
       end
     end
 end

@@ -107,6 +107,6 @@ class Parsers::Vartur::Attributes::AgencyAttributes < Parsers::BaseAttributes
   end
 
   def is_active
-    true
+    response.code != "404"
   end
 end

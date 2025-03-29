@@ -9,7 +9,7 @@ class Parsers::Operation::Region::Search
 
   def call
     @result = find_by_title(@attributes, @locales) || find_by_alternate_name(@attributes)
-    !@result.nil?
+    @result.present?
   end
 
   private

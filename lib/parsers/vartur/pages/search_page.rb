@@ -2,7 +2,7 @@ class Parsers::Vartur::Pages::SearchPage < Parsers::BasePage
   include ActiveModel::Validations
   include Parsers::ParserUtils
 
-  attr_reader :agent, :logger
+  attr_reader :agent, :logger, :result
 
   validates :agent, presence: true
   validates :logger, presence: true
@@ -10,11 +10,11 @@ class Parsers::Vartur::Pages::SearchPage < Parsers::BasePage
   def initialize(agent, logger)
     @agent = agent
     @logger = logger
+    @result = []
   end
 
   def call
     return false unless valid?
-    property_urls = []
     page_num = 1
 
     loop do
@@ -29,12 +29,12 @@ class Parsers::Vartur::Pages::SearchPage < Parsers::BasePage
 
       break if new_property_urls.blank?
 
-      property_urls.concat(new_property_urls)
+      @result.concat(new_property_urls)
     rescue => e
       @logger.error("Ошибка при парсинге #{page_num} страницы недвижимости.\n #{e.message}\n#{e.backtrace.join("\n")}")
+      return false
     end
-
-    property_urls
+    true
   end
 
   private

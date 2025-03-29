@@ -28,6 +28,7 @@ class Parsers::Vartur::Schema
       true
     rescue => e
       errors.add(:base, e.message)
+      logger.error("Произошла ошибка во время парсинга: #{e.message}")
       false
     end
   end
@@ -41,7 +42,9 @@ class Parsers::Vartur::Schema
     end
 
     def parse_property_links
-      Parsers::Vartur::Pages::SearchPage.new(agent, logger).call
+      search_page = Parsers::Vartur::Pages::SearchPage.new(agent, logger)
+      search_page.call
+      search_page.result
     rescue => e
       raise 'Ошибка во время парсинга страницы поиска агентства'
     end
@@ -77,10 +80,19 @@ class Parsers::Vartur::Schema
     end
 
     def parse_properties(property_urls)
-      property_page_parser = Parsers::Vartur::Pages::PropertyPage.new(agent, logger)
+      agency = ::Agency
+                 .select(:id, :website, :parse_source)
+                 .where('website=:link', link: Parsers::ParserUtils.wrap_url(AGENCY_URL))
+                 .first
+
+      if agency.nil?
+        raise "Не удалось найти агентство с URL #{AGENCY_URL}"
+      end
+
+      property_page_parser = Parsers::Vartur::Pages::PropertyPage.new(agent, logger, agency)
       property_page_parser.call(property_urls)
       logger.info('Парсинг завершен')
     rescue => e
-      raise 'Ошибка во время парсинга недвижимостей'
+      raise "Ошибка во время парсинга недвижимостей: #{e.message}"
     end
 end
