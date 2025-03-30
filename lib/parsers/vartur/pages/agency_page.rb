@@ -18,7 +18,7 @@ class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
     @logger.info("Старт парсинга агенства\n")
 
     agency_attrs = parse_pages
-    return if agency_attrs.blank?
+    return false if agency_attrs.blank?
 
     process_parsed(agency_url, agency_attrs)
   rescue => e
@@ -74,13 +74,13 @@ class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
       handler = Parsers::Vartur::Operations::Agency::Upsert.new
       success = handler.call(agency_url, attrs)
 
-      if !success
-        @logger.error(handler.errors.full_messages)
-      else
+      if success
         entity = handler.result
         new_or_updated = entity.previously_new_record? ? 'добавлена' : 'изменена'
         @logger.info("Сущность #{entity.id} была #{new_or_updated}")
         @logger.info("Переданные параметры: #{attrs}")
+      else
+        @logger.error(handler.errors.full_messages)
       end
       success
     end

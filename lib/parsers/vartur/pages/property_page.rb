@@ -15,6 +15,7 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
 
   def call(property_urls)
     return false unless valid?
+    success = true
     property_urls.each do |url|
       begin
         @logger.info("Старт парсинга недвижимости #{url}\n")
@@ -22,13 +23,13 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
 
         next if property_attrs.blank?
 
-        process_parsed(url, property_attrs)
-        true
+        success &= process_parsed(url, property_attrs)
       rescue => e
         @logger.error("Ошибка при парсинге. #{url}\n#{e.message}\n#{e.backtrace.first}\n")
-        false
+        success = false
       end
     end
+    success
   end
 
   private
@@ -86,13 +87,13 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
       handler = Parsers::Vartur::Operations::Property::Upsert.new(@agency)
       success = handler.call(property_url, attrs)
 
-      if !success
-        @logger.error(handler.errors.full_messages)
-      else
+      if success
         entity = handler.entity
         new_or_updated = entity.previously_new_record? ? 'добавлена' : 'изменена'
         @logger.info("Сущность #{entity.id} была #{new_or_updated}")
         @logger.info("Переданные параметры: #{attrs}")
+      else
+        @logger.error(handler.errors.full_messages)
       end
       success
     end

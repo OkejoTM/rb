@@ -38,7 +38,8 @@ class Parsers::Vartur::Schema
     def parse_agency_info(agency_url)
       Parsers::Vartur::Pages::AgencyPage.new(agent, logger).call(agency_url)
     rescue => e
-      raise 'Ошибка во время парсинга страниц агентства'
+      logger.error("Ошибка во время парсинга страниц агентства: #{e.message}\n#{e.backtrace.join("\n")}")
+      raise "Ошибка во время парсинга страниц агентства: #{e.message}"
     end
 
     def parse_property_links
@@ -46,7 +47,8 @@ class Parsers::Vartur::Schema
       search_page.call
       search_page.result
     rescue => e
-      raise 'Ошибка во время парсинга страницы поиска агентства'
+      logger.error("Ошибка во время парсинга страницы поиска агентства: #{e.message}\n#{e.backtrace.join("\n")}")
+      raise "Ошибка во время парсинга страницы поиска агентства: #{e.message}"
     end
 
     def separate_properties(property_urls)
@@ -59,7 +61,8 @@ class Parsers::Vartur::Schema
 
       [new_properties, existing_properties]
     rescue => e
-      raise 'Ошибка при разделении недвижимостей'
+      logger.error("Ошибка при разделении недвижимостей: #{e.message}\n#{e.backtrace.join("\n")}")
+      raise "Ошибка при разделении недвижимостей: #{e.message}"
     end
 
     def deactivate_not_founded_properties(agency_url, existed_property_urls)
@@ -70,7 +73,8 @@ class Parsers::Vartur::Schema
         .where.not(external_link: existed_property_urls)
         .update_all(is_active: false)
     rescue => e
-      raise 'Ошибка при деактивации старых недвижимостей'
+      logger.error("Ошибка при деактивации старых недвижимостей: #{e.message}\n#{e.backtrace.join("\n")}")
+      raise "Ошибка при деактивации старых недвижимостей: #{e.message}"
     end
 
     def log_separated_properties(new_property_urls, existed_property_urls)
@@ -93,6 +97,7 @@ class Parsers::Vartur::Schema
       property_page_parser.call(property_urls)
       logger.info('Парсинг завершен')
     rescue => e
+      logger.error("Ошибка во время парсинга недвижимостей: #{e.message}\n#{e.backtrace.join("\n")}")
       raise "Ошибка во время парсинга недвижимостей: #{e.message}"
     end
 end

@@ -22,21 +22,21 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
   end
 
   def region
-    return if response.blank? || @breadcrumbs.size < 4
+    return if response.blank? || breadcrumbs.size < 4
 
     breadcrumbs[-2].at('a')&.text&.strip
   end
 
   def city
-    return if response.blank? || @breadcrumbs.size < 5
+    return if response.blank? || breadcrumbs.size < 5
 
-    @breadcrumbs[-1].at('a')&.text&.strip
+    breadcrumbs[-1].at('a')&.text&.strip
   end
 
   def property_type
-    return if response.blank? || @breadcrumbs.size < 2
+    return if response.blank? || breadcrumbs.size < 2
 
-    type = @breadcrumbs[1].at('a')&.text&.strip
+    type = breadcrumbs[1].at('a')&.text&.strip
     property_type_mapping[type] || type
   end
 
