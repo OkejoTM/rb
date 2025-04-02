@@ -7,9 +7,9 @@ class Parsers::Vartur::Operations::Agency::Upsert
   attr_reader :result
 
   def call(agency_url, attributes)
-    @entity = find_agency(agency_url)
+    @result = find_agency(agency_url)
 
-    if @entity.new_record?
+    if @result.new_record?
       add_seo(attributes)
       add_slug(attributes)
     end
@@ -18,7 +18,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
     process_other_contacts(attributes)
     process_logo(attributes)
 
-    @result = save(@entity, attributes)
+    @result = save!(@result, attributes)
     true
   rescue => e
     errors.add(:base, message: e.message)
@@ -27,7 +27,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
 
   private
     def find_agency(agency_url)
-      entity =
+      result =
         ::Agency.includes(:logo,
                           :contacts,
                           :agency_other_contacts,
@@ -38,12 +38,12 @@ class Parsers::Vartur::Operations::Agency::Upsert
                 .where(website: Parsers::ParserUtils.wrap_url(agency_url))
                 .first
 
-      entity.presence || ::Agency.new
+      result.presence || ::Agency.new
     end
 
     def process_other_contacts(attributes)
       parsed_attributes = attributes.slice(:other_contacts_ru, :other_contacts_en)
-      agency_other_contacts = @entity&.agency_other_contacts || []
+      agency_other_contacts = @result&.agency_other_contacts || []
       agency_other_contacts_attributes = []
 
       if agency_other_contacts.blank? && LOCALES.all? { |locale| parsed_attributes[:"other_contacts_#{locale}"].blank? }
@@ -114,7 +114,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
 
     def process_contacts(attributes)
       parsed_attributes = attributes.slice(:contacts_ru, :contacts_en)
-      contacts = @entity&.contacts || []
+      contacts = @result&.contacts || []
       contacts_attributes = []
 
       # Пропускаем, если нет контактов и атрибутов
@@ -181,25 +181,25 @@ class Parsers::Vartur::Operations::Agency::Upsert
       attributes[:seo_agency_page] = SeoAgencyPage.new_default_agency_page
     end
 
-    def save!(entity, attributes)
+    def save!(result, attributes)
       permitted_attrs = permitted_params(attributes)
-      entity.assign_attributes(permitted_attrs)
+      result.assign_attributes(permitted_attrs)
 
-      if entity.save
-        entity
+      if result.save
+        result
       else
-        raise entity&.errors&.messages&.to_json
+        raise result&.errors&.messages&.to_json
       end
     end
 
     def find_agency_other_contacts_by_title(title)
-      @entity&.agency_other_contacts&.find do |contact|
+      @result&.agency_other_contacts&.find do |contact|
         LOCALES.any? { |locale| contact.send(:"title_#{locale}") == title }
       end
     end
 
     def find_agency_contacts_by_value(value)
-      @entity&.contacts&.find { |contact| contact.value == value }
+      @result&.contacts&.find { |contact| contact.value == value }
     end
 
     def find_contact_by_type(type)

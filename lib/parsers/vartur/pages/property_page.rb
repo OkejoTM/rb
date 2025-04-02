@@ -35,34 +35,35 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
   private
 
     def attribute_parser_map
-      {
-        en: {
-          h1_en: :h1,
-          pictures: :pictures,
-          country_name_en: :country_name_en,
-          region_en: :region,
-          city_en: :city,
-          property_type_en: :property_type,
-          bathroom_count: :bathroom_count,
-          area: :area,
-          building_year: :building_year,
-          room_count: :room_count,
-          bedroom_count: :bedroom_count,
-          sale_price: :sale_price,
-          description_en: :description,
-          area_unit: :area_unit,
-          parsed: :parsed,
-          moderated: :moderated
-        },
-        ru: {
-          h1_ru: :h1,
-          country_name_ru: :country_name_ru,
-          region_ru: :region,
-          city_ru: :city,
-          property_type_ru: :property_type,
-          description_ru: :description
+      @attribute_parser_map ||=
+        {
+          en: {
+            h1_en: :h1,
+            pictures: :pictures,
+            country_name_en: :country_name_en,
+            region_en: :region,
+            city_en: :city,
+            property_type_en: :property_type,
+            bathroom_count: :bathroom_count,
+            area: :area,
+            building_year: :building_year,
+            room_count: :room_count,
+            bedroom_count: :bedroom_count,
+            sale_price: :sale_price,
+            description_en: :description,
+            area_unit: :area_unit,
+            parsed: :parsed,
+            moderated: :moderated
+          },
+          ru: {
+            h1_ru: :h1,
+            country_name_ru: :country_name_ru,
+            region_ru: :region,
+            city_ru: :city,
+            property_type_ru: :property_type,
+            description_ru: :description
+          }
         }
-      }
     end
 
     def parse_pages(url)
@@ -88,9 +89,9 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
       success = handler.call(property_url, attrs)
 
       if success
-        entity = handler.entity
-        new_or_updated = entity.previously_new_record? ? 'добавлена' : 'изменена'
-        @logger.info("Сущность #{entity.id} была #{new_or_updated}")
+        result = handler.result
+        new_or_updated = result.previously_new_record? ? 'добавлена' : 'изменена'
+        @logger.info("Сущность #{result.id} была #{new_or_updated}")
         @logger.info("Переданные параметры: #{attrs}")
       else
         @logger.error(handler.errors.full_messages)

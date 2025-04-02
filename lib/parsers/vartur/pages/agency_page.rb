@@ -29,27 +29,28 @@ class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
   private
 
     def attribute_parser_map
-      {
-        en: {
-          about_page: {
-            name_en: :name,
-            about_en: :about_en,
-            logo: :logo,
-            website: :website,
-            is_active: :is_active
+      @attribute_parser_map ||=
+        {
+          en: {
+            about_page: {
+              name_en: :name,
+              about_en: :about_en,
+              logo: :logo,
+              website: :website,
+              is_active: :is_active
+            },
+            contact_page: {
+              other_contacts_en: :other_contacts_en,
+              contacts_en: :contacts_en
+            }
           },
-          contact_page: {
-            other_contacts_en: :other_contacts_en,
-            contacts_en: :contacts_en
-          }
-        },
-        ru: {
-          about_page: {
-            name_ru: :name,
-            about_ru: :about_ru
+          ru: {
+            about_page: {
+              name_ru: :name,
+              about_ru: :about_ru
+            }
           }
         }
-      }
     end
 
     def parse_pages
@@ -75,9 +76,9 @@ class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
       success = handler.call(agency_url, attrs)
 
       if success
-        entity = handler.result
-        new_or_updated = entity.previously_new_record? ? 'добавлена' : 'изменена'
-        @logger.info("Сущность #{entity.id} была #{new_or_updated}")
+        result = handler.result
+        new_or_updated = result.previously_new_record? ? 'добавлена' : 'изменена'
+        @logger.info("Сущность #{result.id} была #{new_or_updated}")
         @logger.info("Переданные параметры: #{attrs}")
       else
         @logger.error(handler.errors.full_messages)

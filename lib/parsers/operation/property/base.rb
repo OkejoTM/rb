@@ -11,7 +11,7 @@ module Parsers::Operation::Property::Base
 
   def filter_corrupted_picture(picture_links)
     picture_links.filter do |picture_link|
-      Parser::ParserUtils.img_exist?(picture_link[:src])
+      Parsers::ParserUtils.img_exist?(picture_link[:src])
     end
   end
 

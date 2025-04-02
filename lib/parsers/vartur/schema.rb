@@ -20,7 +20,10 @@ class Parsers::Vartur::Schema
     begin
       parse_agency_info(AGENCY_URL)
       property_urls = parse_property_links
-      new_properties, existed_property_urls = *separate_properties(property_urls)
+
+      existed_property_urls = find_existing_properties(property_urls)
+      new_properties = determine_new_properties(property_urls, existed_property_urls)
+
       deactivate_not_founded_properties(AGENCY_URL, existed_property_urls)
       log_separated_properties(new_properties, existed_property_urls)
       parse_properties(property_urls)
@@ -28,7 +31,7 @@ class Parsers::Vartur::Schema
       true
     rescue => e
       errors.add(:base, e.message)
-      logger.error("Произошла ошибка во время парсинга: #{e.message}")
+      logger.error("Произошла ошибка во время парсинга: #{e.message}\n#{e.backtrace.join("\n")}")
       false
     end
   end
@@ -36,33 +39,32 @@ class Parsers::Vartur::Schema
   private
 
     def parse_agency_info(agency_url)
-      Parsers::Vartur::Pages::AgencyPage.new(agent, logger).call(agency_url)
-    rescue => e
-      logger.error("Ошибка во время парсинга страниц агентства: #{e.message}\n#{e.backtrace.join("\n")}")
-      raise "Ошибка во время парсинга страниц агентства: #{e.message}"
+      success = Parsers::Vartur::Pages::AgencyPage.new(agent, logger).call(agency_url)
+
+      unless success
+        raise "Парсинг страниц агентства завершился с ошибками"
+      end
+      success
     end
 
     def parse_property_links
       search_page = Parsers::Vartur::Pages::SearchPage.new(agent, logger)
-      search_page.call
+      success = search_page.call
+      unless success
+        raise "Ошибка во время парсинга страницы поиска агентства"
+      end
+
       search_page.result
-    rescue => e
-      logger.error("Ошибка во время парсинга страницы поиска агентства: #{e.message}\n#{e.backtrace.join("\n")}")
-      raise "Ошибка во время парсинга страницы поиска агентства: #{e.message}"
     end
 
-    def separate_properties(property_urls)
-      existing_properties =
-        ::Property
-          .where(external_link: property_urls)
-          .pluck(:external_link)
+    def find_existing_properties(property_urls)
+      ::Property
+        .where(external_link: property_urls)
+        .pluck(:external_link)
+    end
 
-      new_properties = property_urls.reject { |urls| urls.in?(existing_properties) }
-
-      [new_properties, existing_properties]
-    rescue => e
-      logger.error("Ошибка при разделении недвижимостей: #{e.message}\n#{e.backtrace.join("\n")}")
-      raise "Ошибка при разделении недвижимостей: #{e.message}"
+    def determine_new_properties(property_urls, existing_property_urls)
+      property_urls - existing_property_urls
     end
 
     def deactivate_not_founded_properties(agency_url, existed_property_urls)
@@ -72,9 +74,6 @@ class Parsers::Vartur::Schema
         .where('agencies.parse_source': agency_url)
         .where.not(external_link: existed_property_urls)
         .update_all(is_active: false)
-    rescue => e
-      logger.error("Ошибка при деактивации старых недвижимостей: #{e.message}\n#{e.backtrace.join("\n")}")
-      raise "Ошибка при деактивации старых недвижимостей: #{e.message}"
     end
 
     def log_separated_properties(new_property_urls, existed_property_urls)
@@ -94,10 +93,12 @@ class Parsers::Vartur::Schema
       end
 
       property_page_parser = Parsers::Vartur::Pages::PropertyPage.new(agent, logger, agency)
-      property_page_parser.call(property_urls)
+      success = property_page_parser.call(property_urls)
+
+      unless success
+        raise "Парсинг недвижимостей завершился с ошибками"
+      end
+
       logger.info('Парсинг завершен')
-    rescue => e
-      logger.error("Ошибка во время парсинга недвижимостей: #{e.message}\n#{e.backtrace.join("\n")}")
-      raise "Ошибка во время парсинга недвижимостей: #{e.message}"
     end
 end

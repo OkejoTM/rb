@@ -22,15 +22,15 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
   end
 
   def region
-    return if response.blank? || breadcrumbs.size < 4
+    return if response.blank? || breadcrumbs.size < 5
 
-    breadcrumbs[-2].at('a')&.text&.strip
+    breadcrumbs[4].at('a')&.text&.strip
   end
 
   def city
-    return if response.blank? || breadcrumbs.size < 5
+    return if response.blank? || breadcrumbs.size < 4
 
-    breadcrumbs[-1].at('a')&.text&.strip
+    breadcrumbs[3].at('a')&.text&.strip
   end
 
   def property_type
@@ -70,7 +70,7 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
   end
 
   def area_unit
-    return Formatters::AreaFormatter::AREA_UNIT_SQ_M
+    Formatters::AreaFormatter::AREA_UNIT_SQ_M
   end
 
   def sale_price
@@ -123,9 +123,10 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
   end
 
   def property_type_mapping
-    {
-      'Land' => 'Land plot'
-    }
+    @property_type_mapping ||=
+      {
+        'Land' => 'Land plot'
+      }
   end
 
   def moderated
