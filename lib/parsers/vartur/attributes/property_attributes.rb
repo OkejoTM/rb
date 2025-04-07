@@ -21,23 +21,12 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
     response.at('h2[itemprop="name"]')&.text&.strip
   end
 
-  def region
-    return if response.blank? || breadcrumbs.size < 5
-
-    breadcrumbs[4].at('a')&.text&.strip
-  end
-
-  def city
-    return if response.blank? || breadcrumbs.size < 4
-
-    breadcrumbs[3].at('a')&.text&.strip
-  end
-
-  def property_type
-    return if response.blank? || breadcrumbs.size < 2
-
-    type = breadcrumbs[1].at('a')&.text&.strip
-    property_type_mapping[type] || type
+  def breadcrumbs
+    return [] if response.blank?
+    data = response.css('nav[aria-label="Breadcrumb"] ol li')
+    data.map do |li|
+      li.at('a')&.text&.strip
+    end
   end
 
   def bathroom_count
@@ -59,18 +48,23 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
   end
 
   def area
-    return if response.blank?
-    icon_parent = response.at('span:contains("SQM")')&.parent
-    return if icon_parent.blank?
+    parent_area_span = area_element
+    return if parent_area_span.blank?
 
-    area_text = icon_parent.at('span.text-xs')&.text&.strip
+    area_text = parent_area_span.at('span.text-xs')&.text&.strip
     return if area_text.blank?
 
     area_text.scan(/\d+/).first
   end
 
   def area_unit
-    Formatters::AreaFormatter::AREA_UNIT_SQ_M
+    (element = area_element) && element.at('span:contains("SQFT")') ?
+      Formatters::AreaFormatter::AREA_UNIT_SQ_FT :
+      Formatters::AreaFormatter::AREA_UNIT_SQ_M
+  end
+
+  def area_element
+    @area_element ||= response && (response.at('span:contains("SQM")')&.parent || response.at('span:contains("SQFT")')&.parent)
   end
 
   def sale_price
@@ -122,15 +116,8 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
     end
   end
 
-  def property_type_mapping
-    @property_type_mapping ||=
-      {
-        'Land' => 'Land plot'
-      }
-  end
-
   def moderated
-    true
+    false
   end
 
   def parsed
@@ -141,9 +128,24 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
     response.code != "404"
   end
 
-  private
+  def property_tags
+    return [] if response.blank?
 
-    def breadcrumbs
-      @breadcrumbs ||= response.css('nav[aria-label="Breadcrumb"] ol li')
+    tags = []
+    feature_sections = response.css('.flex.flex-col.mb-3')
+
+    feature_sections.each do |section|
+      section.css('.flex.items-center span.text-gray-600.text-sm').each do |tag_span|
+        tag_text = tag_span.text.strip
+        next if tag_text.blank?
+
+        tags << {
+          title_en: tag_text,
+          title_ru: tag_text
+        }
+      end
     end
+
+    tags.uniq { |tag| tag[:title_en] }
+  end
 end

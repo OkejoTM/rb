@@ -40,10 +40,7 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
           en: {
             h1_en: :h1,
             pictures: :pictures,
-            country_name_en: :country_name_en,
-            region_en: :region,
-            city_en: :city,
-            property_type_en: :property_type,
+            breadcrumbs: :breadcrumbs,
             bathroom_count: :bathroom_count,
             area: :area,
             building_year: :building_year,
@@ -53,14 +50,11 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
             description_en: :description,
             area_unit: :area_unit,
             parsed: :parsed,
-            moderated: :moderated
+            moderated: :moderated,
+            property_tags: :property_tags
           },
           ru: {
             h1_ru: :h1,
-            country_name_ru: :country_name_ru,
-            region_ru: :region,
-            city_ru: :city,
-            property_type_ru: :property_type,
             description_ru: :description
           }
         }
@@ -71,9 +65,11 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
       en_page = @agent.load_page(url)
       ru_page = @agent.load_page(url.gsub(%r{/listings/(\d+)$}, '/ru/spiski/\1'))
 
-      if en_page.blank? || ru_page.blank?
-        @logger.warn("Пропущена #{url} т.к. ответ был пустым")
+      if en_page.blank? && ru_page.blank?
+        @logger.warn("Пропущена #{url} т.к. обе страницы (en и ru) были пустыми")
         return nil
+      elsif en_page.blank? || ru_page.blank?
+        @logger.warn("Для #{url} одна из страниц была пустой: #{en_page.blank? ? "английская (en)" : "русская (ru)"}")
       end
 
       # Парсим данные с обеих страниц

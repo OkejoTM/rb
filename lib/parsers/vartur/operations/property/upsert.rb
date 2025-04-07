@@ -18,13 +18,14 @@ class Parsers::Vartur::Operations::Property::Upsert
       add_country(attributes)
       add_region(attributes)
       add_city(attributes)
-      add_property_type(attributes, property_types: property_types_preload)
+      add_property_type(attributes)
       add_agency(attributes)
       add_external_link(property_url, attributes)
     end
 
-    pictures(result, attributes)
-    noncommercial_property_attribute(result, attributes)
+    update_pictures(result, attributes)
+    update_noncommercial_attributes(result, attributes)
+    update_property_tags(result, attributes)
     save!(@result, attributes)
     true
   rescue => e
@@ -50,91 +51,131 @@ class Parsers::Vartur::Operations::Property::Upsert
     end
 
     def add_country(attributes)
-      country_search = Parsers::Operation::Country::Search.new(attributes, LOCALES)
-      country_search.call
-      country = country_search.result
+      country = find_country_from_breadcrumbs(attributes)
 
-      attributes[:country_id] = country.id
+      attributes[:country_id] = country&.id
+    end
+
+    def find_country_from_breadcrumbs(attributes)
+      breadcrumbs = attributes[:breadcrumbs]
+      return if breadcrumbs.blank?
+
+      search_attrs = {}
+      breadcrumbs.each do |crumb|
+        next if crumb.blank?
+
+        LOCALES.each do |locale|
+          search_attrs[:"country_name_#{locale}"] = crumb
+        end
+
+        country_search = Parsers::Operation::Country::Search.new(search_attrs, LOCALES)
+        if country_search.call
+          return country_search.result
+        end
+      end
     end
 
     def add_region(attributes)
-      attributes[:region_en] = attributes[:city_en] if attributes[:region_en].blank?
-      region_search = Parsers::Operation::Region::Search.new(attributes, LOCALES)
-      region_search.call
-      region = region_search.result
+      region = find_region_from_breadcrumbs(attributes)
 
-      return attributes if region.blank?
+      attributes[:region_id] = region&.id
+      attributes[:region_name_en] = region&.title_en
+      attributes[:region_name_ru] = region&.title_ru
+    end
 
-      attributes[:region_id] = region.id
-      attributes[:region_name_en] = region.title_en
-      attributes[:region_name_ru] = region.title_ru
+    def find_region_from_breadcrumbs(attributes)
+      breadcrumbs = attributes[:breadcrumbs]
+      return if attributes[:country_id].blank? || breadcrumbs.blank?
+
+      search_attrs = { country_id: attributes[:country_id] }
+      breadcrumbs.each do |crumb|
+        next if crumb.blank?
+
+        LOCALES.each do |locale|
+          search_attrs[:"region_#{locale}"] = crumb
+        end
+
+        region_search = Parsers::Operation::Region::Search.new(search_attrs, LOCALES)
+        if region_search.call
+          return region_search.result
+        end
+      end
+      nil
     end
 
     def add_city(attributes)
-      city = find_city(attributes)
-      if city.blank?
-        city_search = Parsers::Operation::City::Search.new(attributes, LOCALES)
-        city_search.call
-        city = city_search.result
-      end
+      city = find_city_from_breadcrumbs(attributes)
 
-      return attributes if city.blank?
-
-      attributes[:city_id] = city.id
-      attributes[:city_name_en] = city.title_en
-      attributes[:city_name_ru] = city.title_ru
+      attributes[:city_id] = city&.id
+      attributes[:city_name_en] = city&.title_en
+      attributes[:city_name_ru] = city&.title_ru
     end
 
-    def find_city(attributes)
-      conditions = []
-      params = {}
+    def find_city_from_breadcrumbs(attributes)
+      breadcrumbs = attributes[:breadcrumbs]
+      return if breadcrumbs.blank?
 
-      LOCALES.each do |locale|
-        city_name = attributes[:"city_#{locale}"]
-        next if city_name.blank?
+      search_attrs = { country_id: attributes[:country_id] }
+      breadcrumbs.each do |crumb|
+        next if crumb.blank?
 
-        conditions << "title_#{locale} ILIKE :title_#{locale}"
-        params[:"title_#{locale}"] = city_name
-      end
-
-      return nil if conditions.empty?
-
-      City.where(region_id: attributes[:region_id])
-          .where(conditions.join(' OR '), params)
-          .first
-    end
-
-    def add_property_type(attributes, property_types: nil)
-      property_type = find_property_type(property_types, attributes, LOCALES)
-      attributes[:property_type_id] =
-        if property_type.present?
-          property_type.id
-        else
-          ::PropertyType::OTHER
+        LOCALES.each do |locale|
+          search_attrs[:"city_#{locale}"] = crumb
         end
+
+        city_search = Parsers::Vartur::Operations::City::VarturSearch.new(search_attrs, LOCALES)
+        if city_search.call
+          return city_search.result
+        end
+      end
+      nil
     end
 
-    def property_types_preload
-      @property_types_preload ||= ::PropertyType
-                                    .select(:id, :title_ru, :title_en)
-                                    .to_a
+    def add_property_type(attributes)
+      property_type = find_property_type_from_breadcrumbs(attributes)
+      attributes[:property_type_id] = property_type&.id || ::PropertyType::OTHER
+    end
+
+    def find_property_type_from_breadcrumbs(attributes)
+      breadcrumbs = attributes[:breadcrumbs]
+      return if breadcrumbs.blank?
+
+      search_attrs = {}
+      breadcrumbs.each do |crumb|
+        next if crumb.blank?
+
+        LOCALES.each do |locale|
+          search_attrs[:"property_type_#{locale}"] = property_type_mapping[crumb] || crumb
+        end
+
+        property_type = find_property_type(search_attrs)
+        return property_type if property_type.present?
+      end
+      nil
+    end
+
+    def property_type_mapping
+      @property_type_mapping ||=
+        {
+          'Land' => 'Land plot'
+        }
     end
 
     def add_agency(attributes)
-      attributes[:agency_id] = @agency.id
+      attributes[:agency_id] = @agency&.id
     end
 
     def add_external_link(link, attributes)
       attributes[:external_link] = link
     end
 
-    def pictures(property, attributes)
+    def update_pictures(property, attributes)
       if attributes.has_key?(:pictures)
         attributes[:pictures_attributes] = check_pictures(attributes[:pictures], pictures: property.pictures)
       end
     end
 
-    def noncommercial_property_attribute(property, attributes)
+    def update_noncommercial_attributes(property, attributes)
       has_property_attrs = attributes.keys.any? do |key|
         key.in?(%i[level level_count property_id bathroom_count bedroom_count])
       end
@@ -150,6 +191,24 @@ class Parsers::Vartur::Operations::Property::Upsert
       noncommercial_attrs = noncomercial_property_hash(property_attrs)
       noncommercial_attrs[:id] = noncommercial.id if noncommercial.present?
       noncommercial_attrs
+    end
+
+    def update_property_tags(property, attributes)
+      if attributes.has_key?(:property_tags) && attributes[:property_tags].present?
+        # Загружаем все существующие теги
+        all_property_tags = ::PropertyTag.includes(:property_tag_aliases).all.to_a
+
+        tag_attrs = check_property_tags(
+          property.property_tags,
+          attributes[:property_tags],
+          all_property_tags,
+          LOCALES
+        )
+
+        # Добавляем атрибуты в основные атрибуты объекта
+        attributes[:property_tag_ids] = tag_attrs[:property_tag_ids] if tag_attrs[:property_tag_ids].present?
+        attributes[:property_tags_attributes] = tag_attrs[:property_tags_attributes] if tag_attrs[:property_tags_attributes].present?
+      end
     end
 
     def save!(result, attributes)

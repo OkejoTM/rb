@@ -36,26 +36,13 @@ module Parsers::Operation::Property::Base
 
   # Property
 
-  def find_property_type(property_types, attributes, locales)
-    if property_types.present?
-
-      property_types.find do |c|
-        locales.any? do |l|
-          next false if attributes[:"property_type_#{l}"].blank?
-
-          c.send(:"title_#{l}").match?(/#{attributes[:"property_type_#{l}"]}/i)
-        end
-      end
-
-    else
-      # long request
-      PropertyType.where(
-        'title_ru ILIKE :title_ru or title_en ILIKE :title_en',
-        title_ru: "%#{attributes[:property_type_ru]}%",
-        title_en: "%#{attributes[:property_type_en]}%"
-      ).select(:id)
-       .last
-    end
+  def find_property_type(attributes)
+    PropertyType.where(
+      'title_ru ILIKE :title_ru or title_en ILIKE :title_en',
+      title_ru: "%#{attributes[:property_type_ru]}%",
+      title_en: "%#{attributes[:property_type_en]}%"
+    ).select(:id)
+    .last
   end
 
   # Commercial property attributes
@@ -81,10 +68,10 @@ module Parsers::Operation::Property::Base
 
   # PropertyTags
 
-  def check_property_tags(property_tags, property_tag_attrs, all_property_tags)
+  def check_property_tags(property_tags, property_tag_attrs, all_property_tags, locales)
     # Оставляем теги, которые есть в полученных с сайта тегах
     existed_tags = property_tags&.filter do |tag|
-      property_tag_attrs.any? { |attr| compare_tags(tag, attr) }
+      property_tag_attrs.any? { |attr| compare_tags(tag, attr, locales) }
     end || []
 
     # добавить новые теги, которые нужно создать
@@ -92,7 +79,7 @@ module Parsers::Operation::Property::Base
 
       # Проходим по всем существующим тегам и пытаемся использовать их
       existed_tag = all_property_tags.find do |tag|
-        compare_tags(tag, tag_attr)
+        compare_tags(tag, tag_attr, locales)
       end
 
       if existed_tag.present?
@@ -115,7 +102,7 @@ module Parsers::Operation::Property::Base
     }
   end
 
-  def compare_tags(property_tag, tag_attrs)
+  def compare_tags(property_tag, tag_attrs, locales)
     original_names = locales.map { |locale| property_tag.send("title_#{locale}") }
     aliases = property_tag.property_tag_aliases.map(&:name)
     parsed_tag_names = locales.map { |locale| tag_attrs[:"title_#{locale}"] }

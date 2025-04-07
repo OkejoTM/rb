@@ -7,6 +7,8 @@ class Parsers::Vartur::Pages::SearchPage < Parsers::BasePage
   validates :agent, presence: true
   validates :logger, presence: true
 
+  LOCATIONS = %w[turkey dubai].freeze
+
   def initialize(agent, logger)
     @agent = agent
     @logger = logger
@@ -15,24 +17,27 @@ class Parsers::Vartur::Pages::SearchPage < Parsers::BasePage
 
   def call
     return false unless valid?
-    page_num = 1
 
-    loop do
-      url = page_url(page_num)
-      @logger.info("Парсинг страницы #{url} на предмет недвижимости")
+    LOCATIONS.each do |location|
+      page_num = 1
 
-      page = @agent.load_page(url)
+      loop do
+        url = page_url(location, page_num)
+        @logger.info("Парсинг страницы #{url} на предмет недвижимости")
 
-      page_num += 1
+        page = @agent.load_page(url)
 
-      new_property_urls = parse_property_urls(page)
+        page_num += 1
 
-      break if new_property_urls.blank?
+        new_property_urls = parse_property_urls(page)
 
-      @result.concat(new_property_urls)
-    rescue => e
-      @logger.error("Ошибка при парсинге #{page_num} страницы недвижимости.\n #{e.message}\n#{e.backtrace.join("\n")}")
-      return false
+        break if new_property_urls.blank?
+
+        @result.concat(new_property_urls)
+      rescue => e
+        @logger.error("Ошибка при парсинге #{page_num} страницы недвижимости.\n #{e.message}\n#{e.backtrace.join("\n")}")
+        return false
+      end
     end
     true
   end
@@ -46,7 +51,7 @@ class Parsers::Vartur::Pages::SearchPage < Parsers::BasePage
           .map { |url| "#{wrap_url(Parsers::Vartur::Schema::AGENCY_URL)}/listings/#{url.match(/\d+$/).to_s}" }
     end
 
-    def page_url(page_num)
-      "#{wrap_url(Parsers::Vartur::Schema::AGENCY_URL)}/property/for-sale/turkey?page=#{page_num}"
+    def page_url(location, page_num)
+      "#{wrap_url(Parsers::Vartur::Schema::AGENCY_URL)}/property/for-sale/#{location}?page=#{page_num}"
     end
 end

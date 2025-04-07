@@ -1,7 +1,7 @@
 class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
   include ActiveModel::Validations
 
-  attr_reader :agent, :logger
+  attr_reader :agent, :logger, :agency
 
   validates :agent, presence: true
   validates :logger, presence: true
@@ -76,9 +76,9 @@ class Parsers::Vartur::Pages::AgencyPage < Parsers::BasePage
       success = handler.call(agency_url, attrs)
 
       if success
-        result = handler.result
-        new_or_updated = result.previously_new_record? ? 'добавлена' : 'изменена'
-        @logger.info("Сущность #{result.id} была #{new_or_updated}")
+        @agency = handler.result
+        new_or_updated = agency.previously_new_record? ? 'добавлена' : 'изменена'
+        @logger.info("Сущность #{agency.id} была #{new_or_updated}")
         @logger.info("Переданные параметры: #{attrs}")
       else
         @logger.error(handler.errors.full_messages)

@@ -8,7 +8,7 @@ class Parsers::Operation::Country::Search
   end
 
   def call
-    @result = find_by_title(@attributes, @locales)
+    @result = find_by_title(@attributes, @locales) || find_by_alternate_name(@attributes)
     @result.present?
   end
 
@@ -29,5 +29,15 @@ class Parsers::Operation::Country::Search
       return nil if conditions.empty?
 
       Country.where(conditions.join(' OR '), params).first
+    end
+
+    def find_by_alternate_name(attributes)
+      country_name = attributes[:country_name_en]
+
+      country_alternates = AlternateName.where("lower(alternate_name) = lower(?)", country_name)
+      matching_country_ids = country_alternates.pluck(:geoname_id)
+
+      countries = Country.where(id: matching_country_ids)
+      countries.first
     end
 end

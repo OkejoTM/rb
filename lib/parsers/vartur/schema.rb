@@ -4,7 +4,7 @@ class Parsers::Vartur::Schema
   AGENCY_URL = 'www.vartur.com'
   LOCALES = %i[en ru].freeze
 
-  attr_reader :agent, :logger
+  attr_reader :agent, :logger, :agency
 
   validates :agent, presence: true
   validates :logger, presence: true
@@ -21,8 +21,8 @@ class Parsers::Vartur::Schema
       parse_agency_info(AGENCY_URL)
       property_urls = parse_property_links
 
-      existed_property_urls = find_existing_properties(property_urls)
-      new_properties = determine_new_properties(property_urls, existed_property_urls)
+      existed_property_urls = load_existed_property_urls(property_urls)
+      new_properties = determine_new_property_urls(property_urls, existed_property_urls)
 
       deactivate_not_founded_properties(AGENCY_URL, existed_property_urls)
       log_separated_properties(new_properties, existed_property_urls)
@@ -39,7 +39,9 @@ class Parsers::Vartur::Schema
   private
 
     def parse_agency_info(agency_url)
-      success = Parsers::Vartur::Pages::AgencyPage.new(agent, logger).call(agency_url)
+      handler = Parsers::Vartur::Pages::AgencyPage.new(agent, logger)
+      success = handler.call(agency_url)
+      @agency = handler.agency
 
       unless success
         raise "Парсинг страниц агентства завершился с ошибками"
@@ -57,14 +59,14 @@ class Parsers::Vartur::Schema
       search_page.result
     end
 
-    def find_existing_properties(property_urls)
+    def load_existed_property_urls(property_urls)
       ::Property
         .where(external_link: property_urls)
         .pluck(:external_link)
     end
 
-    def determine_new_properties(property_urls, existing_property_urls)
-      property_urls - existing_property_urls
+    def determine_new_property_urls(external_property_urls, existing_property_urls)
+      external_property_urls - existing_property_urls
     end
 
     def deactivate_not_founded_properties(agency_url, existed_property_urls)
@@ -83,16 +85,8 @@ class Parsers::Vartur::Schema
     end
 
     def parse_properties(property_urls)
-      agency = ::Agency
-                 .select(:id, :website, :parse_source)
-                 .where('website=:link', link: Parsers::ParserUtils.wrap_url(AGENCY_URL))
-                 .first
 
-      if agency.nil?
-        raise "Не удалось найти агентство с URL #{AGENCY_URL}"
-      end
-
-      property_page_parser = Parsers::Vartur::Pages::PropertyPage.new(agent, logger, agency)
+      property_page_parser = Parsers::Vartur::Pages::PropertyPage.new(agent, logger, @agency)
       success = property_page_parser.call(property_urls)
 
       unless success
