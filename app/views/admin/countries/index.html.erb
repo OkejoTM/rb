@@ -21,7 +21,7 @@
     <th><%= t(:active_short, scope: :properties) %></th>
     <th><%= t(:popular, scope: :common) %></th>
     <th><%= t(:slug, scope: :areas) %></th>
-    <th><%= "#{t(:short_properties_count, scope: :common)}/#{t(:short_active, scope: :common)}/#{t(:short_active_and_moderated, scope: :common)}" %></th>
+    <th><%= "#{t(:short_properties_count, scope: :common)}/#{t(:short_active, scope: :common)}/#{t(:short_active_and_moderated, scope: :common)}/#{t(:parsed, scope: :common)}" %></th>
     <th><%= t("common.actual_properties") %></th>
     <th><%= t(:short_regions_count, scope: :areas) %></th>
     <th><%= t("common.seo_pages") %></th>
@@ -43,9 +43,10 @@
         <td>
           <%= link_to country.properties_count, properties_path(country_id: country.id) %> /
           <%= link_to country.active_properties_count, properties_path(country_id: country.id, active: "on") %> /
-          <%= link_to country.active_and_moderated_properties_count, properties_path(country_id: country.id, active: "on", moderated: "on") %>
+          <%= link_to country.active_and_moderated_properties_count, properties_path(country_id: country.id, active: "on", moderated: "on") %> /
+          <%= country.properties.parsed.count %>
         </td>
-        <td><%= progress_bar(country.actual_properties_percent) %></td>
+        <td><span title='которую обновляли в последние пол года'><%= progress_bar(country.actual_properties_percent) %></span></td>
         <td><%= country.regions.count %></td>
         <td><%= link_to country.seo_location_pages.count, country_browse_pages_path(country) %></td>
         <td><%= Utils::Html::bool_glyphicon(country.show_agencies_on_website?) %></td>

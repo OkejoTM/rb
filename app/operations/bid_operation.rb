@@ -5,7 +5,7 @@ class BidOperation
   map :check_user_device
   map :init
   step :save
-  tee :notify_by_email
+  # tee :notify_by_email
   # tee :sync_bid
 
   def check_user_device(request:, form_params:)

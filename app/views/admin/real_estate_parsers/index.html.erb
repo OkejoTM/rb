@@ -1,0 +1,48 @@
+<% title @page_title %>
+<h2><%= t(:index, scope: :real_estate_parsers) %> </h2>
+
+<br>
+
+<table class="table table-striped table-hover table-with-items">
+  <tr>
+    <th>№</th>
+    <th><%= t('real_estate_parsers.agency') %></th>
+    <th><%= t('real_estate_parsers.started_at') %></th>
+    <th><%= t('real_estate_parsers.finished_at') %></th>
+    <th><%= t('real_estate_parsers.status') %></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+  <% @objects.each do |parser| %>
+    <tr>
+      <td><%= parser.id %></td>
+      <td><%= parser.agency.name %></td>
+      <td><%= date_format(parser.started_at, format_type: :short_date_time_format) if parser.started_at != nil %></td>
+      <td><%= date_format(parser.finished_at, format_type: :short_date_time_format) if parser.finished_at != nil %></td>
+      <td>
+        <%
+          case parser.status
+          when "success"
+        %>
+          <span style="color: green;"><%= status(parser.status) %></span>
+        <% when "unsuccess" %>
+          <span style="color: red;"><%= status(parser.status) %></span>
+        <% when "process_not_started" %>
+          <%= t('real_estate_parsers.process_not_started') %>
+        <% else %>
+          <%= status(parser.status) %>
+        <% end %>
+      </td>
+      <td><%= link_to t('real_estate_parser_logs.index'), real_estate_parser_real_estate_parser_logs_path(real_estate_parser_id: parser.id, parser_id: parser.id) %></td>
+      <td>
+        <%= button_to t('real_estate_parsers.start'),
+                      { controller: 'real_estate_parsers', id: parser.id, action: 'start' },
+                      { method: :post, disabled: (parser.started_at.present? && parser.finished_at.present? && parser.started_at == parser.finished_at || parser.status == "in_progress"), class: 'btn btn-primary' } %>
+      </td>
+    </tr>
+  <% end %>
+
+</table>
+
+<br>

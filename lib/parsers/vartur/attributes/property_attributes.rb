@@ -8,14 +8,6 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
     'USD'
   end
 
-  def country_name_ru
-    'Турция'
-  end
-
-  def country_name_en
-    'Turkey'
-  end
-
   def h1
     return if response.blank?
     response.at('h2[itemprop="name"]')&.text&.strip
@@ -58,13 +50,10 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
   end
 
   def area_unit
-    (element = area_element) && element.at('span:contains("SQFT")') ?
-      Formatters::AreaFormatter::AREA_UNIT_SQ_FT :
-      Formatters::AreaFormatter::AREA_UNIT_SQ_M
-  end
-
-  def area_element
-    @area_element ||= response && (response.at('span:contains("SQM")')&.parent || response.at('span:contains("SQFT")')&.parent)
+    return if response.blank?
+    return Formatters::AreaFormatter::AREA_UNIT_SQ_FT if response.at('span:contains("SQFT")').present?
+    return Formatters::AreaFormatter::AREA_UNIT_SQ_M if response.at('span:contains("SQM")').present?
+    nil
   end
 
   def sale_price
@@ -77,6 +66,7 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
   end
 
   def pictures
+    return nil
     return if response.blank?
 
     all_images = response.css('img')
@@ -117,7 +107,7 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
   end
 
   def moderated
-    false
+    true
   end
 
   def parsed
@@ -148,4 +138,10 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
 
     tags.uniq { |tag| tag[:title_en] }
   end
+
+  private
+
+    def area_element
+      @area_element ||= response && (response.at('span:contains("SQM")')&.parent || response.at('span:contains("SQFT")')&.parent)
+    end
 end

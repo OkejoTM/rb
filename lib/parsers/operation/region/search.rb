@@ -16,7 +16,7 @@ class Parsers::Operation::Region::Search
 
     def find_by_title(attributes, locales)
       conditions = []
-      params = { country_id: attributes[:country_id] }
+      params = {}
 
       locales.each do |locale|
         region_name = attributes[:"region_#{locale}"]
@@ -28,9 +28,9 @@ class Parsers::Operation::Region::Search
 
       return nil if conditions.empty?
 
-      Region.where(country_id: attributes[:country_id])
-            .where(conditions.join(' OR '), params)
-            .first
+      query = Region.where(conditions.join(' OR '), params)
+      query = query.where(country_id: attributes[:country_id]) if attributes[:country_id].present?
+      query.first
     end
 
     def find_by_alternate_name(attributes)

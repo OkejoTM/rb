@@ -70,9 +70,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
     end
 
     def update_other_contacts(parsed_attributes)
-      result = []
-
-      LOCALES.each do |locale|
+      LOCALES.reduce([]) do |memo, locale|
         contacts_attrs = parsed_attributes[:"other_contacts_#{locale}"] || []
 
         contacts_attrs.each do |contact_attr|
@@ -92,11 +90,10 @@ class Parsers::Vartur::Operations::Agency::Upsert
               }
             end
 
-          result.push(other_contact_params)
+          memo.push(other_contact_params)
         end
+        memo
       end
-
-      result
     end
 
     def process_contacts(attributes)
@@ -129,9 +126,7 @@ class Parsers::Vartur::Operations::Agency::Upsert
     end
 
     def update_contacts(parsed_attributes)
-      result = []
-
-      LOCALES.each do |locale|
+      LOCALES.reduce([]) do |memo, locale|
         contacts_attrs = parsed_attributes[:"contacts_#{locale}"] || []
 
         contacts_attrs.each do |contact_attr|
@@ -146,10 +141,10 @@ class Parsers::Vartur::Operations::Agency::Upsert
             contact_type_id: contact_type.id
           }
 
-          result.push(new_contact)
+          memo.push(new_contact)
         end
+        memo
       end
-      result
     end
 
     def process_logo(attributes)

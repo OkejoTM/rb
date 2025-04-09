@@ -51,7 +51,8 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
             area_unit: :area_unit,
             parsed: :parsed,
             moderated: :moderated,
-            property_tags: :property_tags
+            property_tags: :property_tags,
+            is_active: :is_active
           },
           ru: {
             h1_ru: :h1,

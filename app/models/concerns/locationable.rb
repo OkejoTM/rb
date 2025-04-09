@@ -71,10 +71,15 @@ module Locationable
     super.presence || properties.active.count
   end
 
+  # Количество актуальной (добавленной вручную или через интеграцию) недвижимости
+  def actual_properties_count
+    properties.active_and_moderated.not_fillers.count
+  end
+
   # Процент актуальной (добавленной вручную или через интеграцию) недвижимости
   def actual_properties_percent
     if active_and_moderated_properties_count > 0
-      properties.active_and_moderated.not_fillers.count * 100 / active_and_moderated_properties_count
+      actual_properties_count * 100 / active_and_moderated_properties_count
     else
       0
     end

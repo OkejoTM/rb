@@ -30,7 +30,7 @@ class Parsers::BasePage
         end
 
       method_list.each do |attribute, method|
-        parsed_hash[attribute] = handler.send(method)
+        parsed_hash[attribute] = handler.public_send(method)
       end
       parsed_hash
     end

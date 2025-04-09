@@ -8,7 +8,7 @@ class Admin::CountriesController < Admin::BasicAdminController
   # GET /countries
   # GET /countries.json
   def index
-    countries = Country.all
+    countries = Country.order(active_and_moderated_properties_count: :desc)
     countries = Country.filter(countries, params)
     # countries = countries.sort_by { |c| c.title_ru } # потому что .order(title_ru: :asc) для кириллицы не сработал
 

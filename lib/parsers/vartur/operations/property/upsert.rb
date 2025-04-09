@@ -73,6 +73,7 @@ class Parsers::Vartur::Operations::Property::Upsert
           return country_search.result
         end
       end
+      nil
     end
 
     def add_region(attributes)
@@ -115,7 +116,7 @@ class Parsers::Vartur::Operations::Property::Upsert
       breadcrumbs = attributes[:breadcrumbs]
       return if breadcrumbs.blank?
 
-      search_attrs = { country_id: attributes[:country_id] }
+      search_attrs = { region_id: attributes[:region_id] }
       breadcrumbs.each do |crumb|
         next if crumb.blank?
 
@@ -123,7 +124,7 @@ class Parsers::Vartur::Operations::Property::Upsert
           search_attrs[:"city_#{locale}"] = crumb
         end
 
-        city_search = Parsers::Vartur::Operations::City::VarturSearch.new(search_attrs, LOCALES)
+        city_search = Parsers::Operation::City::Search.new(search_attrs, LOCALES)
         if city_search.call
           return city_search.result
         end
@@ -162,7 +163,7 @@ class Parsers::Vartur::Operations::Property::Upsert
     end
 
     def add_agency(attributes)
-      attributes[:agency_id] = @agency&.id
+      attributes[:agency_id] = @agency.id
     end
 
     def add_external_link(link, attributes)

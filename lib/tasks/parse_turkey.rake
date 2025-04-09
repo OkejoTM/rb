@@ -5,13 +5,10 @@ namespace :parse_turkey do
     begin
       PropimoSettings.set('parser', false) # Защищаем таску от параллельного запуска
 
-      logger = Logger.new('log/parsers/vartur.log')
-      logger.level = Logger::INFO
-
       Parsers::Vartur::Schema.new(
         Parser::AgentProxy.new,
-        logger
-      ).call()
+        Parsers::RealEstateParserLogger.new("log/parsers", RealEstateParser.joins(:agency).where(agencies: { name_en: 'vartur' }).first)
+      ).call
     ensure
       PropimoSettings.set('parser', true)
     end

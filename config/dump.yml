@@ -1,0 +1,7 @@
+default:
+  dump: <%= "#{Date.today.strftime('%d%m%Y')}.propimo_production.dump" %>
+  host: 'propimo.com'
+  local_db: <%= Rails.configuration.database_configuration[Rails.env]&.[]('database') || 'propimo_dev' %>
+  out: <%= "#{Date.today.strftime('%d%m%Y')}.propimo_production_shuffled.dump" %>
+  remote_db: 'propimo_prod'
+  user: 'propimo'

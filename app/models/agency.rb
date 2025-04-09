@@ -56,6 +56,7 @@ class Agency < ApplicationRecord
   has_many :contacts, as: :contactable, dependent: :destroy, index_errors: true
   has_many :agency_other_contacts, dependent: :destroy
   has_many :messengers, dependent: :destroy, index_errors: true
+  has_many :real_estate_parsers, dependent: :destroy, index_errors: true
   has_and_belongs_to_many :agency_types, optional: true
 
   has_one :seo_agency_page, dependent: :destroy
