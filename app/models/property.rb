@@ -509,7 +509,7 @@ class Property < ApplicationRecord
       properties_can_be_translated = Property.active.where.not("description_#{source_lang}": '')
       translated_properties = properties_can_be_translated
                                 .where("autotranslated_description_#{lang}": true)
-      # translated_properties.count * 100 / properties_can_be_translated.count
+      translated_properties.count * 100 / properties_can_be_translated.count
     end
   end
 

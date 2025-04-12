@@ -33,9 +33,8 @@ class Parsers::Vartur::Pages::SearchPage < Parsers::BasePage
 
         break if new_property_urls.blank?
 
-        new_property_urls = new_property_urls.first
+        new_property_urls = new_property_urls
         @result.concat(new_property_urls)
-        break
       rescue => e
         @logger.error("Ошибка при парсинге #{page_num} страницы недвижимости.\n #{e.message}\n#{e.backtrace.join("\n")}")
         return false

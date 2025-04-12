@@ -25,7 +25,7 @@ class RealEstateParser < ApplicationRecord
   end
 
   def start
-    Parsers::Vartur::Schema.new(Parser::AgentProxy.new, Parsers::RealEstateParserLogger.new("log/parsers", RealEstateParser.find_by(id: id))).call()
+    Parsers::Vartur::Schema.new(Parser::AgentProxy.new, Parsers::RealEstateParserLogger.new("log/parsers", RealEstateParser.find_by(id: id))).call
   end
 
   def name

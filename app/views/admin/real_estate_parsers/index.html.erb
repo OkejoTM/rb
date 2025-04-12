@@ -34,10 +34,10 @@
           <%= status(parser.status) %>
         <% end %>
       </td>
-      <td><%= link_to t('real_estate_parser_logs.index'), real_estate_parser_real_estate_parser_logs_path(real_estate_parser_id: parser.id, parser_id: parser.id) %></td>
+      <td><%= link_to t('real_estate_parser_logs.index'), real_estate_parser_real_estate_parser_logs_path(real_estate_parser_id: parser.id) %></td>
       <td>
         <%= button_to t('real_estate_parsers.start'),
-                      { controller: 'real_estate_parsers', id: parser.id, action: 'start' },
+                      { controller: 'admin/real_estate_parsers', real_estate_parser_id: parser.id, action: 'start' },
                       { method: :post, disabled: (parser.started_at.present? && parser.finished_at.present? && parser.started_at == parser.finished_at || parser.status == "in_progress"), class: 'btn btn-primary' } %>
       </td>
     </tr>

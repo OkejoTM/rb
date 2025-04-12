@@ -23,17 +23,17 @@ class Parsers::RealEstateParserLogger < Logger
   def info(message)
     @logger.info(message)
 
-    match = message.match(/New properies: (\d+).*?Existed properies: (\d+)/)
+    match = message.match(/(?:New properties|Новых недвижимостей): (\d+).*?(?:Existed properties|Существующих недвижимостей): (\d+)/)
     if match
       @log.update(created_properties_count: match[1] , updated_properties_count: match[2])
     end
 
-    match = message.match(/Deleted properies: (\d+)/)
+    match = message.match(/(?:Deleted properties|Удаленных недвижимостей): (\d+)/)
     if match
       @log.update(deleted_properties_count: match[1])
     end
 
-    match = message.match(/Parsing finished/)
+    match = message.match(/Parsing finished|Парсинг завершен/)
     if match
       unless @log.status == 'unsuccess'
         @log.update(status: 'success')

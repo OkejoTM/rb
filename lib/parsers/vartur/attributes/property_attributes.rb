@@ -66,7 +66,6 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
   end
 
   def pictures
-    return nil
     return if response.blank?
 
     all_images = response.css('img')

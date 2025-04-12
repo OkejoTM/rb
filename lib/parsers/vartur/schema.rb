@@ -24,7 +24,8 @@ class Parsers::Vartur::Schema
       existed_property_urls = load_existed_property_urls(property_urls)
       new_properties = determine_new_property_urls(property_urls, existed_property_urls)
 
-      deactivate_not_founded_properties(AGENCY_URL, existed_property_urls)
+      deleted_properties = deactivate_not_founded_properties(existed_property_urls)
+      log_deactivated_properties(deleted_properties)
       log_separated_properties(new_properties, existed_property_urls)
       parse_properties(property_urls)
 
@@ -69,13 +70,21 @@ class Parsers::Vartur::Schema
       external_property_urls - existing_property_urls
     end
 
-    def deactivate_not_founded_properties(agency_url, existed_property_urls)
-      ::Property
-        .parsed
-        .joins(:agency)
-        .where('agencies.parse_source': agency_url)
-        .where.not(external_link: existed_property_urls)
-        .update_all(is_active: false)
+    def deactivate_not_founded_properties(existed_property_urls)
+      properties_to_deactivate = ::Property
+                                   .parsed
+                                   .joins(:agency)
+                                   .where('agencies.parse_source': AGENCY_URL)
+                                   .where.not(external_link: existed_property_urls)
+      properties_to_deactivate.update_all(is_active: false)
+
+      properties_to_deactivate
+    end
+
+    def log_deactivated_properties(deactivated_urls)
+      deactivated_properties_info =
+        "Удаленнех недвижимостей: #{deactivated_urls.count}"
+      logger.info(deactivated_properties_info)
     end
 
     def log_separated_properties(new_property_urls, existed_property_urls)
