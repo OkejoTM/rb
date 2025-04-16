@@ -2,7 +2,14 @@ class Parsers::RealEstateParserLogger < Logger
   require 'fileutils'
 
   def initialize(log_dir, parser)
-    @log = RealEstateParserLog.create(real_estate_parser_id: parser.id, status: 'in_progress')
+    @log = RealEstateParserLog.create(
+      real_estate_parser_id: parser.id,
+      status: 'in_progress',
+      created_properties_count: 0,
+      updated_properties_count: 0,
+      deleted_properties_count: 0
+    )
+
     @log_file = File.join(File.join(log_dir, parser.name.downcase.gsub(' ', '_')), "log_#{@log.id}.txt")
     create_log_directory(File.join(log_dir, parser.name.downcase.gsub(' ', '_')))
     @logger = Logger.new(@log_file)
@@ -12,12 +19,12 @@ class Parsers::RealEstateParserLogger < Logger
 
   def fatal(message)
     @logger.fatal(message)
-    @log.update(status: 'unsuccess')
+    @log.update(status: 'unsuccess', updated_at: Time.now)
   end
 
   def error(message)
     @logger.error(message)
-    @log.update(status: 'unsuccess')
+    @log.update(status: 'unsuccess', updated_at: Time.now)
   end
 
   def info(message)
@@ -62,4 +69,10 @@ class Parsers::RealEstateParserLogger < Logger
     def log_start_time
       @logger.info("Parsing started #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}")
     end
+
+    def increment_counter(counter_name)
+      RealEstateParserLog.where(id: @log.id).update_all(["#{counter_name} = #{counter_name} + 1"])
+      @log.reload
+    end
+
 end

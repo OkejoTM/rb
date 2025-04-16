@@ -4,11 +4,12 @@ class Admin::RealEstateParserLogsController < Admin::BasicAdminController
 
   private
     def index_hook
-      if params[:real_estate_parser_id].present?
-        @objects = RealEstateParserLog.where(real_estate_parser_id: params[:real_estate_parser_id])
-      else
-        @objects = RealEstateParserLog.all
-      end
+      @objects =
+        if params[:real_estate_parser_id].present?
+          RealEstateParserLog.where(real_estate_parser_id: params[:real_estate_parser_id])
+        else
+          RealEstateParserLog.all
+        end
 
       @pagination = Pagination.new(@objects, current_page: params[:page].to_i, page_size: 100)
       add_breadcrumb t(:index, scope: :real_estate_parsers), :real_estate_parsers_path

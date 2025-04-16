@@ -7,6 +7,7 @@
   <tr>
     <th>№</th>
     <th><%= t('real_estate_parsers.agency') %></th>
+    <th><%= t('real_estate_parsers.is_active') %></th>
     <th><%= t('real_estate_parsers.started_at') %></th>
     <th><%= t('real_estate_parsers.finished_at') %></th>
     <th><%= t('real_estate_parsers.status') %></th>
@@ -17,7 +18,8 @@
   <% @objects.each do |parser| %>
     <tr>
       <td><%= parser.id %></td>
-      <td><%= parser.agency.name %></td>
+      <td><%= link_to parser.agency.name, agencies_list_item_path(locale: 'ru', agency_url: parser.agency.slug), target: "_blank" %></td>
+      <td><%= Utils::Html::bool_glyphicon(parser.is_active?) %></td>
       <td><%= date_format(parser.started_at, format_type: :short_date_time_format) if parser.started_at != nil %></td>
       <td><%= date_format(parser.finished_at, format_type: :short_date_time_format) if parser.finished_at != nil %></td>
       <td>
@@ -37,8 +39,13 @@
       <td><%= link_to t('real_estate_parser_logs.index'), real_estate_parser_real_estate_parser_logs_path(real_estate_parser_id: parser.id) %></td>
       <td>
         <%= button_to t('real_estate_parsers.start'),
-                      { controller: 'admin/real_estate_parsers', real_estate_parser_id: parser.id, action: 'start' },
-                      { method: :post, disabled: (parser.started_at.present? && parser.finished_at.present? && parser.started_at == parser.finished_at || parser.status == "in_progress"), class: 'btn btn-primary' } %>
+                      real_estate_parser_start_path(parser.id),
+                      { method: :post, disabled: (!parser.is_active? && parser.started_at.present? && parser.finished_at.present? && parser.started_at == parser.finished_at || parser.status == "in_progress"), class: 'btn btn-primary' } %>
+        <% if parser.is_active? %>
+          <%= link_to 'Выключить', real_estate_parser_path(id: parser.id, real_estate_parser: { is_active: false }), class: 'btn btn-default', data: { method: :put } %>
+        <% else %>
+          <%= link_to 'Включить', real_estate_parser_path(id: parser.id, real_estate_parser: { is_active: true }), class: 'btn btn-success', data: { method: :put } %>
+        <% end %>
       </td>
     </tr>
   <% end %>
