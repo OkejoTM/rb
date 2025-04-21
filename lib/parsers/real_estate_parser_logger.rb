@@ -1,13 +1,17 @@
 class Parsers::RealEstateParserLogger < Logger
   require 'fileutils'
 
-  def initialize(log_dir, parser)
+  def initialize(log_dir, parser, stats)
+    @stats = stats
+
     @log = RealEstateParserLog.create(
       real_estate_parser_id: parser.id,
       status: 'in_progress',
       created_properties_count: 0,
       updated_properties_count: 0,
-      deleted_properties_count: 0
+      deleted_properties_count: 0,
+      error_properties_count: 0,
+      total_properties_count: 0,
     )
 
     @log_file = File.join(File.join(log_dir, parser.name.downcase.gsub(' ', '_')), "log_#{@log.id}.txt")
@@ -19,34 +23,17 @@ class Parsers::RealEstateParserLogger < Logger
 
   def fatal(message)
     @logger.fatal(message)
-    @log.update(status: 'unsuccess', updated_at: Time.now)
+    update_log_from_stats
   end
 
   def error(message)
     @logger.error(message)
-    @log.update(status: 'unsuccess', updated_at: Time.now)
+    update_log_from_stats
   end
 
   def info(message)
     @logger.info(message)
-
-    match = message.match(/(?:New properties|Новых недвижимостей): (\d+).*?(?:Existed properties|Существующих недвижимостей): (\d+)/)
-    if match
-      @log.update(created_properties_count: match[1] , updated_properties_count: match[2])
-    end
-
-    match = message.match(/(?:Deleted properties|Удаленных недвижимостей): (\d+)/)
-    if match
-      @log.update(deleted_properties_count: match[1])
-    end
-
-    match = message.match(/Parsing finished|Парсинг завершен/)
-    if match
-      unless @log.status == 'unsuccess'
-        @log.update(status: 'success')
-      end
-      @log.update(updated_at: Time.now.strftime('%Y-%m-%d %H:%M:%S'))
-    end
+    update_log_from_stats
   end
 
   def warn(message)
@@ -70,9 +57,9 @@ class Parsers::RealEstateParserLogger < Logger
       @logger.info("Parsing started #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}")
     end
 
-    def increment_counter(counter_name)
-      RealEstateParserLog.where(id: @log.id).update_all(["#{counter_name} = #{counter_name} + 1"])
-      @log.reload
+    def update_log_from_stats
+      return unless @stats.changed
+      @log.update(@stats.to_h.merge(updated_at: Time.now))
+      @stats.reset_changed
     end
-
 end

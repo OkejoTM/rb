@@ -1,32 +1,36 @@
 class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
   include ActiveModel::Validations
 
-  attr_reader :agent, :logger, :agency
+  attr_reader :agent, :logger, :agency, :stats
 
   validates :agent, presence: true
   validates :logger, presence: true
   validates :agency, presence: true
 
-  def initialize(agent, logger, agency)
+  def initialize(agent, logger, agency, stats)
     @agent = agent
     @logger = logger
     @agency = agency
+    @stats = stats
   end
 
   def call(property_urls)
     return false unless valid?
-    success = true
+    success = false
     property_urls.each do |url|
       begin
         @logger.info("Старт парсинга недвижимости #{url}\n")
         property_attrs = parse_pages(url)
 
-        next if property_attrs.blank?
+        if property_attrs.blank?
+          @stats.increment_error_properties
+          next
+        end
 
-        success &= process_parsed(url, property_attrs)
+        success |= process_parsed(url, property_attrs)
       rescue => e
         @logger.error("Ошибка при парсинге. #{url}\n#{e.message}\n#{e.backtrace.first}\n")
-        success = false
+        @stats.increment_error_properties
       end
     end
     success
@@ -88,9 +92,11 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
       if success
         result = handler.result
         new_or_updated = result.previously_new_record? ? 'добавлена' : 'изменена'
+        result.previously_new_record? ? @stats.increment_created_properties : @stats.increment_updated_properties
         @logger.info("Сущность #{result.id} была #{new_or_updated}")
         @logger.info("Переданные параметры: #{attrs}")
       else
+        @stats.increment_error_properties
         @logger.error(handler.errors.full_messages)
       end
       success

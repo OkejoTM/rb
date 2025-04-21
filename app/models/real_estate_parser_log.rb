@@ -7,6 +7,8 @@
 #  deleted_properties_count :integer
 #  status                   :integer          default("unsuccess"), not null
 #  updated_properties_count :integer
+#  error_properties_count   :integer
+#  total_properties_count   :integer
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
 #  real_estate_parser_id    :bigint           indexed
@@ -18,6 +20,7 @@ class RealEstateParserLog < ApplicationRecord
     unsuccess: 0,
     success: 1,
     in_progress: 2,
+    partial_success: 3
   }.freeze
 
   enum status: STATUSES

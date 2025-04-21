@@ -30,7 +30,8 @@ class RealEstateParser < ApplicationRecord
 
   def start
     return false unless is_active?
-    "Parsers::#{agency.slug.camelize}::Schema".constantize.new(Parser::AgentProxy.new, Parsers::RealEstateParserLogger.new("log/parsers", self)).call
+    stats = Parsers::ParserStats.new
+    "Parsers::#{agency.slug.camelize}::Schema".constantize.new(Parser::AgentProxy.new, Parsers::RealEstateParserLogger.new("log/parsers", self, stats), stats).call
   end
 
   def name
