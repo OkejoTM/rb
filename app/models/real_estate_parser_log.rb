@@ -32,4 +32,9 @@ class RealEstateParserLog < ApplicationRecord
   def finished_at
     updated_at unless in_progress?
   end
+
+  def to_percent
+    return 0 if total_properties_count.nil? || total_properties_count.zero?
+    (created_properties_count.to_i + updated_properties_count.to_i + error_properties_count.to_i) * 100 / total_properties_count.to_i
+  end
 end

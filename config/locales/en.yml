@@ -1,22 +1,851 @@
 en:
-
+  popular_countries: "Most Popular Countries"
+  subtitle_popular_countries: "Properties In Most Popular Countries"
+  popular_regions: "Most Popular Regions"
+  subtitle_popular_regions: "Properties In Most Popular Regions"
+  popular_cities: "Most Popular Cities"
+  subtitle_popular_cities: "Properties In Most Popular Cities"
+  best_deals: "Best deals"
+  popular_properties: "Popular properties %{area_locative}"
+  popular_agencies: "Popular agencies %{area_locative}"
+  hello: "Hello, %{role}!"
+  main_url: "go to the main page"
+  sign_out: "sign out"
+  password: "Password"
+  coming_soon: "Coming Soon"
+  image: "Image"
+  additional_features: "Additional Features"
+  price_range: "Price Range"
+  area_range: "Area Range"
+  plot_area_range: "Plot Area Range"
+  nothing_found: "Nothing found"
+  maintence_message: "<strong>Warning!</strong> Currently, maintenance is performed, and then unstable work is possible."
+  company: 'PLC "Overseas property"'
+  company_address: "Office: 119072, Moscow, Bersenevskiy pereulok, 5, build 1"
+  inn: ''
+  we_help_to_find: "We will help you to find property"
+  no_thanks: "No, thanks"
+  sold: "Sold"
+  meta:
+    logo_alt: 'Propimo.com: overseas real estate'
+    index_title: 'Propimo.com: Real estate abroad. Buying and renting real estate abroad'
+    index_description: 'Propimo.com - property broker with international property catalogue, real estate prices from developers, owners, agencies – no mediators.'
+    property_short_title: '%{type}%{location_type} %{location}'
+    property_short_title_mk2: '%{prefix} %{room_or_level_count} %{type}%{location_type}, %{location}'
+    property_title: 'Buy %{type}%{location_types} %{location}%{area} - real estate details №%{id}'
+    property_description: 'Buy %{type} %{location}%{location_types}%{features}%{area}%{price}'
+    property_h1: '%{type}%{location_types} %{location}%{area}'
+    favorite_title: "My favorites"
+    compare_properties_title: "Compare"
+    compare_properties_h1: "Compare"
+  seo:
+    short_page_title: 'Short page title'
+    short_page_title_ru: 'Short page title RU'
+    short_page_title_en: 'Short page title EN'
+    page_title: 'Title'
+    page_title_ru: 'Page title RU'
+    page_title_en: 'Page title EN'
+    page_h1: 'Page H1'
+    page_h1_ru: 'Page H1 RU'
+    page_h1_en: 'Page H1 EN'
+    description: 'Page description'
+    description_ru: 'Page description RU'
+    description_en: 'Page description EN'
+    meta_description: 'Page meta description RU'
+    meta_description_ru: 'Page meta description RU'
+    meta_description_en: 'Page meta description EN'
+  continent:
+    as: "Asia"
+    eu: "Europe"
+    an: "Antarctica"
+    na: "North America"
+    sa: "South America"
+    oc: "Oceania"
+    af: "Africa"
+  common:
+    medium: 'Medium'
+    expensive: 'Expensive'
+    cheap: 'Cheap'
+    on_request: 'On Request'
+    property: 'Property'
+    not_filled: 'Not filled'
+    print: 'Print'
+    download: 'Download'
+    comments: 'Comments'
+    title_ru: "Name Russian"
+    title_en: "Name English"
+    back: "Back"
+    ok: "Ok"
+    cancel: "Cancel"
+    edit: "Edit"
+    done: "Done"
+    delete: "Delete"
+    show: "Show"
+    save: "Save"
+    saving: "Saving..."
+    add: "Add"
+    name: "Name"
+    details: "Details"
+    search: "Search"
+    field: "Field"
+    show_more: "Show More"
+    features: "Features"
+    location: "Location"
+    energy_efficiency: "Energy efficiency"
+    choose_location: "Choose location..."
+    choose_construction_phase: "Choose construction phase..."
+    street_view: "Street View"
+    open_site: "Official site"
+    and: "and"
+    or: "or"
+    with: "with"
+    in: "in"
+    of: "of"
+    from: "From"
+    to: "To"
+    main_page: "Main"
+    popular: "Popular"
+    any_feminine: "Any"
+    any_masculine: "Any"
+    any_neuter: "Any"
+    description_ru: 'Description RU'
+    description_en: 'Description EN'
+    short_description: 'Short description'
+    short_description_ru: 'Short description RU'
+    short_description_en: 'Short description EN'
+    title_genitive_ru: 'Name in genitive RU'
+    title_genitive_en: 'Name in genitive EN'
+    title_prepositional_ru: 'Name in prepositional RU'
+    title_prepositional_en: 'Name in prepositional EN'
+    page: 'page'
+    any_properties: "Any Properties"
+    properties_count: "Properties count"
+    actual_properties: "Actual properties"
+    tags_count: "Tags count"
+    active: "active"
+    active_and_moderated: "active and moderated"
+    active_and_moderated_and_filler: "Active, moderated, filler"
+    active_and_moderated_and_not_filler: "Active, moderated, not filler"
+    short_properties_count: "Prop. ct."
+    short_active: "act."
+    short_active_and_moderated: "act. and mod."
+    parsed: "Parsed"
+    moderated: "Moderated"
+    agencies_count: "Agencies count"
+    short_agencies_count: "Ag. ct."
+    articles_count: "Articles count"
+    popular_articles: "Popular articles"
+    categories: "Categories"
+    group: "Group"
+    map_show: "Show map"
+    more: "More"
+    and_more: "and more"
+    has_active_property: "Has active property"
+    has_active_and_moderated_property: "Has active and moderated property"
+    has_property: "Has property"
+    has_not_locale: "Has not locale"
+    choose: "Please select"
+    enter_search_term: "Enter search term..."
+    all: "All"
+    photo: "Photo"
+    property_category: "Property category"
+    no_coordinates: "No coordinates"
+    no_name: "No name"
+    new: "New"
+    reports: "Reports"
+    today: "today"
+    translations: "Translations"
+    seo_page: "Seo page"
+    seo_pages: "Seo pages"
+    seo_settings: "Seo settings"
+    general_info: "General Info"
+    read_more: "Read More"
+    other: "Other"
+    your_name: "Your Name"
+    email_address: "Email Address"
+    country: "Your Country"
+    agency_name: "Your Agency Name"
+    phone: "Your Phone"
+    message: "Message"
+    i_agree: "I agree with <a href='%{terms}' target='_blank'>terms</a> of personal data processing and privacy <a href='%{privacy}' target='_blank'>policy</a> on Propimo.com"
+    submit_message: "Submit Message"
+    submit_bid: "Submit bid"
+    website: "Your agency website"
+    client: "Client"
+    show_in_filter: 'Show in filter'
+    category: 'Category'
+    tag_alias_name: 'Synonym'
+    category: 'Category'
+    tag_alias_name: 'Synonym'
+    updated_at: 'Updated at'
+    updated_by_at: 'Updated by %{user} at %{date}'
+    created_by_at: 'Created by %{user} at %{date}'
+    choose_photo: "Choose photo"
+    chosen_photos: "Chosen photos"
+    uploaded_photos: "Uploaded photos"
+    photo_delete_confirm: "Are you sure you want to delete this photo?"
+    full_attributes_list: "Full list of property attributes:"
+    display_mode: "Display mode"
+    management: "Management"
+    statistics: "Statistics"
+    no_country: "Country wasn't set"
+    successful_translation: "<strong>Success!</strong><p>Tranlation has been updated</p>"
+    unsuccessful_translation: "Can't translate, try again..."
+    monitor: 'Monitoring'
+    favorite: "Favorites"
+    add_to_bookmark: "Add to bookmark"
+    remove_from_bookmark: "Remove from bookmark"
+    add_to_compare: "Add to compare"
+    remove_from_compare: "Remove from compare"
+    compare_properties: "Compare properties"
+    compare: "Compare"
+    reset: "Reset"
+  banner:
+    title: "Find Your Dream Home"
+    search_placeholder: "Enter country, region or city"
+    min_price: "Min Price"
+    max_price: "Max Price"
+    more_options:
+      more_options_btn: "More Options"
+      less_options_btn: "Less Options"
+      min_area: "Min Area"
+      max_area: "Max Area"
+  flip_banner:
+    title_visible: "We help people and homes find each other"
+    title_hidden: "Browse Properties"
+  navbar_application:
+    residential: "Residential"
+    commercial: "Commercial"
+    land: "Land"
+  navbar_admin:
+    locations: "Locations"
+    catalogs: "Catalogs"
+    feedbacks: "Feedbacks"
+  pagination:
+    previous: "Previous"
+    next: "Next"
+  footer:
+    links_title: "Helpful Links"
+    partnership: "Partnership"
+    login: "Login"
+    contact_us: "Contact Us"
+  filter:
+    title: "Find New Home"
+    internal_links_header: "Real estate %{area_locative} by criteria"
+    found_listings: "Found %{count} listings:"
+  sort:
+    sort_by: "Sort by"
+    default_order: "Default Order"
+    price_low_to_high: "Price Low to High"
+    price_high_to_low: "Price High to Low"
+    russian_title: "By russian title"
+    english_title: "By english title"
+    properties_count_desc: "By properties count desc"
+    properties_count: "By properties count asc"
+    created_at: "Old created"
+    updated_at: "Old updated"
+    created_at_desc: "New created"
+    updated_at_desc: "New updated"
+  users:
+    new: "New user"
+    edit: "Edit user"
+    index: "Users"
+    email: "Email"
+    role: "Role"
+    timezone: "Timezone"
+    last_sing_in_at: "Last sing in at"
+    delete_confirm: "Are you sure you want to delete user?"
+    roles:
+      admin: 'Admin'
+      content_manager: 'Content Manager'
+      agent: 'Real estate agent'
+  areas:
+    name: "Name"
+    is_popular: "Is popular"
+    is_active: "Is active"
+    latitude: "Latitude"
+    longitude: "Longitude"
+    asciiname: "Name ASCII"
+    url: "Url"
+    slug: "Slug"
+    regions_count: "Regions count"
+    cities_count: "Cities count"
+    short_regions_count: "Ct. reg."
+    short_cities_count: "Ct. cities"
+    objects_type: "Objects type"
+  countries:
+    capital: "Capital"
+    new: "New country"
+    edit: "Edit country"
+    index: "Countries"
+    show: "Country"
+    iso_alpha2: "iso alpha2 code"
+    currencyname: "Currency name"
+    currencycode: "Currency code"
+    languages: "Languages"
+    delete_confirm: "Are you sure you want to delete country?"
+    without_translation: "Countries without translation"
+    show_agencies_on_website: "Show country's agencies on website?"
+  regions:
+    new: "New region"
+    edit: "Edit region"
+    index: "Regions"
+    show: "Region"
+    region_center: "Region center"
+    delete_confirm: "Are you sure you want to delete region?"
+    without_translation: "Regions without translation"
+  cities:
+    new: "New city"
+    edit: "Edit city"
+    index: "Cities"
+    show: "City"
+    delete_confirm: "Are you sure you want to delete city?"
+    without_translation: "Cities without translation"
+  contact_people:
+    role_ru: "Role Russian"
+    role_en: "Role English"
+    agency: "Agency"
+    ctype: "Agency Contact Type"
+    cvalue: "Agency Contact Value"
+    avatar: "Avatar"
+    new: "New agency contact person"
+    edit: "Edit agency contact person"
+    index: "Agency contact persons"
+    show: "Agency contact person"
+    delete_confirm: "Are you sure you want to delete agency contact person?"
+    contacts: "Contact persons contacts"
+  messenger_types:
+    new: "New messenger type"
+    edit: "Edit messenger type"
+    index: "Messenger types"
+    show: "Messenger type"
+    delete_confirm: "Are you sure you want to delete messenger type?"
+  agencies:
+    create_at: "Created at"
+    description_ru: "Description Russian"
+    description_en: "Description English"
+    about_ru: "About Russian"
+    about_en: "About English"
+    types_ru: "Types Russian"
+    types_en: "Types English"
+    features: "Features"
+    contact_person: "Contact persons"
+    contacts: "Contacts"
+    other_contacts: "Other contacts"
+    content_ru: "Agency Contact content Russian"
+    content_en: "Agency Contact content English"
+    messengers: "Messengers"
+    phone: "Agency Phone"
+    messenger_type_id: "Agency messenger_type_id"
+    logo: "Logo"
+    website: "Website"
+    link: "link"
+    prian_link: "Prian link"
+    prian_properties_link: "Prian properties link"
+    hs_link: "HS link"
+    hs_properties_link: "HS properties link"
+    properties: "Properties"
+    find_last: "Find last agencies"
+    last: "Last agencies"
+    new: "New agency"
+    edit: "Edit agency"
+    index: "Agencies"
+    show: "Agency"
+    delete_confirm: "Are you sure you want to delete agency?"
+    our_property: "Properties"
+    our_agents: "Agents"
+    no_property: "No properties"
+    no_agents: "No agents"
+    alert_not_active_description: "It is not active agency"
+    without_translation: "Agencies without translation"
+    agencies_in_regions: "Agencies in regions"
+    agencies_in_cities: "Agencies in cities"
+    has_contract: "Has contract?"
+    show_on_website: "Show on website"
+  location_types:
+    new: "New location type"
+    edit: "Edit location type"
+    index: "Location types"
+    show: "Location type"
+    delete_confirm: "Are you sure you want to delete location type?"
+  seo_templates:
+    new: "New seo template"
+    edit: "Edit seo template"
+    index: "Seo templates"
+    show: "Seo template"
+    delete_confirm: "Are you sure you want to delete seo template?"
+    seo_pages: "Seo template page"
+    seo_value: "Value from template"
+    seo_fields_edition: "Seo fields editing, template - "
+    not_created: "Not a single SEO template has been created yet."
+  seo_articles_pages:
+    articles_main: "Seo articles index page"
+    articles_countries_main: "Seo page articles index in country"
+    articles_categories_main: "Seo page articles index in category"
+    edit_articles_main: "Edit base index seo articles page"
+    edit_articles_countries_main: "Edit base index seo articles page in country"
+    edit_articles_categories_main: "Edit base index seo articles page in category"
+    index: "Seo articles index pages"
+    show: "Seo  articles index page"
+  seo_agencies_pages:
+    agencies_main: "Seo agencies index page"
+    edit_agencies_main: "Edit base agencies index seo page"
+    index: "Seo agencies index pages"
+    show: "Seo agencies index page"
+  seo_agency_pages:
+    agency_main: "Seo agency page"
+    edit_agency_main: "Edit base seo agency page"
+    index: "Seo agency pages"
+    show: "Seo agency page"
+  properties:
+    error: "Failed to save. Check if everything is filled in correctly."
+    general: "General"
+    photos: "Photos"
+    prices: "Prices"
+    distances: "Distances"
+    in_credit: "In credit"
+    in_mortgage: "In mortgage"
+    from_builder: "From builder"
+    bank_property: "Bank property"
+    with_business: "With business"
+    object: "object"
+    objects_dative: "objects"
+    objects_genitive: "objects"
+    last: "Last properties"
+    same: "Same properties"
+    similar: "Similar Properties"
+    far_property: "So far properties"
+    distance_to_city: "Distance to city"
+    attributes: "Properties Attributes"
+    no_location: "Properties without location"
+    h1_ru: "h1 Russian"
+    h1_en: "h1 English"
+    external_link: "Link"
+    create_at: "Created at"
+    type: "Type"
+    agency: "Agency"
+    ex_link: "External link"
+    new: "New real estate"
+    edit: "Edit real estate"
+    index: "Properties"
+    show: "Real Estate"
+    delete_confirm: "Are you sure you want to delete real estate?"
+    any_status: "Any Status"
+    for_sale: "For Sale"
+    for_rent: "For Rent"
+    area: "Area"
+    plot_area: "Plot Area"
+    rentable_area: "Rentable area"
+    total_area: "total area"
+    bedroom_count: "Bedrooms"
+    bathroom_count: "Bathrooms"
+    room_count: "Rooms"
+    bedrooms_any: "Bedrooms (Any)"
+    bathrooms_any: "Bathrooms (Any)"
+    room_count_any: "Room Count (Any)"
+    bedrooms_ablative: "bedrooms"
+    bathrooms_ablative: "bathrooms"
+    rooms: "Rooms"
+    description: "Description"
+    description_ru: "Description in Russian"
+    description_en: "Description in English"
+    description_two: "Description two"
+    description_two_ru: "Description two Russian"
+    description_two_en: "Description two English"
+    description_three: "Description three"
+    description_three_ru: "Description three Russian"
+    description_three_en: "Description three English"
+    day_ago: "day ago"
+    days_ago: "days ago"
+    price_on_request: "Price on request"
+    with_price: "Price present"
+    level: "Storey"
+    level_count: "Storeys count"
+    not_last_level: "Not last floor"
+    building_year: "Building year"
+    last_repair: "Last repair"
+    rental_yield_per_year: "Rental yield % per year"
+    rental_yield_per_month: "Rental yield % per month"
+    min_absolute_income: "Min absolute income"
+    min_amount_of_own_capital: "Min amount of own capital"
+    construction_phase: "Construction phase"
+    new_building: "New building"
+    off_plan: "Off plan"
+    resale: "Resale"
+    to_food_stores: "To food stores"
+    to_ski_lift: "To the ski lift"
+    to_beach: "To beach"
+    to_sea: "To the sea"
+    to_metro_station: "To metro station"
+    to_medical_facilities: "To medical facilities"
+    to_historical_city_center: "To historical city center"
+    to_state_border: "To state border"
+    to_railroad_station: "To railroad station"
+    to_nearest_big_city: "To nearest big city"
+    to_airport: "To the airport"
+    to_food_stores_unit: "To food stores unit"
+    to_ski_lift_unit: "To the ski lift unit"
+    to_beach_unit: "To beach unit"
+    to_sea_unit: "To the sea unit"
+    to_metro_station_unit: "To metro station unit"
+    to_medical_facilities_unit: "To medical facilities unit"
+    to_historical_city_center_unit: "To historical city center unit"
+    to_state_border_unit: "To state border unit"
+    to_railroad_station_unit: "To railroad station unit"
+    to_nearest_big_city_unit: "To nearest big city unit"
+    to_airport_unit: "To the airport unit"
+    location_types: "Location types"
+    building_stage: "Building stage"
+    prian_link: "Prian link"
+    hs_link: "HS link"
+    additional_area: "Additional area"
+    additional_area_en: "Additional area en"
+    additional_area_ru: "Additional area ru"
+    is_active: "Active"
+    latitude: "Latitude"
+    longitude: "Longitude"
+    sale_price: "Sale price"
+    rent_price: "Rent price"
+    price: "price"
+    per_day: "Per day"
+    per_week: "Per week"
+    per_month: "Per month"
+    unit: "Unit"
+    city_name: "City name"
+    region_name: "Region name"
+    country_name: "Country name"
+    seo_path: "Seo path"
+    not_moderated: "Not moderated"
+    for_moderation: "For moderation"
+    active_short: "Act."
+    moderated_short: "Mod."
+    active_choice: "Choice act."
+    moderated_choice: "Choice mod."
+    not_active_short: "Not act."
+    not_moderated_short: "Not mod."
+    alert_not_active: "Attention!"
+    alert_not_active_description: "Property is not active. You couldn't buy this property..."
+    studio: "Studio"
+    send_message: "Write to seller"
+    person_name: 'Person Name'
+    contacts: 'Contacts'
+    message: 'Message'
+    last_comment: 'Last comment'
+    is_filler: 'filler'
+    video: 'Video'
+  property_types:
+    new: "New real estate type"
+    edit: "Edit real estate type"
+    index: "Real Estate types"
+    show: "Real Estate type"
+    delete_confirm: "Are you sure you want to delete real estate type?"
+  property_type_groups:
+    new: "New real estate types group"
+    edit: "Edit real estate types group"
+    index: "Real Estate types groups"
+    show: "Real Estate types group"
+    delete_confirm: "Are you sure you want to delete real estate types group?"
+  property_supertypes:
+    new: "New real estate supertype"
+    edit: "Edit real estate supertype"
+    index: "Real Estate supertypes"
+    show: "Real Estate supertype"
+    delete_confirm: "Are you sure you want to delete real estate supertype?"
+  property_tag_categories:
+    new: "New real estate tag category"
+    edit: "Edit real estate tag category"
+    index: "Real Estate tag categories"
+    show: "Real Estate tag category"
+    delete_confirm: "Are you sure you want to delete real estate tag category?"
+    not_stated: "Not stated"
+  property_tags:
+    new: "New real estate tag"
+    edit: "Edit real estate tag"
+    index: "Real Estate tags"
+    show: "Real Estate tag"
+    delete_confirm: "Are you sure you want to delete real estate tag?"
+    filtered_tags: "Tags from these categories are displayed in the filter according to the property category"
+  property_tag_aliases:
+    aliases: 'Synonyms'
+  agency_types:
+    new: "New agency type"
+    edit: "Edit agency type"
+    index: "Agency types"
+    show: "Agency type"
+    delete_confirm: "Are you sure you want to delete agency type?"
+  contact_types:
+    new: "New agency contact type"
+    edit: "Edit agency contact type"
+    index: "Agency contact types"
+    show: "Agency contact type"
+    delete_confirm: "Are you sure you want to delete agency contact type?"
+  articles:
+    new: "New article"
+    edit: "Edit article"
+    index: "Articles"
+    show: "Article"
+    delete_confirm: "Are you sure you want to delete article?"
+    alert_not_active_description: "It is not active article"
+  article_categories:
+    new: "New article category"
+    edit: "Edit article category"
+    index: "Article categories"
+    show: "Article category"
+    delete_confirm: "Are you sure you want to delete article category?"
+  seo_templates_groups:
+    new: "New seo templates group"
+    edit: "Edit seo templates group"
+    index: "Seo templates groups"
+    show: "Seo templates group"
+    delete_confirm: "Are you sure you want to delete seo templates group?"
+  bids:
+    new: "Request object's relevance"
+    edit: "Edit bid"
+    index: "Bids"
+    show: "Bid"
+    delete_confirm: "Are you sure you want to delete bid?"
+    success_notice: "Your message has been submitted to us."
+    error_notice: "Sorry, please try again."
+    contacts_sent: 'Contacts Sent?'
+    cost: "Cost/Old Cost"
+    query: "Сlient's name, email or phone"
+  agency_bids:
+    show: 'Agency bid'
+    index: 'Agency bids'
+    delete_confirm: "Are you sure you want to delete bid?"
+    success_notice: "Your message has been submitted to us."
+    error_notice: "Sorry, please try again."
+  client_feedbacks:
+    show: 'Client feedback'
+    index: 'Client bids'
+    delete_confirm: "Are you sure you want to delete feedback?"
+    success_notice: "Your message has been submitted to us."
+    error_notice: "Sorry, please try again."
+    source: "Source page"
+    contact_us: "Contact us"
   real_estate_parsers:
     index: "Parsers"
     agency: "Agency"
     started_at: "Date of start"
     finished_at: "Date of finish"
     status: "Status"
-    process_not_started: "process not started"
-    real_estate_parser_logs:
-      index: "Logs"
-      started_at: "Date of start"
-      finished_at: "Date of finish"
-      status: "Status"
-      created_properties_count: "Count created properties"
-      updated_properties_count: "Count updated properties"
-      deleted_properties_count: "Count deleted properties"
-      statuses:
-        unsuccess: 'unsuccessful'
-        success: 'successful'
-        in_progress: 'in progress'
-  
+    start: "Start"
+    is_active: "Active"
+    percent: "Progress"
+  real_estate_parser_logs:
+    index: "Logs"
+    started_at: "Date of start"
+    finished_at: "Date of finish"
+    status: "Status"
+    created_properties_count: "Count created properties"
+    updated_properties_count: "Count updated properties"
+    deleted_properties_count: "Count deleted properties"
+    error_properties_count: "Count error properties"
+    total_properties_count: "Count total properties"
+    statuses:
+      unsuccess: 'unsuccessful'
+      success: 'successful'
+      in_progress: 'in progress'
+      partial_success: 'partial success'
+      process_not_started: "process not started"
+  pages:
+    edit: "Edit page"
+    index: "Pages"
+    delete_confirm: "Are you sure you want to delete page?"
+  squares:
+    sq_m: "sq.m."
+    ares: "ares"
+    hectares: "hectares"
+    acres: "acres"
+    sq_ft: "sq.ft."
+  distances:
+    meters: "meters"
+    kilometers: "kilometers"
+    miles: "miles"
+  reports:
+    content: "Content"
+    content_report: "Content report"
+    select_start_date: "Select start date"
+    select_end_date: "Select end date"
+    select_user: "Select user"
+    generate_report: "Generate report"
+    user_report: "User report"
+    users_report: "Users report"
+    user_report_title: "Report of"
+    users_report_title: "Users report"
+  comments:
+    modal_title: 'Comments for bids'
+    no_comments: 'No comments'
+    delete_confirm: "Are you sure you want to delete page?"
+  contact_ways:
+    preferred_ways: 'Preferred ways of contact'
+    want_to_have_answer: "I'd like to receive an answer in the messenger:"
+  bitrix:
+    success: 'Synchronized with Bitrix'
+    danger: 'Error during synchronizing with Bitrix'
+    warning: 'Waiting for synchronizing with Bitrix'
+    bitrix_link: 'Open in Bitrix'
+    synchronize: 'Synchronize with Bitrix'
+    errors:
+      wrong_type_bid: 'Wrong Lead type'
+      queued: 'Queued'
+      already_in_queue: 'Already in queue'
+  monitor:
+    sidekiq: 'Sidekiq'
+
+  property_chunks:
+    prefix:
+      masculine:
+        cozy: "cozy"
+        spacious: "spacious"
+        fabulous: "fabulous"
+        comfortable: "comfortable"
+        gorgeous: "gorgeous"
+        beautiful: "beautiful"
+        magnificent: "magnificent"
+      feminine:
+        cozy: "cozy"
+        spacious: "spacious"
+        fabulous: "fabulous"
+        comfortable: "comfortable"
+        gorgeous: "gorgeous"
+        beautiful: "beautiful"
+        magnificent: "magnificent"
+      neuter:
+        cozy: "cozy"
+        spacious: "spacious"
+        fabulous: "fabulous"
+        comfortable: "comfortable"
+        gorgeous: "gorgeous"
+        beautiful: "beautiful"
+        magnificent: "magnificent"
+      plural:
+        cozy: "cozy"
+        spacious: "spacious"
+        fabulous: "fabulous"
+        comfortable: "comfortable"
+        gorgeous: "gorgeous"
+        beautiful: "beautiful"
+        magnificent: "magnificent"
+
+    room_count:
+      studio: "studio"
+      masculine:
+        1_room: "one room"
+        2_room: "two room"
+        3_room: "three room"
+        4_room: "four room"
+        5_room: "five room"
+      feminine:
+        1_room: "one room"
+        2_room: "two room"
+        3_room: "three room"
+        4_room: "four room"
+        5_room: "five room"
+      neuter:
+        1_room: "one room"
+        2_room: "two room"
+        3_room: "three room"
+        4_room: "four room"
+        5_room: "five room"
+      plural:
+        1_room: "one room"
+        2_room: "two room"
+        3_room: "three room"
+        4_room: "four room"
+        5_room: "five room"
+
+    level_count:
+      masculine:
+        1_story: "one-story"
+        2_story: "two-story"
+        3_story: "three-story"
+        4_story: "four-story"
+        5_story: "five-story"
+      feminine:
+        1_story: "one-story"
+        2_story: "two-story"
+        3_story: "three-story"
+        4_story: "four-story"
+        5_story: "five-story"
+      neuter:
+        1_story: "one-story"
+        2_story: "two-story"
+        3_story: "three-story"
+        4_story: "four-story"
+        5_story: "five-story"
+      plural:
+        1_story: "one-story"
+        2_story: "two-story"
+        3_story: "three-story"
+        4_story: "four-story"
+        5_story: "five-story"
+      levels:
+        1_story: "one-story"
+        2_story: "two-story"
+        3_story: "three-story"
+        4_story: "four-story"
+        5_story: "five-story"
+
+  snippets:
+    common:
+      year: Current year
+      year_next: Next year
+      year_tactical: From January to September is equal to the current year, for example "2017", from October to December contains two years, starting with the current one, through a hyphen, for example "2017 - 2018"
+    area:
+      area_name: Location name
+      area_genitive: Location genitive name
+      area_locative: Location locative name
+      area_full_name_locative: Location locative full name (with country, region, etc)
+
+      area_region_name: Location region name
+      area_region_genitive: Location region genitive name
+      area_region_locative: Location region locative name
+      area_region_full_name_locative: Location region locative full name (with country, region, etc)
+
+      area_country_name: Location country name
+      area_country_genitive: Location country genitive name
+      area_country_locative: Location country locative name
+      area_country_full_name_locative: Location country locative full name (with country, region, etc)
+    properties:
+      properties_count: Count of properties for area
+    agency:
+      agency_name: Agency name
+      priority_country_title: Agency priority country name
+
+  continents:
+    AF: "Africa"
+    OC: "Australia"
+    EU: "Europe"
+    AS: "Asia"
+    NA: "North America"
+    SA: "South America"
+    AN: "Antarctica"
+
+  errors:
+    must_be_specified: "field must be specified"
+    incorrectly_email: "email entered incorrectly"
+    incorrectly_phone: "phone entered incorrectly"
+    extension_whitelist_error: "extension whitelist error"
+
+  agency_bid:
+    title: 'Partnership with Propimo.com'
+    form_h1: 'Placement on Propimo.com'
+    description:
+      title: 'Propimo.com is the international real estate broker, helping customers and agencies find each other.
+              Every day we receive requests for the purchase of real estate: from Spain to Vietnam, from a small
+              apartment in Montenegro to the huge storage facilities in Finland. Every month, the number of people
+              interested in real estate are growing and we are actively looking for partners for cooperation.'
+      list_prepend: 'We have:'
+      advantages_list:
+        - 'You can upload any number of real estates to the site;'
+        - 'Placement of real estates on the site is free;'
+        - 'All messages from customers you receive for free.'
+      contact_request: 'Want to become our partner? Leave a request and we will contact you, or contact us directly %{email}'
+
+  pdf:
+    header:
+      property_number: 'Property number: %{id}'
+    footer:
+      source_title: 'Taken from %{link}'
+      pages: 'Page <span class="page"></span> of <span class="topage"></span>'

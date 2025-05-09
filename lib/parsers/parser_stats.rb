@@ -1,7 +1,6 @@
 # lib/parsers/real_estate_parser_stats.rb
 class Parsers::ParserStats
   attr_reader :created_properties_count, :updated_properties_count, :deleted_properties_count, :error_properties_count, :total_properties_count, :status
-  attr_reader :changed
 
   def initialize
     @created_properties_count = 0
@@ -59,6 +58,10 @@ class Parsers::ParserStats
 
   def not_in_database
     @total_properties_count - @created_properties_count - @updated_properties_count - @error_properties_count
+  end
+
+  def changed?
+    @changed
   end
 
   def reset_changed

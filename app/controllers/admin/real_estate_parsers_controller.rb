@@ -1,9 +1,9 @@
 class Admin::RealEstateParsersController < Admin::BasicAdminController
   init_resource :real_estate_parsers
-  define_actions :index, :update, :show
+  define_actions :index, :show
 
   def start
-    RealEstateParserJob.perform_later(params[:real_estate_parser_id])
+    @real_estate_parser = RealEstateParser.find(params[:real_estate_parser_id])
     if @real_estate_parser.is_active?
       RealEstateParserJob.perform_later(@real_estate_parser.id)
       redirect_to real_estate_parsers_path
@@ -15,20 +15,17 @@ class Admin::RealEstateParsersController < Admin::BasicAdminController
   def update
     @real_estate_parser = RealEstateParser.find(params[:id])
 
-    respond_to do |format|
-      if @real_estate_parser.update(real_estate_parser_params)
-        format.html { redirect_to real_estate_parsers_path, notice: 'Статус парсера успешно обновлен.' }
-        format.json { render :show, status: :ok, location: @real_estate_parser }
-      else
-        format.html { redirect_to real_estate_parsers_path, alert: 'Не удалось обновить статус парсера.' }
-        format.json { render json: @real_estate_parser.errors, status: :unprocessable_entity }
-      end
+    if @real_estate_parser.update(real_estate_parser_params)
+      redirect_to real_estate_parsers_path, notice: 'Статус парсера успешно обновлен.'
+    else
+      redirect_to real_estate_parsers_path, alert: 'Не удалось обновить статус парсера.'
     end
   end
 
   private
+
     def index_hook
-      add_breadcrumb "#{t(:index, scope: :real_estate_parsers)}", :real_estate_parsers_path
+      add_breadcrumb t(:index, scope: :real_estate_parsers), :real_estate_parsers_path
 
       @page_title = t(:index, scope: :real_estate_parsers)
     end

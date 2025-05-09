@@ -80,5 +80,4 @@ module Parser::ParserUtils
         -1
     end
   end
-
 end

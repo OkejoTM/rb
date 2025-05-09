@@ -1,0 +1,3 @@
+class Parser::<%= class_name %>::Attributes::PropertyAttributes < Parser::BaseAttributes
+  include Parser::PropertyBaseAttributes
+end

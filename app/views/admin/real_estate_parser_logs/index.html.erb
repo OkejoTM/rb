@@ -12,6 +12,8 @@
     <th><%= t('real_estate_parser_logs.created_properties_count') %></th>
     <th><%= t('real_estate_parser_logs.updated_properties_count') %></th>
     <th><%= t('real_estate_parser_logs.deleted_properties_count') %></th>
+    <th><%= t('real_estate_parser_logs.error_properties_count') %></th>
+    <th><%= t('real_estate_parser_logs.total_properties_count') %></th>
     <th><%= t('real_estate_parser_logs.file') %></th>
   </tr>
 
@@ -21,20 +23,13 @@
       <td><%= date_format(real_estate_parser_log.started_at, format_type: :short_date_time_format) if real_estate_parser_log.started_at != nil %></td>
       <td><%= date_format(real_estate_parser_log.finished_at, format_type: :short_date_time_format) if real_estate_parser_log.finished_at != nil %></td>
       <td>
-        <%
-          case real_estate_parser_log.status
-          when "success"
-        %>
-          <span style="color: green;"><%= status(real_estate_parser_log.status) %></span>
-        <% when "unsuccess" %>
-          <span style="color: red;"><%= status(real_estate_parser_log.status) %></span>
-        <% else %>
-          <%= status(real_estate_parser_log.status) %>
-        <% end %>
+        <%= parser_log_status_with_color(real_estate_parser_log.status) %>
       </td>
       <td><%= real_estate_parser_log.created_properties_count %></td>
       <td><%= real_estate_parser_log.updated_properties_count %></td>
       <td><%= real_estate_parser_log.deleted_properties_count %></td>
+      <td><%= real_estate_parser_log.error_properties_count %></td>
+      <td><%= real_estate_parser_log.total_properties_count %></td>
       <td><%= link_to t('real_estate_parser_logs.open_file'), real_estate_parser_real_estate_parser_log_open_file_path(real_estate_parser_id: real_estate_parser_log.real_estate_parser_id, real_estate_parser_log_id: real_estate_parser_log.id, id: real_estate_parser_log.id) %></td>
     </tr>
   <% end %>

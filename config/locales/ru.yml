@@ -20,23 +20,853 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 ru:
+  popular_countries: "Популярные Страны"
+  subtitle_popular_countries: "Недвижимость в популярных странах"
+  popular_regions: "Популярные регионы"
+  subtitle_popular_regions: "Недвижимость в популярных регионах"
+  popular_cities: "Популярные города"
+  subtitle_popular_cities: "Недвижимость в популярных городах"
+  best_deals: "Лучшие предложения"
+  popular_properties: "Популярная недвижимость %{area_locative}"
+  popular_agencies: "Популярные агентства недвижимости %{area_locative}"
+  hello: "Привет, %{email}! Здесь мы управляем недвижимостью!"
+  main_url: "на главную"
+  sign_out: "выйти"
+  password: "Пароль"
+  coming_soon: "Скоро"
+  image: "Картинка"
+  additional_features: "Дополнительные опции"
+  price_range: "Диапазон цен"
+  area_range: "Площадь"
+  plot_area_range: "Площадь участка"
+  nothing_found: "Ничего не найдено"
+  maintence_message: "<strong>Внимание!</strong> В настоящее время производится техническое обслуживание, вследствие чего возможна нестабильная работа."
+  company: 'ООО "ОВЕРСИЗ ПРОПЕРТИ"'
+  company_address: "Офис: 119072, г Москва, Берсеневский переулок, д.5 стр.1"
+  inn: 'ИНН: 3444125504'
+  we_help_to_find: "Мы поможем Вам подобрать недвижимость"
+  no_thanks: "Нет, спасибо"
+  sold: "Продано"
+  meta:
+    logo_alt: 'Propimo.com: поиск и покупка зарубежной недвижимости'
+    index_title: 'Propimo.com: Недвижимость за рубежом. Покупка и аренда недвижимости за границей'
+    index_description: 'Propimo.com - каталог зарубежной недвижимости, предложения от компаний и частных лиц, которые можно купить или арендовать по выгодным ценам.'
+    property_short_title: '%{type}%{location_type} %{location}'
+    property_short_title_mk2: '%{prefix} %{room_or_level_count} %{type}%{location_type}, %{location}'
+    property_title: 'Купить %{type}%{location_types} %{location}%{area} - объявление №%{id}'
+    property_description: 'Купить %{type} %{location}%{location_types}%{features}%{area}%{price}'
+    property_h1: '%{type}%{location_types} %{location}%{area}'
+    favorite_title: "Избранное"
+    compare_properties_title: "Сравнение"
+    compare_properties_h1: "Сравнение"
+  seo:
+    short_page_title: 'Короткое название'
+    short_page_title_ru: 'Короткое название RU'
+    short_page_title_en: 'Короткое название EN'
+    page_title: 'Заголовок'
+    page_title_ru: 'Title страницы RU'
+    page_title_en: 'Title страницы EN'
+    page_h1: 'H1 страницы'
+    page_h1_ru: 'H1 страницы RU'
+    page_h1_en: 'H1 страницы EN'
+    description: 'Описание страницы'
+    description_ru: 'Описание страницы RU'
+    description_en: 'Описание страницы EN'
+    meta_description: 'Meta описание страницы'
+    meta_description_ru: 'Meta description страницы RU'
+    meta_description_en: 'Meta description страницы EN'
+  continent:
+    as: "Азия"
+    eu: "Европа"
+    an: "Антарктида"
+    na: "Северная Америка"
+    sa: "Южная Америка"
+    oc: "Океания"
+    af: "Африка"
+  common:
+    medium: 'Средняя'
+    expensive: 'Дорогая'
+    cheap: 'Дешевая'
+    on_request: 'По запросу'
+    property: 'Недвижимость'
+    not_filled: 'Не указаны'
+    print: 'Распечатать'
+    download: 'Скачать'
+    comments: 'Комментарии'
+    title_ru: "Наименование на Русском"
+    title_en: "Наименование на Английском"
+    back: "Назад"
+    ok: "Ок"
+    cancel: "Отмена"
+    edit: "Редактировать"
+    done: "Готово"
+    delete: "Удалить"
+    show: "Показать"
+    save: "Сохранить"
+    saving: "Сохранение..."
+    add: "Добавить"
+    name: "Название"
+    field: "Поле"
+    details: "Подробнее"
+    search: "Найти"
+    show_more: "Показать Больше"
+    features: "Особенности"
+    location: "Расположение"
+    energy_efficiency: "Энергоэффективность"
+    choose_location: "Выберите расположение..."
+    choose_construction_phase: "Выберите стадию строительства..."
+    street_view: "Вид с улицы"
+    open_site: "Официальный сайт"
+    and: "и"
+    or: "или"
+    with: "с"
+    in: "в"
+    of: "из"
+    from: "От"
+    to: "До"
+    main_page: "Главная"
+    favorite: "Избранные объекты"
+    popular: "Популярное"
+    any_feminine: "Любая"
+    any_masculine: "Любой"
+    any_neuter: "Любое"
+    description_ru: 'Описание RU'
+    description_en: 'Описание EN'
+    short_description: 'Короткое описание'
+    short_description_ru: 'Короткое описание RU'
+    short_description_en: 'Короткое описание EN'
+    title_genitive_ru: 'Название в родительном падеже RU (нет чего? ...)'
+    title_genitive_en: 'Название в родительном падеже EN'
+    title_prepositional_ru: 'Название в предложном падеже RU (где? в ...)'
+    title_prepositional_en: 'Название в предложном падеже EN'
+    page: 'страница'
+    any_properties: "Любая недвижимость"
+    properties_count: "Количество недвижимости"
+    actual_properties: "Актуальная недвижимость"
+    tags_count: "Количество тегов"
+    active: "активной"
+    active_and_moderated: "активной и модерированной"
+    active_and_moderated_and_filler: "Активная, отмодерированная, массовка"
+    active_and_moderated_and_not_filler: "Активная, отмодерированная, не массовка"
+    short_properties_count: "Кол-во н-ти"
+    short_active: "акт."
+    short_active_and_moderated: "акт. и мод."
+    parsed: "Спарсено"
+    moderated: "Отмодерировано"
+    agencies_count: "Количество агентств"
+    short_agencies_count: "Кол-во агентств"
+    articles_count: "Количество статей"
+    popular_articles: "Популярные статьи"
+    categories: "Категории"
+    group: "Группа"
+    map_show: "Показать на карте"
+    more: "Еще"
+    and_more: "и еще"
+    has_active_property: "Есть активная недвижимость"
+    has_active_and_moderated_property: "Есть активная и отмодерированная недвижимость"
+    has_property: "Есть недвижимость"
+    has_not_locale: "Нет перевода"
+    choose: "Выберите"
+    enter_search_term: "Введите поисковый запрос ..."
+    all: "Все"
+    photo: "Изображения"
+    property_category: "Категория недвижимости"
+    no_coordinates: "Нет координат"
+    no_name: "Безымянный"
+    new: "Новый"
+    reports: "Отчеты"
+    today: "сегодня"
+    translations: "Переводы"
+    seo_page: "Сео страница"
+    seo_pages: "Сео страниц"
+    seo_settings: "Сео настройки"
+    general_info: "Основная информация"
+    read_more: "Читать Далее"
+    other: "Прочее"
+    your_name: "Ваше имя"
+    email_address: "Ваш Email"
+    country: 'Ваша страна'
+    agency_name: 'Ваше агентство'
+    phone: "Ваш телефон"
+    message: "Сообщение"
+    i_agree: "Я согласен с правилами обработки <a href='%{terms}' target='_blank'>персональных данных</a> и <a href='%{privacy}' target='_blank'>политикой конфиденциальности</a> Propimo.com"
+    submit_message: "Отправить Сообщение"
+    submit_bid: "Отправить заявку"
+    website: "Сайт вашего агентства"
+    client: "Клиент"
+    show_in_filter: 'Отображается в фильтре'
+    category: 'Категория'
+    tag_alias_name: 'Синоним'
+    category: 'Категория'
+    tag_alias_name: 'Синоним'
+    updated_at: 'Обновлено'
+    updated_by_at: 'Обновлено %{user} в %{date}'
+    created_by_at: 'Создано %{user} в %{date}'
+    no_country: 'Страна не указана'
+    choose_photo: "Выбрать фото"
+    chosen_photos: "Выбранные фотографии"
+    uploaded_photos: "Загруженные фотографии"
+    photo_delete_confirm: "Вы уверены, что хотите удалить фотографию?"
+    full_attributes_list: "Полный список атрибутов недвижимости:"
+    display_mode: "Режим отображения"
+    management: "Управление"
+    statistics: "Статистика"
+    successful_translation: "Перевод успешно обновлен!"
+    unsuccessful_translation: "Перевести не удалось, попробуйте снова..."
+    monitor: 'Мониторинг'
+    add_to_bookmark: "Добавить в избранное"
+    remove_from_bookmark: "Удалить из избранного"
+    add_to_compare: "Добавить в сравнение"
+    remove_from_compare: "Удалить из сравнения"
+    compare_properties: "Сравнение недвижимости"
+    compare: "Сравнить"
+    reset: "Сбросить"
+  banner:
+    title: "Найдите дом своей мечты"
+    search_placeholder: "Введите страну, регион или город"
+    min_price: "Цена От"
+    max_price: "Цена До"
+    more_options:
+      more_options_btn: "Больше условий"
+      less_options_btn: "Меньше условий"
+      min_area: "Площадь От"
+      max_area: "Площадь До"
+  flip_banner:
+    title_visible: "Мы помогаем людям и домам найти друг друга"
+    title_hidden: "Искать недвижимость"
+  navbar_application:
+    residential: "Жилая"
+    commercial: "Коммерческая"
+    land: "Земельные участки"
+  navbar_admin:
+    locations: "Локации"
+    catalogs: "Справочники"
+    feedbacks: 'Обращения'
+  pagination:
+    previous: "Предыдущая"
+    next: "Следующая"
+  footer:
+    links_title: "Полезные ссылки"
+    partnership: "Партнерам"
+    login: "Войти"
+    contact_us: "Контакты"
+  filter:
+    title: "Найти новый дом"
+    internal_links_header: "Недвижимость %{area_locative} по критериям"
+    found_listings: "Найдено %{count} вариантов:"
+  sort:
+    sort_by: "Сортировка"
+    default_order: "По умолчанию"
+    price_low_to_high: "По возрастанию цены"
+    price_high_to_low: "По убыванию цены"
+    russian_title: "По русскому переводу"
+    english_title: "По английскому переводу"
+    properties_count_desc: "По убыванию кол-ва недвижимости"
+    properties_count: "По возрастанию кол-ва недвижимости"
+    created_at: "Старые созданные"
+    updated_at: "Старые измененные"
+    created_at_desc: "Новые созданные"
+    updated_at_desc: "Новые измененные"
+  users:
+    new: "Новый пользователь"
+    edit: "Редактирование пользователя"
+    index: "Пользователи"
+    email: "Email"
+    role: "Роль"
+    timezone: "Часовой пояс"
+    last_sing_in_at: "Последний вход"
+    delete_confirm: "Вы уверены, что хотите деактивировать пользователя?"
+    roles:
+      admin: 'Администратор'
+      content_manager: 'Контент-менеджер'
+      agent: 'Агент по продаже недвижимости'
+      seller_person: 'Частный продавец'
+  areas:
+    name: "Наименование"
+    is_popular: "Популярная"
+    is_active: "Активная"
+    latitude: "Широта"
+    longitude: "Долгота"
+    asciiname: "Наименование в кодировке ASCII"
+    url: "Url"
+    slug: "Slug"
+    regions_count: "Количество регионов"
+    cities_count: "Количество городов"
+    short_regions_count: "Кол-во рег."
+    short_cities_count: "Кол-во гор."
+    objects_type: "Тип объектов"
+  countries:
+    capital: "Столица"
+    new: "Новая страна"
+    edit: "Редактирование страны"
+    index: "Страны"
+    show: "Страна"
+    iso_alpha2: "iso alpha2 код"
+    currencyname: "Название валюты"
+    currencycode: "Код валюты"
+    languages: "Языки"
+    delete_confirm: "Вы уверены что хотите удалить страну?"
+    without_translation: "Страны без перевода"
+    show_agencies_on_website: "Показывать агентства страны?"
+  regions:
+    new: "Новый регион"
+    edit: "Редактирование региона"
+    index: "Регионы"
+    show: "Регион"
+    region_center: "Региональный центр"
+    delete_confirm: "Вы уверены что хотите удалить регион?"
+    without_translation: "Регионы без перевода"
+  cities:
+    new: "Новый город"
+    edit: "Редактирование города"
+    index: "Города"
+    show: "Город"
+    delete_confirm: "Вы уверены что хотите удалить город?"
+    without_translation: "Города без перевода"
+  contact_people:
+    role_ru: "Должность на Русском"
+    role_en: "Должность на Английском"
+    agency: "Агентство"
+    ctype: "Тип контакта агентства"
+    cvalue: "Контакт агентства"
+    avatar: "Фото"
+    new: "Новый представитель агентства"
+    edit: "Редактирование представителя агентства"
+    index: "Представители агентства"
+    show: "Представитель агентства"
+    delete_confirm: "Вы уверены что хотите удалить представителя агентства?"
+    contacts: "Контакты для контактного лица"
+  messenger_types:
+    new: "Новый тип мессенджера"
+    edit: "Редактирование типа мессенджера"
+    index: "Типы мессенджеров"
+    show: "Тип мессенджера"
+    delete_confirm: "Вы уверены что хотите удалить тип мессенджера?"
+  agencies:
+    create_at: "Дата создания"
+    description_ru: "Описание на Русском"
+    description_en: "Описание на Английском"
+    about_ru: "Описание на Русском"
+    about_en: "Описание на Английском"
+    types_ru: "Типы на Русском"
+    types_en: "Типы на Английском"
+    features: "Особенности"
+    contact_person: "Контактное лицо"
+    contacts: "Контакты"
+    other_contacts: "Другие контакты"
+    content_ru: "Контент на Русском"
+    content_en: "Контент на Английском"
+    messengers: "Связь"
+    phone: "Телефон агентства"
+    messenger_type_id: "Тип связи агентства"
+    logo: "Логотип"
+    website: "Website"
+    link: "Ссылка"
+    prian_link: "Ссылка на Prian"
+    prian_properties_link: "Ссылка на недвижимость Prian"
+    hs_link: "Ссылка на HS"
+    hs_properties_link: "Ссылка на недвижимость HS"
+    properties: "Недвижимость"
+    find_last: "Найти последние агентства"
+    last: "Последние агентства"
+    new: "Новое агентство"
+    edit: "Редактирование агентства"
+    index: "Агентства"
+    show: "Агентство"
+    delete_confirm: "Вы уверены что хотите удалить агентство?"
+    our_property: "Недвижимость"
+    our_agents: "Агенты"
+    no_property: "Пока нет недвижимости..."
+    no_agents: "Пока нет агентов..."
+    alert_not_active_description: "Это неактивное агентство"
+    without_translation: "Агентства без перевода"
+    agencies_in_regions: "Агентства в регионах"
+    agencies_in_cities: "Агентства в городах"
+    has_contract: "Заключен договор?"
+    show_on_website: "Показывать на сайте"
+  location_types:
+    new: "Новый тип расположения"
+    edit: "Редактирование типа расположения"
+    index: "Типы расположения"
+    show: "Тип расположения"
+    delete_confirm: "Вы уверены что хотите удалить тип расположения?"
+  seo_templates:
+    new: "Новый сео шаблон"
+    edit: "Редактирование сео шаблона"
+    index: "Сео шаблоны"
+    show: "Сео шаблон"
+    delete_confirm: "Вы уверены что хотите удалить сео шаблон?"
+    seo_pages: "Страницы SEO-шаблона"
+    seo_meaning: "Значение из шаблона"
+    seo_fields_edition: "Редактирование SEO-полей, шаблон - "
+    not_created: "Еще не создано ни одного SEO-шаблона."
+  seo_articles_pages:
+    articles_main: "Сео страница списка статей"
+    articles_countries_main: "Сео страница списка статей в стране"
+    articles_categories_main: "Сео страница списка статей в категории"
+    edit_articles_main: "Редактирование базовой сео страницы списка статей"
+    edit_articles_countries_main: "Редактирование базовой сео страницы списка статей в стране"
+    edit_articles_categories_main: "Редактирование базовой сео страницы списка статей в категории"
+    index: "Сео страницы списка статей"
+    show: "Сео страница списка статей"
+  seo_agencies_pages:
+    agencies_main: "Базовая сео страница списка агентств"
+    edit_agencies_main: "Редактирование базовой сео страницы списка агентств"
+    index: "Сео страницы списка агентств"
+    show: "Сео страница списка агентств"
+  seo_agency_pages:
+    agency_main: "Базовая сео страница агентства"
+    edit_agency_main: "Редактирование базовой сео страницы агентства"
+    index: "Сео страницы агентств"
+    show: "Сео страница агентства"
+  properties:
+    error: "Не удалось сохранить. Проверьте, все ли заполнено верно."
+    general: "Главная"
+    photos: "Фотографии"
+    prices: "Цены"
+    distances: "Расстояния"
+    in_credit: "В кредит"
+    in_mortgage: "В ипотеку"
+    from_builder: "От застройщика"
+    bank_property: "Банковская собственность"
+    with_business: "С бизнесом"
+    object: "объект"
+    objects_dative: "объекта"
+    objects_genitive: "объектов"
+    last: "Последняя недвижимость"
+    same: "Схожая недвижимость"
+    similar: "Похожая недвижимость"
+    far_property: "Далекая недвижимость"
+    distance_to_city: "Расстояние до города"
+    attributes: "Атрибуты недвижимости"
+    no_location: "Недвижимость без локации"
+    h1_ru: "h1 Русский"
+    h1_en: "h1 Английский"
+    external_link: "Ссылка"
+    create_at: "Дата создания"
+    type: "Тип"
+    agency: "Агентство"
+    ex_link: "Внешние ссылки"
+    new: "Новая недвижимость"
+    edit: "Редактирование недвижимости"
+    index: "Недвижимость"
+    show: "Недвижимость"
+    delete_confirm: "Вы уверены что хотите удалить недвижимость?"
+    any_status: "Любой статус"
+    for_sale: "Продажа"
+    for_rent: "Аренда"
+    area: "Площадь"
+    plot_area: "Участок"
+    rentable_area: "Арендопригодная площадь"
+    total_area: "общая площадь"
+    bedroom_count: "Спальни"
+    bathroom_count: "Ванные"
+    room_count: "Комнаты"
+    bedrooms_any: "Спальни (Любое)"
+    bathrooms_any: "Ванные (Любое)"
+    room_count_any: "Количество комнат (Любое)"
+    bedrooms_ablative: "спальнями"
+    bathrooms_ablative: "ванными"
+    rooms: "Комнаты"
+    description: "Описание"
+    description_ru: "Описание на русском"
+    description_en: "Описание на английском"
+    description_two: "Описание 2"
+    description_two_ru: "Описание 2 на русском"
+    description_two_en: "Описание 2 на английском"
+    description_three: "Описание 3"
+    description_three_ru: "Описание 3 на русском"
+    description_three_en: "Описание 3 на английском"
+    day_ago: "день назад"
+    days_ago: "дней назад"
+    price_on_request: "Цена по запросу"
+    with_price: "С указанной ценой"
+    level: "Этаж"
+    level_count: "Этажность"
+    not_last_level: "Не последний этаж"
+    building_year: "Год постройки"
+    last_repair: "Последний ремонт"
+    rental_yield_per_year: "Доходность от аренды % в год"
+    rental_yield_per_month: "Доходность от аренды % в месяц"
+    min_absolute_income: "Минимальный абсолютный доход"
+    min_amount_of_own_capital: "Минимальный размер собственного капитала"
+    construction_phase: "Стадия строительства"
+    new_building: "Новый дом"
+    off_plan: "Строящийся объект"
+    resale: "Вторичная недвижимость"
+    to_food_stores: "До продовольственных магазинов"
+    to_ski_lift: "До подъемника"
+    to_beach: "До пляжа"
+    to_sea: "До моря"
+    to_metro_station: "До метро"
+    to_medical_facilities: "До медучреждений"
+    to_historical_city_center: "До исторического центра города"
+    to_state_border: "До границы"
+    to_railroad_station: "До вокзала"
+    to_nearest_big_city: "До ближайшего крупного населенного пункта"
+    to_airport: "До аэропорта"
+    to_food_stores_unit: "До продовольственных магазинов (ед. изм.)"
+    to_ski_lift_unit: "До подъемника (ед. изм.)"
+    to_beach_unit: "До пляжа (ед. изм.)"
+    to_sea_unit: "До моря (ед. изм.)"
+    to_metro_station_unit: "До метро (ед. изм.)"
+    to_medical_facilities_unit: "До медучреждений (ед. изм.)"
+    to_historical_city_center_unit: "До исторического центра города (ед. изм.)"
+    to_state_border_unit: "До границы (ед. изм.)"
+    to_railroad_station_unit: "До вокзала (ед. изм.)"
+    to_nearest_big_city_unit: "До ближайшего крупного населенного пункта (ед. изм.)"
+    to_airport_unit: "До аэропорта (ед. изм.)"
+    location_types: "Тип расположения"
+    building_stage: "Стадия строительства"
+    prian_link: "Ссылка на Prian"
+    hs_link: "Ссылка на HS"
+    additional_area: "Дополнительная площадь"
+    additional_area_en: "Дополнительная площадь en"
+    additional_area_ru: "Дополнительная площадь ru"
+    is_active: "Активная"
+    latitude: "Широта"
+    longitude: "Долгота"
+    sale_price: "Продажа"
+    rent_price: "Аренда"
+    price: "цена"
+    per_day: "В день"
+    per_week: "В неделю"
+    per_month: "В месяц"
+    unit: "у.е."
+    city_name: "Название города"
+    region_name: "Название региона"
+    country_name: "Название страны"
+    seo_path: "Seo путь"
+    not_moderated: "Не модерирована"
+    for_moderation: "Для модерирования"
+    active_short: "Акт."
+    moderated_short: "Отр."
+    active_choice: "Выбрать акт."
+    moderated_choice: "Выбрать отр."
+    not_active_short: "Не акт."
+    not_moderated_short: "Не отр."
+    alert_not_active: "Внимание!"
+    alert_not_active_description: "Данная недвижимость не активна. Вы не сможете ее купить."
+    studio: "Студия"
+    send_message: "Написать продавцу"
+    person_name: 'Имя клиента'
+    contacts: 'Контакты'
+    message: 'Сообщение'
+    last_comment: 'Последний комментарий'
+    is_filler: 'Массовка'
+    video: 'Видео'
+  property_types:
+    new: "Новый тип недвижимости"
+    edit: "Редактирование типа недвижимости"
+    index: "Типы недвижимости"
+    show: "Тип недвижимости"
+    delete_confirm: "Вы уверены что хотите удалить тип недвижимости?"
+  property_type_groups:
+    new: "Новая группа типов недвижимости"
+    edit: "Редактирование группы типов недвижимости"
+    index: "Группы типов недвижимости"
+    show: "Группа типов недвижимости"
+    delete_confirm: "Вы уверены что хотите удалить группу типов недвижимости?"
+  property_supertypes:
+    new: "Новая категория недвижимости"
+    edit: "Редактирование категории недвижимости"
+    index: "Категории недвижимости"
+    show: "Категория недвижимости"
+    delete_confirm: "Вы уверены что хотите удалить категорию недвижимости?"
+  property_tag_categories:
+    new: "Новая категория тегов недвижимости"
+    edit: "Редактирование категории тегов недвижимости"
+    index: "Категории тегов недвижимости"
+    show: "Категория тегов недвижимости"
+    delete_confirm: "Вы уверены что хотите удалить категорию тегов недвижимости?"
+    not_stated: "Не указано"
+  property_tags:
+    new: "Новый тег недвижимости"
+    edit: "Редактирование тега недвижимости"
+    index: "Теги недвижимости"
+    show: "Тег недвижимости"
+    filtered_tags: "Теги из этих категорий отображаются в фильтре в соответствии с категорией недвижимости"
+    delete_confirm: "Вы уверены что хотите удалить тег недвижимости?"
+  property_tag_aliases:
+    aliases: 'Синонимы'
+  agency_types:
+    new: "Новый тип агентства"
+    edit: "Редактирование типа агентства"
+    index: "Типы агентства"
+    show: "Тип агентства"
+    delete_confirm: "Вы уверены что хотите удалить тип агентства?"
+  contact_types:
+    new: "Новый тип контакта агентства"
+    edit: "Редактирование типа контакта агентства"
+    index: "Типы контактов агентства"
+    show: "Тип контакта агентства"
+    delete_confirm: "Вы уверены что хотите удалить тип контакта агентства?"
+  articles:
+    new: "Новая статья"
+    edit: "Редактирование статьи"
+    index: "Статьи"
+    show: "Статья"
+    delete_confirm: "Вы уверены что хотите удалить статью?"
+    alert_not_active_description: "Эта статья отключена и не отображается на сайте"
+  article_categories:
+    new: "Новая категория статей"
+    edit: "Редактирование категории статей"
+    index: "Категории статей"
+    show: "Категория статей"
+    delete_confirm: "Вы уверены что хотите удалить категорию статей?"
+  seo_templates_groups:
+    new: "Новая группа сео шаблонов"
+    edit: "Редактирование группы сео шаблонов"
+    index: "Группы сео шаблонов"
+    show: "Группа сео шаблонов"
+    delete_confirm: "Вы уверены что хотите удалить группу сео шаблонов?"
+  bids:
+    new: "Запросить актуальность объекта"
+    edit: "Редактирование обращения"
+    index: "Обращения"
+    show: "Обращение"
+    delete_confirm: "Вы уверены что хотите удалить обращение?"
+    success_notice: "Ваше сообщение было отправлено."
+    error_notice: "Извините, попробуйте еще раз."
+    contacts_sent: 'Контакты отправлены?'
+    cost: "Цена/Старая цена"
+    query: "Имя клиента, email или телефон"
+  agency_bids:
+    show: 'Обращение агентства'
+    index: 'Обращения агентств'
+    delete_confirm: "Вы уверены что хотите удалить обращение?"
+    error_notice: "Извините, попробуйте еще раз."
+    success_notice: "Ваше сообщение было отправлено."
+  client_feedbacks:
+    show: 'Отзыв клиента'
+    index: 'Заявки на подбор'
+    delete_confirm: "Вы уверены что хотите удалить обращение?"
+    error_notice: "Извините, попробуйте еще раз."
+    success_notice: "Ваше сообщение было отправлено."
+    source: "Источник"
+    contact_us: "Связаться с нами"
   real_estate_parsers:
     index: "Парсеры"
     agency: "Агенство"
     started_at: "Дата начала"
     finished_at: "Дата завершения"
     status: "Статус"
-    process_not_started: "процесс еще не начат"
-    real_estate_parser_logs:
-      index: "Логи"
-      started_at: "Дата начала"
-      finished_at: "Дата завершения"
-      status: "Статус"
-      created_properties_count: "Количество добавленных объектов"
-      updated_properties_count: "Количество обновленных объектов"
-      deleted_properties_count: "Количество удаленныйх объектов"
-      statuses:
-        unsuccess: 'неуспешно'
-        success: 'успешно'
-        in_progress: 'в процессе'
-  
+    start: "Начать"
+    percent: "Прогресс парсинга"
+  real_estate_parser_logs:
+    index: "Логи"
+    started_at: "Дата начала"
+    finished_at: "Дата завершения"
+    status: "Статус"
+    created_properties_count: "Количество добавленных объектов"
+    updated_properties_count: "Количество обновленных объектов"
+    deleted_properties_count: "Количество удаленных объектов"
+    error_properties_count: "Количество объектов с ошибкой"
+    total_properties_count: "Всего объектов парсинга"
+    statuses:
+      unsuccess: 'неуспешно'
+      success: 'успешно'
+      in_progress: 'в процессе'
+      partial_success: 'частичный успех'
+      process_not_started: "процесс еще не начат"
+  pages:
+    edit: "Редактирование страницы"
+    index: "Страницы"
+    delete_confirm: "Вы уверены что хотите удалить страницу?"
+  squares:
+    sq_m: "кв.м."
+    ares: "сот."
+    hectares: "Га"
+    acres: "акров"
+    sq_ft: "кв.фт."
+  distances:
+    meters: "м"
+    kilometers: "км"
+    miles: "миль"
+  reports:
+    content: "По работе контент менеджера"
+    content_report: "Отчет по работе контент менеджера"
+    select_start_date: "Выберите начало периода"
+    select_end_date: "Выберите конец периода"
+    select_user: "Выберите пользователя"
+    generate_report: "Сгенерировать отчет"
+    user_report: "Отчет пользователя"
+    users_report: "Отчет пользователей"
+    user_report_title: "Отчет пользователя"
+    users_report_title: "Отчет пользователей"
+  comments:
+    modal_title: 'Комментарии к обращению'
+    no_comments: 'Комментарии отсутствуют'
+    delete_confirm: "Вы уверены что хотите удалить комментарий?"
+  contact_ways:
+    preferred_ways: 'Предпочтительные способы связи'
+    want_to_have_answer: 'Я бы хотел получить ответ в мессенджере'
+  bitrix:
+    success: 'Синхронизировано с Битриксом'
+    danger: 'Произошла ошибка при синхронизации с Битриксом'
+    warning: 'Ожидает синхронизации с Битриксом'
+    bitrix_link: 'Открыть в Битриксе'
+    synchronize: 'Синхронизовать с Битриксом'
+    errors:
+      wrong_type_bid: 'Неверный тип Лида'
+      queued: 'Поставлен в очередь'
+      already_in_queue: 'Уже обрабатывается'
+  monitor:
+    sidekiq: 'Sidekiq'
+
+  property_chunks:
+    prefix:
+      masculine:
+        cozy: "уютный"
+        spacious: "просторный"
+        fabulous: "потрясающий"
+        comfortable: "комфортабельный"
+        gorgeous: "роскошный"
+        beautiful: "прекрасный"
+        magnificent: "великолепный"
+      feminine:
+        cozy: "уютная"
+        spacious: "просторная"
+        fabulous: "потрясающая"
+        comfortable: "комфортабельная"
+        gorgeous: "роскошная"
+        beautiful: "прекрасная"
+        magnificent: "великолепная"
+      neuter:
+        cozy: "уютное"
+        spacious: "просторное"
+        fabulous: "потрясающее"
+        comfortable: "комфортабельное"
+        gorgeous: "роскошное"
+        beautiful: "прекрасное"
+        magnificent: "великолепное"
+      plural:
+        cozy: "уютные"
+        spacious: "просторные"
+        fabulous: "потрясающие"
+        comfortable: "комфортабельные"
+        gorgeous: "роскошные"
+        beautiful: "прекрасные"
+        magnificent: "великолепные"
+
+    room_count:
+      studio: "студия"
+      masculine:
+        1_room: "однокомнатный"
+        2_room: "двухкомнатный"
+        3_room: "трехкомнатный"
+        4_room: "четырехкомнатный"
+        5_room: "пятикомнатный"
+      feminine:
+        1_room: "однокомнатная"
+        2_room: "двухкомнатная"
+        3_room: "трехкомнатная"
+        4_room: "четырехкомнатная"
+        5_room: "пятикомнатная"
+      neuter:
+        1_room: "однокомнатное"
+        2_room: "двухкомнатное"
+        3_room: "трехкомнатное"
+        4_room: "четырехкомнатное"
+        5_room: "пятикомнатное"
+      plural:
+        1_room: "однокомнатные"
+        2_room: "двухкомнатные"
+        3_room: "трехкомнатные"
+        4_room: "четырехкомнатные"
+        5_room: "пятикомнатные"
+
+    level_count:
+      masculine:
+        1_story: "одноэтажный"
+        2_story: "двухэтажный"
+        3_story: "трехэтажный"
+        4_story: "четырехэтажный"
+        5_story: "пятиэтажный"
+      feminine:
+        1_story: "одноэтажная"
+        2_story: "двухэтажная"
+        3_story: "трехэтажная"
+        4_story: "четырехэтажная"
+        5_story: "пятиэтажная"
+      neuter:
+        1_story: "одноэтажное"
+        2_story: "двухэтажное"
+        3_story: "трехэтажное"
+        4_story: "четырехэтажное"
+        5_story: "пятиэтажное"
+      plural:
+        1_story: "одноэтажные"
+        2_story: "двухэтажные"
+        3_story: "трехэтажные"
+        4_story: "четырехэтажные"
+        5_story: "пятиэтажные"
+      levels:
+        1_story: "одноуровневый"
+        2_story: "двухуровневый"
+        3_story: "трехуровневый"
+        4_story: "четырехуровневый"
+        5_story: "пятиуровневый"
+
+  snippets:
+    common:
+      year: Текущий год
+      year_next: Следующий год
+      year_tactical: С января по сентябрь равен текущему году, например "2017", с октября по декабрь содержит два года, начиная с текущего, через дефис, например "2017 - 2018"
+    area:
+      area_name: Название локации
+      area_genitive: Название локации в родительном падеже
+      area_locative: Название локации в предложном падеже
+      area_full_name_locative: Полное название локации в предложном падеже (со страной, регионом и т.д.)
+
+      area_region_name: Название региона локации
+      area_region_genitive: Название региона локации в родительном падеже
+      area_region_locative: Название региона локации в предложном падеже
+      area_region_full_name_locative: Полное название региона локации в предложном падеже (со страной, регионом и т.д.)
+
+      area_country_name: Название страны локации
+      area_country_genitive: Название страны локации в родительном падеже
+      area_country_locative: Название страны локации в предложном падеже
+      area_country_full_name_locative: Полное название страны локации в предложном падеже (со страной, регионом и т.д.)
+    property:
+      properties_count: Количество недвижимости для локации
+    agency:
+      agency_name: Название агентства
+      priority_country_title: Название приоритетной страны агентства
+
+  continents:
+    AF: "Африка"
+    OC: "Австралия"
+    EU: "Европа"
+    AS: "Азия"
+    NA: "Серверная Америка"
+    SA: "Южная Америка"
+    AN: "Антарктида"
+
+  errors:
+    must_be_specified: "поле должно быть указано"
+    incorrectly_email: "email введен некорректно"
+    incorrectly_phone: "телефонный номер введен некорректно"
+    extension_whitelist_error: "Расширение файла не допустимо"
+
+  agency_bid:
+    title: 'Партнерство с Propimo.com'
+    form_h1: 'Размещение на Propimo.com'
+    description:
+      title: 'Propimo.com - международный брокер недвижимости, помогающий покупателям и агентствам найти друг друга.
+              Ежедневно мы получаем заявки на покупку недвижимости: от Испании до Вьетнама, от небольшой квартиры в
+              Черногории до огромных складских помещений в Финляндии. С каждым месяцем количество интересующихся
+              недвижимостью клиентов растет и мы активно ищем партнеров для сотрудничества.'
+      list_prepend: 'У нас:'
+      advantages_list:
+        - 'Вы можете загрузить на сайт любое количество объектов;'
+        - 'Размещение объектов на сайте бесплатно;'
+        - 'Все сообщения от покупателей вы получаете бесплатно.'
+      contact_request: 'Хотите стать нашим партнером? Оставьте заявку и мы обязательно свяжемся с вами, или напишите нам на почту %{email}'
+
+  pdf:
+    header:
+      property_number: 'Номер объекта: %{id}'
+    footer:
+      source_title: 'Информация взята с %{link}'
+      pages: 'Страница <span class="page"></span> из <span class="topage"></span>'

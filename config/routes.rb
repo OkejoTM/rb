@@ -66,10 +66,10 @@ Rails.application.routes.draw do
     resources :seo_templates_groups
     resources :pages, only: [:index, :edit, :update]
     resources :bids, only: [:index, :update, :destroy]
-    resources :real_estate_parsers, only: :index do
-      post '/start', to: 'real_estate_parsers#start'
+    resources :real_estate_parsers, only: [:index, :update] do
+      post :start
 
-      resources :real_estate_parser_logs, only: :index do
+      resources :real_estate_parser_logs, only: :index, controller: 'real_estate_parsers/real_estate_parser_logs' do
         get 'open_file/:id', to: 'files#open_in_browser', as: 'open_file'
       end
     end

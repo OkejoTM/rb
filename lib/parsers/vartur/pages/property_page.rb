@@ -24,6 +24,7 @@ class Parsers::Vartur::Pages::PropertyPage < Parsers::BasePage
 
         if property_attrs.blank?
           @stats.increment_error_properties
+          @logger.warn("Аттрибуты для недвижимости #{url} были пустые")
           next
         end
 

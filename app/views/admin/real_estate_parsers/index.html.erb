@@ -11,6 +11,7 @@
     <th><%= t('real_estate_parsers.started_at') %></th>
     <th><%= t('real_estate_parsers.finished_at') %></th>
     <th><%= t('real_estate_parsers.status') %></th>
+    <th><%= t('real_estate_parsers.percent') %></th>
     <th></th>
     <th></th>
   </tr>
@@ -23,29 +24,31 @@
       <td><%= date_format(parser.started_at, format_type: :short_date_time_format) if parser.started_at != nil %></td>
       <td><%= date_format(parser.finished_at, format_type: :short_date_time_format) if parser.finished_at != nil %></td>
       <td>
-        <%
-          case parser.status
-          when "success"
-        %>
-          <span style="color: green;"><%= status(parser.status) %></span>
-        <% when "unsuccess" %>
-          <span style="color: red;"><%= status(parser.status) %></span>
-        <% when "process_not_started" %>
-          <%= t('real_estate_parsers.process_not_started') %>
-        <% else %>
-          <%= status(parser.status) %>
-        <% end %>
+        <%= parser_log_status_with_color(parser.status) %>
       </td>
+      <td><span title='процесс парсинга'><%= progress_bar(parser.latest_run&.to_percent || 0) %></span></td>
       <td><%= link_to t('real_estate_parser_logs.index'), real_estate_parser_real_estate_parser_logs_path(real_estate_parser_id: parser.id) %></td>
       <td>
-        <%= button_to t('real_estate_parsers.start'),
+        <div class="btn-group" role="group">
+
+          <%= link_to t('real_estate_parsers.start'),
                       real_estate_parser_start_path(parser.id),
-                      { method: :post, disabled: (!parser.is_active? && parser.started_at.present? && parser.finished_at.present? && parser.started_at == parser.finished_at || parser.status == "in_progress"), class: 'btn btn-primary' } %>
-        <% if parser.is_active? %>
-          <%= link_to 'Выключить', real_estate_parser_path(id: parser.id, real_estate_parser: { is_active: false }), class: 'btn btn-default', data: { method: :put } %>
-        <% else %>
-          <%= link_to 'Включить', real_estate_parser_path(id: parser.id, real_estate_parser: { is_active: true }), class: 'btn btn-success', data: { method: :put } %>
-        <% end %>
+                      class: "btn #{!parser.can_be_started? ? 'btn-default disabled' : 'btn-primary'}",
+                      data: { method: :post },
+                      disabled: !parser.can_be_started? %>
+
+          <% if parser.is_active? %>
+            <%= link_to 'Деактивировать',
+                        real_estate_parser_path(id: parser.id, real_estate_parser: { is_active: false }),
+                        class: 'btn btn-default',
+                        data: { method: :put } %>
+          <% else %>
+            <%= link_to 'Активировать',
+                        real_estate_parser_path(id: parser.id, real_estate_parser: { is_active: true }),
+                        class: 'btn btn-success',
+                        data: { method: :put } %>
+          <% end %>
+        </div>
       </td>
     </tr>
   <% end %>

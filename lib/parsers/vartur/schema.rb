@@ -26,7 +26,7 @@ class Parsers::Vartur::Schema
 
       deleted_properties = deactivate_not_founded_properties(existed_property_urls)
       log_deactivated_properties(deleted_properties)
-      log_separated_properties(new_properties, existed_property_urls - deleted_properties)
+      log_separated_properties(new_properties, existed_property_urls)
       parse_properties(property_urls)
 
       true

@@ -17,24 +17,35 @@ class RealEstateParser < ApplicationRecord
 
   def status
     return 'process_not_started' if real_estate_parser_logs.blank?
-    real_estate_parser_logs.order(:created_at).last.status
+    latest_run.status
   end
 
   def started_at
-    real_estate_parser_logs.order(:created_at).last&.created_at.presence
+    latest_run&.created_at.presence
   end
 
   def finished_at
-    real_estate_parser_logs.order(:created_at).last&.finished_at.presence
+    latest_run&.finished_at.presence
   end
 
   def start
     return false unless is_active?
+    agent = Parser::AgentProxy.new
     stats = Parsers::ParserStats.new
-    "Parsers::#{agency.slug.camelize}::Schema".constantize.new(Parser::AgentProxy.new, Parsers::RealEstateParserLogger.new("log/parsers", self, stats), stats).call
+    logger = Parsers::RealEstateParserLogger.new('log/parsers', self, stats)
+    "Parsers::#{agency.slug.camelize}::Schema".constantize.new(agent, logger, stats).call
+  end
+
+  def latest_run
+    return nil if real_estate_parser_logs.blank?
+    real_estate_parser_logs.order(:created_at).last
   end
 
   def name
     "Real Estate Parser #{id}"
+  end
+
+  def can_be_started?
+    status != "in_progress" && is_active?
   end
 end

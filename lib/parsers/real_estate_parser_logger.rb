@@ -1,5 +1,6 @@
+require 'fileutils'
+
 class Parsers::RealEstateParserLogger < Logger
-  require 'fileutils'
 
   def initialize(log_dir, parser, stats)
     @stats = stats
@@ -38,6 +39,7 @@ class Parsers::RealEstateParserLogger < Logger
 
   def warn(message)
     @logger.warn(message)
+    update_log_from_stats
   end
 
   def debug(message)
@@ -54,12 +56,12 @@ class Parsers::RealEstateParserLogger < Logger
     end
 
     def log_start_time
-      @logger.info("Parsing started #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}")
+      @logger.info("Parsing started #{Time.zone.now.strftime('%Y-%m-%d %H:%M:%S')}")
     end
 
     def update_log_from_stats
-      return unless @stats.changed
-      @log.update(@stats.to_h.merge(updated_at: Time.now))
+      return unless @stats.changed?
+      @log.update(@stats.to_h.merge(updated_at: Time.zone.now))
       @stats.reset_changed
     end
 end
