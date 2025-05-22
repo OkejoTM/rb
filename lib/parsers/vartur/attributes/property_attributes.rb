@@ -85,8 +85,14 @@ class Parsers::Vartur::Attributes::PropertyAttributes < Parsers::BaseAttributes
 
   def description
     return if response.blank?
-    description_text = response.css('.text-sm.text-gray-600').text.strip
-    description_text.split(/\n+/).map(&:strip).reject(&:empty?).join("\n")
+
+    description_header = response.css('h4.p-3.bg-gray-100.text-gray-800:contains("Description")').first
+    return '' if description_header.blank?
+
+    description_block = description_header.parent.parent.css('.p-3.text-sm.text-gray-600').first
+    return '' if description_block.blank?
+
+    description_block.text.strip.split(/\n+/).map(&:strip).reject(&:empty?).join('\n')
   end
 
   def building_year
